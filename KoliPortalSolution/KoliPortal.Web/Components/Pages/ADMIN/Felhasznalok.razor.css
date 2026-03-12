@@ -1,0 +1,50 @@
+﻿/* --- SEGÉDOSZTÁLYOK ÉS BURKOLÓ --- */
+.text-center {
+    text-align: center;
+}
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- SZEREPKÖR JELVÉNYEK (Badges) --- */
+.role-badge {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.role-student {
+    background-color: #e0f2fe;
+    color: #0284c7;
+}
+
+.role-admin {
+    background-color: #f3e8ff;
+    color: #9333ea;
+}
+
+.role-maintenance {
+    background-color: #ffedd5;
+    color: #ea580c;
+}
+
+/* --- MŰVELET GOMBOK --- */
+.action-btn {
+    background: transparent;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+    .action-btn:hover {
+        background-color: #f1f5f9;
+        color: #0f172a;
+    }

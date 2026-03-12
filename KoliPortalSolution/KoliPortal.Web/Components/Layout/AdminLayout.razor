@@ -1,0 +1,50 @@
+﻿@inherits LayoutComponentBase
+
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <i class="bi bi-person-fill-gear icon"></i>
+            Adminisztráció
+        </div>
+
+        <nav class="sidebar-nav">
+            <NavLink class="nav-item" href="/" Match="NavLinkMatch.All">
+                <i class="bi bi-grid-fill icon"></i>
+                Áttekintés
+            </NavLink>
+            <NavLink class="nav-item" href="/felhasznalok">
+                <i class="bi bi-people icon"></i>
+                Felhasználók
+            </NavLink>
+            <NavLink class="nav-item" href="/szobak">
+                <i class="bi bi-door-open icon"></i>
+                Szobák
+            </NavLink>
+            <NavLink class="nav-item" href="/karbantartas">
+                <i class="bi bi-tools icon"></i>
+                Karbantartás
+            </NavLink>
+            <NavLink class="nav-item" href="/beallitasok">
+                <i class="bi bi-gear icon"></i>
+                Beállítások
+            </NavLink>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="avatar">A</div>
+                <div class="user-info">
+                    <span class="user-name">Adminisztrátor</span>
+                    <span class="user-role">Fő-admin</span>
+                </div>
+                <div class="logout-icon">
+                    <i class="bi bi-box-arrow-right"></i>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        @Body
+    </main>
+</div>
