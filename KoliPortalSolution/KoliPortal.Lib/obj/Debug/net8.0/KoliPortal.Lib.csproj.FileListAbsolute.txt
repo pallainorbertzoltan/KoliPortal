@@ -1,0 +1,13 @@
+C:\Users\user\source\repos\pallainorbertzoltan\KoliPortal\KoliPortalSolution\KoliPortal.Lib\bin\Debug\net8.0\KoliPortal.Lib.deps.json
+C:\Users\user\source\repos\pallainorbertzoltan\KoliPortal\KoliPortalSolution\KoliPortal.Lib\bin\Debug\net8.0\KoliPortal.Lib.dll
+C:\Users\user\source\repos\pallainorbertzoltan\KoliPortal\KoliPortalSolution\KoliPortal.Lib\bin\Debug\net8.0\KoliPortal.Lib.pdb
+C:\Users\user\source\repos\pallainorbertzoltan\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.csproj.AssemblyReference.cache
+C:\Users\user\source\repos\pallainorbertzoltan\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\source\repos\pallainorbertzoltan\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.AssemblyInfoInputs.cache
+C:\Users\user\source\repos\pallainorbertzoltan\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.AssemblyInfo.cs
+C:\Users\user\source\repos\pallainorbertzoltan\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\pallainorbertzoltan\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.sourcelink.json
+C:\Users\user\source\repos\pallainorbertzoltan\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.dll
+C:\Users\user\source\repos\pallainorbertzoltan\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\refint\KoliPortal.Lib.dll
+C:\Users\user\source\repos\pallainorbertzoltan\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.pdb
+C:\Users\user\source\repos\pallainorbertzoltan\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\ref\KoliPortal.Lib.dll

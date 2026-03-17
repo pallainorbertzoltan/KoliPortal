@@ -1,0 +1,57 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = KoliPortal.Web
+build_property.RootNamespace = KoliPortal.Web
+build_property.ProjectDir = C:\Users\user\source\repos\pallainorbertzoltan\KoliPortal\KoliPortalSolution\KoliPortal.Web\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\user\source\repos\pallainorbertzoltan\KoliPortal\KoliPortalSolution\KoliPortal.Web
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/user/source/repos/pallainorbertzoltan/KoliPortal/KoliPortalSolution/KoliPortal.Web/Components/App.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/pallainorbertzoltan/KoliPortal/KoliPortalSolution/KoliPortal.Web/Components/Routes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/pallainorbertzoltan/KoliPortal/KoliPortalSolution/KoliPortal.Web/Components/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/user/source/repos/pallainorbertzoltan/KoliPortal/KoliPortalSolution/KoliPortal.Web/Components/Layout/AdminLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcQWRtaW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-093ymkrhz2
+
+[C:/Users/user/source/repos/pallainorbertzoltan/KoliPortal/KoliPortalSolution/KoliPortal.Web/Components/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-a1h8p0fllz
+
+[C:/Users/user/source/repos/pallainorbertzoltan/KoliPortal/KoliPortalSolution/KoliPortal.Web/Components/Pages/ADMIN/Attekintes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBRE1JTlxBdHRla2ludGVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-i4iuf4rnfy
+
+[C:/Users/user/source/repos/pallainorbertzoltan/KoliPortal/KoliPortalSolution/KoliPortal.Web/Components/Pages/ADMIN/Felhasznalok.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBRE1JTlxGZWxoYXN6bmFsb2sucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-47y4jzkb10
+
+[C:/Users/user/source/repos/pallainorbertzoltan/KoliPortal/KoliPortalSolution/KoliPortal.Web/Components/Pages/ADMIN/Karbantartas.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBRE1JTlxLYXJiYW50YXJ0YXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-ppfzthiqgg
+
+[C:/Users/user/source/repos/pallainorbertzoltan/KoliPortal/KoliPortalSolution/KoliPortal.Web/Components/Pages/ADMIN/Szobak.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBRE1JTlxTem9iYWsucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-8j6y9jmal6

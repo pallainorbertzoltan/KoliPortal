@@ -1,0 +1,61 @@
+﻿@page "/szobak"
+@layout AdminLayout
+
+<header class="page-header text-center">
+    <h1>Szobák Állapota</h1>
+    <p>Kapacitás és lakók áttekintése.</p>
+</header>
+
+<div class="content-wrapper">
+    <div class="filter-controls">
+        <button class="filter-btn active">Összes</button>
+        <button class="filter-btn">Szabad ágyak</button>
+    </div>
+
+    <div class="card">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Szoba</th>
+                    <th>Emelet</th>
+                    <th>Kapacitás</th>
+                    <th>Lakók</th>
+                    <th>Telítettség</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>101</td>
+                    <td>1. Emelet</td>
+                    <td>4 fő</td>
+                    <td>Kovács N., Nagy A.</td>
+                    <td>
+                        <span class="status-badge partial">50% (2/4)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>102</td>
+                    <td>1. Emelet</td>
+                    <td>3 fő</td>
+                    <td>Szabó P., Varga J., Kiss M.</td>
+                    <td>
+                        <span class="status-badge full">100% (3/3)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>205</td>
+                    <td>2. Emelet</td>
+                    <td>2 fő</td>
+                    <td>-</td>
+                    <td>
+                        <span class="status-badge empty">0% (0/2)</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+
+}

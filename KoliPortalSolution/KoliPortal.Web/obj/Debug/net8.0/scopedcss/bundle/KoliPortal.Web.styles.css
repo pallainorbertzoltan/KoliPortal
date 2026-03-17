@@ -1,0 +1,505 @@
+/* _content/KoliPortal.Web/Components/Layout/AdminLayout.razor.rz.scp.css */
+/* Fő konténer és elrendezés */
+.dashboard-container[b-093ymkrhz2] {
+    display: flex;
+    height: 100vh;
+    background-color: #f8fafc;
+    overflow: hidden;
+}
+
+/* --- SIDEBAR (Oldalsáv) --- */
+.sidebar[b-093ymkrhz2] {
+    width: 260px;
+    background-color: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header[b-093ymkrhz2] {
+    padding: 24px 20px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0d9488;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-nav[b-093ymkrhz2] {
+    flex: 1;
+    padding: 20px 0;
+    overflow-y: auto;
+}
+
+/* A NavLink a háttérben egy <a> taget generál, ezt formázzuk */
+[b-093ymkrhz2] .nav-item {
+    padding: 12px 24px;
+    margin: 4px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #64748b;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none; /* Ne legyen aláhúzva a link */
+}
+
+    [b-093ymkrhz2] .nav-item:hover {
+        background-color: #f1f5f9;
+    }
+
+    /* A Blazor automatikusan ráteszi az 'active' class-t az aktív menüpontra */
+    [b-093ymkrhz2] .nav-item.active {
+        background-color: #f0fdfa;
+        color: #0d9488;
+    }
+
+    [b-093ymkrhz2] .nav-item .icon {
+        font-size: 1.2rem;
+    }
+
+/* Sidebar Footer / Felhasználói profil */
+.sidebar-footer[b-093ymkrhz2] {
+    padding: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.user-profile[b-093ymkrhz2] {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar[b-093ymkrhz2] {
+    width: 36px;
+    height: 36px;
+    background-color: #0d9488;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.user-info[b-093ymkrhz2] {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name[b-093ymkrhz2] {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #0f172a;
+}
+
+.user-role[b-093ymkrhz2] {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.logout-icon[b-093ymkrhz2] {
+    margin-left: auto;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+/* --- FŐ TARTALOM --- */
+.main-content[b-093ymkrhz2] {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+/* _content/KoliPortal.Web/Components/Layout/MainLayout.razor.rz.scp.css */
+.page[b-a1h8p0fllz] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main[b-a1h8p0fllz] {
+    flex: 1;
+}
+
+.sidebar[b-a1h8p0fllz] {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row[b-a1h8p0fllz] {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .top-row[b-a1h8p0fllz]  a, .top-row[b-a1h8p0fllz]  .btn-link {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+        text-decoration: none;
+    }
+
+    .top-row[b-a1h8p0fllz]  a:hover, .top-row[b-a1h8p0fllz]  .btn-link:hover {
+        text-decoration: underline;
+    }
+
+    .top-row[b-a1h8p0fllz]  a:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+@media (max-width: 640.98px) {
+    .top-row[b-a1h8p0fllz] {
+        justify-content: space-between;
+    }
+
+    .top-row[b-a1h8p0fllz]  a, .top-row[b-a1h8p0fllz]  .btn-link {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 641px) {
+    .page[b-a1h8p0fllz] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-a1h8p0fllz] {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row[b-a1h8p0fllz] {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .top-row.auth[b-a1h8p0fllz]  a:first-child {
+        flex: 1;
+        text-align: right;
+        width: 0;
+    }
+
+    .top-row[b-a1h8p0fllz], article[b-a1h8p0fllz] {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
+
+#blazor-error-ui[b-a1h8p0fllz] {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss[b-a1h8p0fllz] {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+/* _content/KoliPortal.Web/Components/Pages/ADMIN/Attekintes.razor.rz.scp.css */
+/* --- STATISZTIKAI KÁRTYÁK RÁCS --- */
+.stats-grid[b-i4iuf4rnfy] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-top: 32px;
+}
+
+.stat-card[b-i4iuf4rnfy] {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.stat-icon[b-i4iuf4rnfy] {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-large[b-i4iuf4rnfy] {
+    font-size: 1.5rem;
+}
+
+.stat-icon.purple[b-i4iuf4rnfy] {
+    background-color: #f3e8ff;
+    color: #9333ea;
+}
+
+.stat-icon.blue[b-i4iuf4rnfy] {
+    background-color: #e0f2fe;
+    color: #0284c7;
+}
+
+.stat-icon.orange[b-i4iuf4rnfy] {
+    background-color: #ffedd5;
+    color: #ea580c;
+}
+
+.stat-icon.green[b-i4iuf4rnfy] {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+.stat-details h3[b-i4iuf4rnfy] {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.stat-details p[b-i4iuf4rnfy] {
+    margin: 4px 0 0 0;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+/* --- TARTALOM RÁCS (Dashboard specifikus) --- */
+.content-grid[b-i4iuf4rnfy] {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    margin-top: 32px;
+}
+
+/* --- STÁTUSZ JELVÉNYEK --- */
+.status-badge[b-i4iuf4rnfy] {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+    .status-badge.aktív[b-i4iuf4rnfy] {
+        background-color: #dcfce7;
+        color: #16a34a;
+    }
+
+/* --- KAPACITÁS LISTA --- */
+.capacity-list[b-i4iuf4rnfy] {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.capacity-item[b-i4iuf4rnfy] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.floor-name[b-i4iuf4rnfy] {
+    font-weight: 500;
+    color: #0f172a;
+}
+
+.floor-capacity[b-i4iuf4rnfy] {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+/* _content/KoliPortal.Web/Components/Pages/ADMIN/Felhasznalok.razor.rz.scp.css */
+/* --- SEGÉDOSZTÁLYOK ÉS BURKOLÓ --- */
+.text-center[b-47y4jzkb10] {
+    text-align: center;
+}
+
+.content-wrapper[b-47y4jzkb10] {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- SZEREPKÖR JELVÉNYEK (Badges) --- */
+.role-badge[b-47y4jzkb10] {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.role-student[b-47y4jzkb10] {
+    background-color: #e0f2fe;
+    color: #0284c7;
+}
+
+.role-admin[b-47y4jzkb10] {
+    background-color: #f3e8ff;
+    color: #9333ea;
+}
+
+.role-maintenance[b-47y4jzkb10] {
+    background-color: #ffedd5;
+    color: #ea580c;
+}
+
+/* --- MŰVELET GOMBOK --- */
+.action-btn[b-47y4jzkb10] {
+    background: transparent;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+    .action-btn:hover[b-47y4jzkb10] {
+        background-color: #f1f5f9;
+        color: #0f172a;
+    }
+/* _content/KoliPortal.Web/Components/Pages/ADMIN/Karbantartas.razor.rz.scp.css */
+/* --- SZEKCIÓK (Sections) --- */
+.maintenance-section[b-ppfzthiqgg] {
+    margin-bottom: 40px;
+}
+
+.section-header[b-ppfzthiqgg] {
+    margin-bottom: 16px;
+}
+
+    .section-header h2[b-ppfzthiqgg] {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .section-header p[b-ppfzthiqgg] {
+        margin: 4px 0 0 0;
+        font-size: 0.9rem;
+        color: #64748b;
+    }
+
+/* --- TÁBLÁZAT EXTRÁK --- */
+.table-scroll-container[b-ppfzthiqgg] {
+    overflow-x: auto;
+}
+
+.task-desc[b-ppfzthiqgg] {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.desc-text[b-ppfzthiqgg] {
+    font-weight: 500;
+    color: #0f172a;
+}
+
+.desc-date[b-ppfzthiqgg] {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+/* --- PRIORITÁS / STÁTUSZ JELVÉNYEK --- */
+.priority-badge[b-ppfzthiqgg] {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.p-done[b-ppfzthiqgg] {
+    background-color: #e6fced; /* Nagyon világos mentazöld háttér */
+    color: #26c267; /* Élénk zöld szöveg */
+}
+
+/* Folyamatban / Normál (Sárgás-narancs) */
+.p-active[b-ppfzthiqgg] {
+    background-color: #fef3c7; /* Világos sárgás háttér */
+    color: #d97706; /* Narancssárga szöveg */
+}
+
+.action-text[b-ppfzthiqgg] {
+    color: #64748b;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* --- ÜRES ÁLLAPOT (Előzményeknél) --- */
+.empty-state-card[b-ppfzthiqgg] {
+    text-align: center;
+    color: #64748b;
+    font-style: italic;
+    padding: 40px 24px;
+}
+/* _content/KoliPortal.Web/Components/Pages/ADMIN/Szobak.razor.rz.scp.css */
+/* --- SZŰRŐ GOMBOK --- */
+.filter-controls[b-8j6y9jmal6] {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    justify-content: flex-start;
+}
+
+.filter-btn[b-8j6y9jmal6] {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+    .filter-btn:hover[b-8j6y9jmal6] {
+        background: #f1f5f9;
+    }
+
+    .filter-btn.active[b-8j6y9jmal6] {
+        background: #0d9488;
+        color: #ffffff;
+        border-color: #0d9488;
+    }
+
+/* --- TELÍTETTSÉG JELVÉNYEK --- */
+.status-badge[b-8j6y9jmal6] {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: inline-block;
+}
+
+    .status-badge.full[b-8j6y9jmal6] {
+        background-color: #fee2e2;
+        color: #ef4444; /* Piros, ha tele van */
+    }
+
+    .status-badge.partial[b-8j6y9jmal6] {
+        background-color: #fef3c7;
+        color: #d97706; /* Sárgás-narancs, ha részben teli */
+    }
+
+    .status-badge.empty[b-8j6y9jmal6] {
+        background-color: #dcfce7;
+        color: #16a34a; /* Zöld, ha teljesen üres */
+    }

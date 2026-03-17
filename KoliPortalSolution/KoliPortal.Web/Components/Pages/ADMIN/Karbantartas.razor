@@ -1,0 +1,143 @@
+﻿@page "/karbantartas"
+@layout AdminLayout
+
+<header class="page-header text-center">
+    <h1>Karbantartás</h1>
+    <p>Hibajegyek felügyelete.</p>
+</header>
+
+<div class="content-wrapper">
+    <section class="maintenance-section">
+        <div class="section-header">
+            <h2>Aktuális Feladatok</h2>
+            <p>Itt látod a hozzád rendelt hibajegyeket.</p>
+        </div>
+        <div class="card">
+            <div class="table-scroll-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Azonosító</th>
+                            <th>Helyszín</th>
+                            <th>Leírás</th>
+                            <th class="text-center">Prioritás</th>
+                            <th class="text-center">Művelet</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ERR-1907</td>
+                            <td>Szoba 204</td>
+                            <td>
+                                <div class="task-desc">
+                                    <span class="desc-text">[Vízszerelés] SOS!</span>
+                                    <span class="desc-date">2026-02-04</span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span class="priority-badge p-active">Folyamatban</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="action-text">Nyitott</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ERR-1077</td>
+                            <td>Szoba 204</td>
+                            <td>
+                                <div class="task-desc">
+                                    <span class="desc-text">[Egyéb] SOS!</span>
+                                    <span class="desc-date">2026-02-01</span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span class="priority-badge p-done">Lezárt</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="action-text">Lezárva</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ERR-1431</td>
+                            <td>Szoba 204</td>
+                            <td>
+                                <div class="task-desc">
+                                    <span class="desc-text">[Vízszerelés] asd</span>
+                                    <span class="desc-date">2026-02-01</span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span class="priority-badge p-done">Lezárt</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="action-text">Lezárva</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ERR-202</td>
+                            <td>Szoba 204</td>
+                            <td>
+                                <div class="task-desc">
+                                    <span class="desc-text">Csöpög a csap a mosdóban</span>
+                                    <span class="desc-date">2026-01-28</span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span class="priority-badge p-done">Lezárt</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="action-text">Lezárva</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ERR-198</td>
+                            <td>3. Em. Folyosó</td>
+                            <td>
+                                <div class="task-desc">
+                                    <span class="desc-text">Kiégett az izzó</span>
+                                    <span class="desc-date">2026-01-20</span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span class="priority-badge p-done">Lezárt</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="action-text">Lezárva</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ERR-205</td>
+                            <td>Szoba 112</td>
+                            <td>
+                                <div class="task-desc">
+                                    <span class="desc-text">Nem záródik az ablak</span>
+                                    <span class="desc-date">2026-02-01</span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span class="priority-badge p-done">Lezárt</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="action-text">Lezárva</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="maintenance-section">
+        <div class="section-header">
+            <h2>Előzmények</h2>
+            <p>Lezárt feladatok listája.</p>
+        </div>
+        <div class="card empty-state-card">
+            Nincs megjeleníthető előzmény.
+        </div>
+    </section>
+</div>
+
+@code {
+
+}

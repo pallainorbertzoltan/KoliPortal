@@ -588,11 +588,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\OneDrive\\Desktop\\info\\KoliPortal\\KoliPortalSolution\\KoliPortal.Lib\\KoliPortal.Lib.csproj",
+      "projectUniqueName": "C:\\Users\\user\\source\\repos\\pallainorbertzoltan\\KoliPortal\\KoliPortalSolution\\KoliPortal.Lib\\KoliPortal.Lib.csproj",
       "projectName": "KoliPortal.Lib",
-      "projectPath": "C:\\Users\\user\\OneDrive\\Desktop\\info\\KoliPortal\\KoliPortalSolution\\KoliPortal.Lib\\KoliPortal.Lib.csproj",
+      "projectPath": "C:\\Users\\user\\source\\repos\\pallainorbertzoltan\\KoliPortal\\KoliPortalSolution\\KoliPortal.Lib\\KoliPortal.Lib.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\OneDrive\\Desktop\\info\\KoliPortal\\KoliPortalSolution\\KoliPortal.Lib\\obj\\",
+      "outputPath": "C:\\Users\\user\\source\\repos\\pallainorbertzoltan\\KoliPortal\\KoliPortalSolution\\KoliPortal.Lib\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
