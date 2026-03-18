@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "KoliPortal\\KoliPortal.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "KoliPortal.Web\\KoliPortal.Web.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

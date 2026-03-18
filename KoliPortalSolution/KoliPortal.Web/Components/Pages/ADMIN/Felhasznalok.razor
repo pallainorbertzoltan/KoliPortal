@@ -1,73 +1,137 @@
 ﻿@page "/felhasznalok"
+@using KoliPortal.Lib.MODEL
+@using KoliPortal.Lib.SERVICE
 @layout AdminLayout
+@inject FelhasznalokService Felhasznalo
+@inject SzerepkorokService Szerepkorok
+@inject SzobaBeosztasokService SzobaBeosztasok
+@inject SzobakService Szoba
 
 <header class="page-header text-center">
     <h1>Felhasználók Kezelése</h1>
     <p>Kollégisták adatbázisa.</p>
 </header>
 
-<div class="content-wrapper">
-    <div class="card">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Név</th>
-                    <th>Szoba</th>
-                    <th>Email</th>
-                    <th>Szerepkör</th>
-                    <th>Művelet</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>[Név helye]</td>
-                    <td>[Szoba helye]</td>
-                    <td>[Email helye]</td>
-                    <td>
-                        <span class="role-badge role-student">[Szerepkör helye (student)]</span>
-                    </td>
-                    <td>
-                        <button class="action-btn"><i class="bi bi-pencil"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>[Név helye]</td>
-                    <td>[Szoba helye]</td>
-                    <td>[Email helye]</td>
-                    <td>
-                        <span class="role-badge role-student">[Szerepkör helye (student)]</span>
-                    </td>
-                    <td>
-                        <button class="action-btn"><i class="bi bi-pencil"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>[Név helye]</td>
-                    <td>[Szoba helye]</td>
-                    <td>[Email helye]</td>
-                    <td>
-                        <span class="role-badge role-admin">[Szerepkör helye (admin)]</span>
-                    </td>
-                    <td>
-                        <button class="action-btn"><i class="bi bi-pencil"></i></button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>[Név helye]</td>
-                    <td>[Szoba helye]</td>
-                    <td>[Email helye]</td>
-                    <td>
-                        <span class="role-badge role-maintenance">[Szerepkör helye (maintenance)]</span>
-                    </td>
-                    <td>
-                        <button class="action-btn"><i class="bi bi-pencil"></i></button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+@if (betoltesAlatt)
+{
+    <div class="text-center mt-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Betöltés...</span>
+        </div>
+        <p class="mt-2 text-muted">Felhasználók betöltése...</p>
     </div>
-</div>
+}
+else
+{
+    <div class="content-wrapper">
+        <div class="card shadow-sm">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Név</th>
+                        <th>Szoba</th>
+                        <th>Email</th>
+                        <th>Szerepkör</th>
+                        <th>Művelet</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (felhasznalokLista != null && felhasznalokLista.Any())
+                    {
+                        @foreach (var user in felhasznalokLista)
+                        {
+                            <tr>
+                                <td>@user.Nev</td>
+                                <td>@GetAktualisSzoba(user.ID)</td>
+                                <td>@user.Email</td>
+                                <td>
+                                    @* A CSS classt a szerepkör ID alapján adjuk hozzá *@
+                                    <span class="role-badge @GetSzerepkorCss(user.SzerepkorID)">
+                                        @GetSzerepkorNev(user.SzerepkorID)
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="action-btn" title="Szerkesztés"><i class="bi bi-pencil"></i></button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">Nincsenek felhasználók az adatbázisban.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
 
 @code {
+    private bool betoltesAlatt = true;
 
+    // Adattároló listák
+    private List<KoliPortal.Lib.MODEL.Felhasznalok> felhasznalokLista = new();
+    private List<Szerepkorok> szerepkorokLista = new();
+    private List<SzobaBeosztasok> beosztasokLista = new();
+    private List<KoliPortal.Lib.MODEL.Szobak> szobakLista = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // 1. Minden adatot
+            felhasznalokLista = await Felhasznalo.GetFelhasznalok();
+            szerepkorokLista = await Szerepkorok.GetSzerepkorok();
+            beosztasokLista = await SzobaBeosztasok.GetSzobaBeosztasok();
+            szobakLista = await Szoba.GetSzobak();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Hiba az adatok lekérésekor: {ex.Message}");
+        }
+        finally
+        {
+            betoltesAlatt = false;
+        }
+    }
+
+    // --- SEGÉDMETÓDUSOK A TÁBLÁZAT KIÍRÁSÁHOZ ---
+    private string GetAktualisSzoba(int userId)
+    {
+        var aktivBeosztas = beosztasokLista.FirstOrDefault(b => b.UserID == userId && b.TenylegesKikoltozes == null);
+
+        if (aktivBeosztas != null)
+        {
+            var szoba = szobakLista.FirstOrDefault(x => x.ID == aktivBeosztas.RoomID);
+            return szoba != null ? szoba.Szobaszam : "Ismeretlen szoba";
+        }
+
+        return "Nincs szobája";
+    }
+
+    private string GetSzerepkorNev(int szerepkorId)
+    {
+        var szerepkor = szerepkorokLista.FirstOrDefault(sz => sz.ID == szerepkorId);
+        return szerepkor != null ? szerepkor.Nev : "Ismeretlen";
+    }
+
+    private string GetSzerepkorCss(int szerepkorId)
+    {
+        var nev = GetSzerepkorNev(szerepkorId).ToLower();
+
+        if (nev.Contains("admin"))
+        {
+            return "role-admin";
+        }
+        else if (nev.Contains("karbantarto"))
+        {
+            return "role-maintenance";
+        }
+        else 
+        { 
+            return "role-student";
+        }
+    }
 }

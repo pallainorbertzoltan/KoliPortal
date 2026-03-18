@@ -12,7 +12,7 @@ namespace KoliPortal.Lib.MODEL
         [Key]
         public int ID { get; set; }
         public int BejelentoID { get; set; }
-        public int KarbantartoID { get; set; }
+        public int? KarbantartoID { get; set; }
         public string? Leiras { get; set; }
         public int StatuszID { get; set; }
         public DateTime LetrehozasDatum { get; set; }

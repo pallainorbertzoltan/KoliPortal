@@ -1,3 +1,4 @@
+using KoliPortal.Lib.SERVICE;
 using KoliPortal.Web.Components;
 
 namespace KoliPortal.Web
@@ -11,6 +12,15 @@ namespace KoliPortal.Web
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+
+            builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri("https://localhost:44331/") });
+            builder.Services.AddScoped<DiakAdatokService>();
+            builder.Services.AddScoped<SzobakService>();
+            builder.Services.AddScoped<KarbantartasiKeresekService>();
+            builder.Services.AddScoped<SzobaBeosztasokService>();
+            builder.Services.AddScoped<FelhasznalokService>();
+            builder.Services.AddScoped<SzerepkorokService>();
+            builder.Services.AddScoped<KarbantartasStatuszokService>();
 
             var app = builder.Build();
 

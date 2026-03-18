@@ -617,6 +617,23 @@ input:checked + .slider[b-vu13h7k8x3] {
     font-style: italic;
     padding: 40px 24px;
 }
+
+/* --- MŰVELET GOMBOK --- */
+.action-btn[b-ppfzthiqgg] {
+    background: transparent;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+    .action-btn:hover[b-ppfzthiqgg] {
+        background-color: #f1f5f9;
+        color: #0f172a;
+    }
 /* _content/KoliPortal.Web/Components/Pages/ADMIN/Regisztralas.razor.rz.scp.css */
 /* --- ŰRLAP KÁRTYA ÉS ELRENDEZÉS --- */
 .form-card[b-k856ki81q3] {

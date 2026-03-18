@@ -1,143 +1,228 @@
 ﻿@page "/karbantartas"
+@using KoliPortal.Lib.MODEL
+@using KoliPortal.Lib.SERVICE
 @layout AdminLayout
+@inject KarbantartasiKeresekService KarbantartasiKeresek
+@inject KarbantartasStatuszokService KarbantartasStatuszok
+@inject FelhasznalokService Felhasznalok
+@inject SzobaBeosztasokService SzobaBeosztasok
+@inject SzobakService Szobak
 
 <header class="page-header text-center">
     <h1>Karbantartás</h1>
     <p>Hibajegyek felügyelete.</p>
 </header>
 
-<div class="content-wrapper">
-    <section class="maintenance-section">
-        <div class="section-header">
-            <h2>Aktuális Feladatok</h2>
-            <p>Itt látod a hozzád rendelt hibajegyeket.</p>
+@if (betoltesAlatt)
+{
+    <div class="text-center mt-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Betöltés...</span>
         </div>
-        <div class="card">
-            <div class="table-scroll-container">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Azonosító</th>
-                            <th>Helyszín</th>
-                            <th>Leírás</th>
-                            <th class="text-center">Prioritás</th>
-                            <th class="text-center">Művelet</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>ERR-1907</td>
-                            <td>Szoba 204</td>
-                            <td>
-                                <div class="task-desc">
-                                    <span class="desc-text">[Vízszerelés] SOS!</span>
-                                    <span class="desc-date">2026-02-04</span>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <span class="priority-badge p-active">Folyamatban</span>
-                            </td>
-                            <td class="text-center">
-                                <span class="action-text">Nyitott</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>ERR-1077</td>
-                            <td>Szoba 204</td>
-                            <td>
-                                <div class="task-desc">
-                                    <span class="desc-text">[Egyéb] SOS!</span>
-                                    <span class="desc-date">2026-02-01</span>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <span class="priority-badge p-done">Lezárt</span>
-                            </td>
-                            <td class="text-center">
-                                <span class="action-text">Lezárva</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>ERR-1431</td>
-                            <td>Szoba 204</td>
-                            <td>
-                                <div class="task-desc">
-                                    <span class="desc-text">[Vízszerelés] asd</span>
-                                    <span class="desc-date">2026-02-01</span>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <span class="priority-badge p-done">Lezárt</span>
-                            </td>
-                            <td class="text-center">
-                                <span class="action-text">Lezárva</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>ERR-202</td>
-                            <td>Szoba 204</td>
-                            <td>
-                                <div class="task-desc">
-                                    <span class="desc-text">Csöpög a csap a mosdóban</span>
-                                    <span class="desc-date">2026-01-28</span>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <span class="priority-badge p-done">Lezárt</span>
-                            </td>
-                            <td class="text-center">
-                                <span class="action-text">Lezárva</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>ERR-198</td>
-                            <td>3. Em. Folyosó</td>
-                            <td>
-                                <div class="task-desc">
-                                    <span class="desc-text">Kiégett az izzó</span>
-                                    <span class="desc-date">2026-01-20</span>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <span class="priority-badge p-done">Lezárt</span>
-                            </td>
-                            <td class="text-center">
-                                <span class="action-text">Lezárva</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>ERR-205</td>
-                            <td>Szoba 112</td>
-                            <td>
-                                <div class="task-desc">
-                                    <span class="desc-text">Nem záródik az ablak</span>
-                                    <span class="desc-date">2026-02-01</span>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <span class="priority-badge p-done">Lezárt</span>
-                            </td>
-                            <td class="text-center">
-                                <span class="action-text">Lezárva</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <p class="mt-2 text-muted">Hibajegyek letöltése...</p>
+    </div>
+}
+else
+{
+    <div class="content-wrapper">
+        @* --- 1. AKTIV FELADATOK (Nem lezártak) --- *@
+        <section class="maintenance-section">
+            <div class="section-header">
+                <h2>Aktuális Feladatok</h2>
+                <p>Itt látod a hozzád rendelt hibajegyeket.</p>
             </div>
-        </div>
-    </section>
+            <div class="card">
+                <div class="table-scroll-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Azonosító</th>
+                                <th>Bejelentő / Helyszín</th>
+                                <th>Leírás</th>
+                                <th class="text-center">Állapot</th>
+                                <th class="text-center">Művelet</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (aktivHibak.Any())
+                            {
+                                @foreach (var hiba in aktivHibak)
+                                {
+                                    <tr>
+                                        <td>@hiba.ID</td>
+                                        <td>
+                                            <strong>@GetBejelentoNeve(hiba.BejelentoID)</strong><br />
+                                            <small class="text-muted">@GetHelyszin(hiba.BejelentoID)</small>
+                                        </td>
+                                        <td>
+                                            <div class="task-desc">
+                                                <span class="desc-text">@hiba.Leiras</span>
+                                                <span class="desc-date">@hiba.LetrehozasDatum.ToShortDateString()</span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            @* A szín dinamikusan változik a státusz ID alapján *@
+                                            <span class="priority-badge @GetStatuszCss(hiba.StatuszID)">
+                                                @GetStatuszNev(hiba.StatuszID)
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <button class="action-btn" title="Kezelés"><i class="bi bi-pencil"></i></button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted p-4">Jelenleg nincs aktív hibajegy! Hurrá!</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
 
-    <section class="maintenance-section">
-        <div class="section-header">
-            <h2>Előzmények</h2>
-            <p>Lezárt feladatok listája.</p>
-        </div>
-        <div class="card empty-state-card">
-            Nincs megjeleníthető előzmény.
-        </div>
-    </section>
-</div>
+        @* --- 2. ELŐZMÉNYEK (Lezárt feladatok) --- *@
+        <section class="maintenance-section mt-5">
+            <div class="section-header">
+                <h2>Előzmények</h2>
+                <p>Lezárt feladatok listája.</p>
+            </div>
+
+            @if (lezartHibak.Any())
+            {
+                <div class="card">
+                    <div class="table-scroll-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Azonosító</th>
+                                    <th>Bejelentő</th>
+                                    <th>Leírás</th>
+                                    <th class="text-center">Állapot</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var hiba in lezartHibak)
+                                {
+                                    <tr class="text-muted">
+                                        <td>@hiba.ID</td>
+                                        <td>@GetBejelentoNeve(hiba.BejelentoID)</td>
+                                        <td>
+                                            <div class="task-desc">
+                                                <span class="desc-text">@hiba.Leiras</span>
+                                                <span class="desc-date">@hiba.LetrehozasDatum.ToShortDateString()</span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="priority-badge p-done">@GetStatuszNev(hiba.StatuszID)</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card empty-state-card text-center p-4 text-muted">
+                    Még nincs megjeleníthető előzmény.
+                </div>
+            }
+        </section>
+    </div>
+}
 
 @code {
+    private bool betoltesAlatt = true;
+    private string hibaUzenet = "";
 
+    // Adattároló listák az API-ból
+    private List<KarbantartasiKeresek> osszesHiba = new();
+    private List<KarbantartasStatuszok> statuszok = new();
+    private List<KoliPortal.Lib.MODEL.Felhasznalok> felhasznalok = new();
+    private List<SzobaBeosztasok> beosztasok = new();
+    private List<KoliPortal.Lib.MODEL.Szobak> szobak = new();
+
+    // Szűrt listák a megjelenítéshez
+    private List<KarbantartasiKeresek> aktivHibak = new();
+    private List<KarbantartasiKeresek> lezartHibak = new();
+
+    // A Lezárt státusz ID-je
+    private readonly int LEZART_STATUSZ_ID = 3;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // 1. Minden adatot letöltünk
+            osszesHiba = await KarbantartasiKeresek.GetKarbantartasiKeresek();
+            statuszok = await KarbantartasStatuszok.GetKarbantartasiStatuszok();
+            felhasznalok = await Felhasznalok.GetFelhasznalok();
+            beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok();
+            szobak = await Szobak.GetSzobak();
+
+            // 2. Szétválogatjuk a hibákat aktívra és lezártra (rendezve dátum szerint)
+            aktivHibak = osszesHiba
+                .Where(x => x.StatuszID != LEZART_STATUSZ_ID)
+                .OrderByDescending(x => x.LetrehozasDatum)
+                .ToList();
+
+            lezartHibak = osszesHiba
+                .Where(x => x.StatuszID == LEZART_STATUSZ_ID)
+                .OrderByDescending(x => x.LetrehozasDatum)
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            hibaUzenet = ex.Message;
+        }
+        finally
+        {
+            betoltesAlatt = false;
+        }
+    }
+
+    // --- SEGÉDMETÓDUSOK ---
+
+    private string GetBejelentoNeve(int userId)
+    {
+        var user = felhasznalok.FirstOrDefault(x => x.ID == userId);
+        return user != null ? user.Nev : "Ismeretlen felhasználó";
+    }
+
+    // Kinyomozza, hogy a bejelentő diák melyik szobában lakik
+    private string GetHelyszin(int userId)
+    {
+        var aktivBeosztas = beosztasok.FirstOrDefault(x => x.UserID == userId && x.TenylegesKikoltozes == null);
+        if (aktivBeosztas != null)
+        {
+            var szoba = szobak.FirstOrDefault(x => x.ID == aktivBeosztas.RoomID);
+            return szoba != null ? $"{szoba.Szobaszam} szoba" : "Ismeretlen szoba";
+        }
+        return "Közösségi tér"; // Ha nem diák jelentette be
+    }
+
+    private string GetStatuszNev(int statuszId)
+    {
+        var statusz = statuszok.FirstOrDefault(x => x.ID == statuszId);
+        return statusz != null ? statusz.Nev : "Ismeretlen";
+    }
+
+    // Színezi a jelvényt a státusz alapján
+    private string GetStatuszCss(int statuszId)
+    {
+        // Ha nem lezárt (tehát 1 vagy 2), akkor legyen kék/sárga
+        if (statuszId == 1 || statuszId == 2)
+        {
+            return "p-active"; // Új, még nem kezdődött el vagy folyamatban van
+        }
+        else
+        {
+            return "p-done"; // Lezárt
+        }
+    }
 }

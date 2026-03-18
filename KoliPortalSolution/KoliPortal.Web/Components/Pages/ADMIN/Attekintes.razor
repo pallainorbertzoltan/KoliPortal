@@ -1,109 +1,221 @@
 ﻿@page "/"
+@using KoliPortal.Lib.MODEL
+@using KoliPortal.Lib.SERVICE
 @layout AdminLayout
+@inject SzobakService Szobak
+@inject KarbantartasiKeresekService KarbantartasiKeresek
+@inject SzobaBeosztasokService SzobaBeosztasok
+@inject FelhasznalokService FelhasznalokService
 
 <header class="page-header">
     <h1>Rendszer Áttekintés</h1>
     <p>Kollégiumi menedzsment központ.</p>
 </header>
 
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-icon purple">
-            <i class="bi bi-person-check-fill icon-large"></i>
+@if (betoltesAlatt)
+{
+    <div class="text-center mt-5">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Betöltés...</span>
         </div>
-        <div class="stat-details">
-            <h3>[Aktív lakók számának helye]</h3>
-            <p>Aktív Lakó</p>
-        </div>
+        <p class="mt-2 text-muted">Adatok lekérése az API-tól...</p>
     </div>
-
-    <div class="stat-card">
-        <div class="stat-icon blue">
-            <i class="bi bi-house-door-fill icon-large"></i>
-        </div>
-        <div class="stat-details">
-            <h3>[Szabad ágy számának helye]</h3>
-            <p>Szabad ágy</p>
-        </div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-icon orange">
-            <i class="bi bi-exclamation-triangle-fill icon-large"></i>
-        </div>
-        <div class="stat-details">
-            <h3>[Nyitott hiba számának helye]</h3>
-            <p>Nyitott Hiba</p>
-        </div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-icon green">
-            <i class="bi bi-cash-coin icon-large"></i>
-        </div>
-        <div class="stat-details">
-            <h3>[Befizetési arány helye]</h3>
-            <p>Befizetési arány</p>
-        </div>
-    </div>
-</div>
-
-<div class="content-grid">
-    <div class="card recent-residents-card">
-        <div class="card-header">
-            <h2>Legújabb Lakók</h2>
-            <button class="btn-outline">Lista Kezelése</button>
-        </div>
-
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Név</th>
-                    <th>Szoba</th>
-                    <th>Státusz</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>[Név helye]</td>
-                    <td>[Szoba helye]</td>
-                    <td>
-                        <span class="status-badge aktív">[Státusz helye]</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>[Név helye]</td>
-                    <td>[Szoba helye]</td>
-                    <td>
-                        <span class="status-badge aktív">[Státusz helye]</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="card capacity-card">
-        <div class="card-header">
-            <h2>Szoba Kapacitás</h2>
-        </div>
-
-        <div class="capacity-list">
-            <div class="capacity-item">
-                <span class="floor-name">[Emelet neve helye]</span>
-                <span class="floor-capacity">[Kapacitás helye (pl. 100/72 fő)]</span>
+}
+else
+{
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon purple">
+                <i class="bi bi-person-check-fill icon-large"></i>
             </div>
-            <div class="capacity-item">
-                <span class="floor-name">[Emelet neve helye]</span>
-                <span class="floor-capacity">[Kapacitás helye (pl. 100/72 fő)]</span>
+            <div class="stat-details">
+                <h3>@aktivLakokSzama</h3>
+                <p>Aktív Lakó</p>
             </div>
-            <div class="capacity-item">
-                <span class="floor-name">[Emelet neve helye]</span>
-                <span class="floor-capacity">[Kapacitás helye (pl. 100/72 fő)]</span>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <i class="bi bi-house-door-fill icon-large"></i>
+            </div>
+            <div class="stat-details">
+                <h3>@szabadAgyakSzama</h3>
+                <p>Szabad ágy</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon orange">
+                <i class="bi bi-exclamation-triangle-fill icon-large"></i>
+            </div>
+            <div class="stat-details">
+                <h3>@nyitottHibakSzama</h3>
+                <p>Nyitott Hiba</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon green">
+                <i class="bi bi-cash-coin icon-large"></i>
+            </div>
+            <div class="stat-details">
+                <h3>@befizetesiArany%</h3>
+                <p>Befizetési arány</p>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="content-grid">
+        <div class="card recent-residents-card">
+            <div class="card-header">
+                <h2>Legújabb Lakók</h2>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Név</th>
+                        <th>Szoba</th>
+                        <th>Beköltözés</th>
+                        <th>Státusz</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (legujabbLakok != null && legujabbLakok.Any())
+                    {
+                        @foreach (var beosztas in legujabbLakok)
+                        {
+                            <tr>
+                                @* --- MÓDOSÍTVA: Itt hívjuk a kereső metódusokat --- *@
+                                <td>@GetFelhasznaloNev(beosztas.UserID)</td>
+                                <td>@GetSzobaSzam(beosztas.RoomID)</td>
+                                <td>@beosztas.BekoltozesDatum?.ToShortDateString()</td>
+                                <td>
+                                    <span class="status-badge aktív">Aktív</span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">Nincsenek aktív lakók a rendszerben.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card capacity-card">
+            <div class="card-header">
+                <h2>Szoba Kapacitás</h2>
+            </div>
+
+            <div class="capacity-list">
+                @if (emeletKapacitasok != null && emeletKapacitasok.Any())
+                {
+                    @foreach (var emelet in emeletKapacitasok)
+                    {
+                        <div class="capacity-item">
+                            <span class="floor-name">@emelet.EmeletNev</span>
+                            <span class="floor-capacity">@emelet.AktivLakokSzama / @emelet.MaxFerohely fő</span>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted text-center mt-3">Nincsenek szoba adatok.</p>
+                }
+            </div>
+        </div>
+    </div>
+}
 
 @code {
+    private bool betoltesAlatt = true;
 
+    // Statisztika változók
+    private int aktivLakokSzama = 0;
+    private int szabadAgyakSzama = 0;
+    private int nyitottHibakSzama = 0;
+    private int befizetesiArany = 0; // Meg kell még csinálni jóra
+
+    // Lista változók
+    private List<SzobaBeosztasok> legujabbLakok = new();
+    private List<EmeletKapacitas> emeletKapacitasok = new();
+
+    // --- ÚJ: Ezek kellenek a nevek megkereséséhez ---
+    private List<KoliPortal.Lib.MODEL.Felhasznalok> osszesFelhasznalo = new();
+    private List<KoliPortal.Lib.MODEL.Szobak> osszesSzoba = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // 1. Lekérjük az adatokat a generikus API-tól
+            osszesSzoba = await Szobak.GetSzobak();
+            var beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok() ?? new List<SzobaBeosztasok>();
+            var hibak = await KarbantartasiKeresek.GetKarbantartasiKeresek() ?? new List<KarbantartasiKeresek>();
+
+            // Lekérjük a felhasználókat is!
+            osszesFelhasznalo = await FelhasznalokService.GetFelhasznalok();
+
+            // 2. Aktív lakók: Ahol a tényleges kiköltözés még nem történt meg (null)
+            var aktivBeosztasok = beosztasok.Where(b => b.TenylegesKikoltozes == null).ToList();
+            aktivLakokSzama = aktivBeosztasok.Count;
+
+            // 3. Szabad ágyak: Szobak.FerohelyMax összege mínusz az aktív lakók
+            int osszesFerohely = osszesSzoba.Sum(s => s.FerohelyMax);
+            szabadAgyakSzama = osszesFerohely - aktivLakokSzama;
+
+            // 4. Nyitott hibák
+            nyitottHibakSzama = hibak.Count(h => h.StatuszID != 3);
+
+            // 5. Legújabb lakók a táblázatba: Rendezzük a BekoltozesDatum szerint, a legújabb 5 ember
+            legujabbLakok = aktivBeosztasok
+                .OrderByDescending(b => b.BekoltozesDatum)
+                .Take(5)
+                .ToList();
+
+            // 7. Emelet kapacitások összekötve a lakókkal
+            emeletKapacitasok = osszesSzoba
+                .GroupBy(s => s.Emelet)
+                .Select(g => new EmeletKapacitas
+                {
+                    EmeletNev = $"{g.Key}. Emelet",
+                    MaxFerohely = g.Sum(s => s.FerohelyMax),
+                    AktivLakokSzama = aktivBeosztasok.Count(b => g.Select(sz => sz.ID).Contains(b.RoomID))
+                })
+                .OrderBy(e => e.EmeletNev)
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Hiba az adatok lekérésekor: {ex.Message}");
+        }
+        finally
+        {
+            betoltesAlatt = false;
+        }
+    }
+
+    private string GetFelhasznaloNev(int userId)
+    {
+        var user = osszesFelhasznalo.FirstOrDefault(u => u.ID == userId);
+        return user != null ? user.Nev : $"User #{userId}";
+    }
+
+    private string GetSzobaSzam(int roomId)
+    {
+        var szoba = osszesSzoba.FirstOrDefault(s => s.ID == roomId);
+        return szoba != null ? szoba.Szobaszam : $"Szoba #{roomId}";
+    }
+
+    // Kibővítettük az AktívLakokSzama tulajdonsággal
+    public class EmeletKapacitas
+    {
+        public string EmeletNev { get; set; } = "";
+        public int MaxFerohely { get; set; }
+        public int AktivLakokSzama { get; set; }
+    }
 }

@@ -15,7 +15,7 @@ namespace KoliPortal.Lib.MODEL
         public int TipusID { get; set; }
         public decimal Osszeg { get; set; }
         public DateTime Esedekesseg { get; set; }
-        public DateTime BefizetesDatum { get; set; }
+        public DateTime? BefizetesDatum { get; set; }
         public string? Statusz { get; set; }
     }
 }
