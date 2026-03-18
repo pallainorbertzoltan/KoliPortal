@@ -1,32 +1,38 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="dashboard-container">
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <i class="bi bi-person-fill-gear icon"></i>
-            Adminisztráció
+    <header class="mobile-top-bar d-md-none">
+        <button class="hamburger-btn" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+            <i class="bi bi-list"></i>
+        </button>
+    </header>
+
+    <aside class="sidebar collapse d-md-flex" id="sidebarMenu">
+        <div class="sidebar-header d-none d-md-flex">
+            <div class="brand">
+                <i class="bi bi-person-fill-gear icon"></i>
+                Adminisztráció
+            </div>
         </div>
 
         <nav class="sidebar-nav">
             <NavLink class="nav-item" href="/" Match="NavLinkMatch.All">
-                <i class="bi bi-grid-fill icon"></i>
-                Áttekintés
+                <i class="bi bi-grid-fill icon"></i> Áttekintés
             </NavLink>
             <NavLink class="nav-item" href="/felhasznalok">
-                <i class="bi bi-people icon"></i>
-                Felhasználók
+                <i class="bi bi-people icon"></i> Felhasználók
+            </NavLink>
+            <NavLink class="nav-item" href="/regisztralas">
+                <i class="bi bi-person-plus icon"></i> Regisztrálás
             </NavLink>
             <NavLink class="nav-item" href="/szobak">
-                <i class="bi bi-door-open icon"></i>
-                Szobák
+                <i class="bi bi-door-open icon"></i> Szobák
             </NavLink>
             <NavLink class="nav-item" href="/karbantartas">
-                <i class="bi bi-tools icon"></i>
-                Karbantartás
+                <i class="bi bi-tools icon"></i> Karbantartás
             </NavLink>
             <NavLink class="nav-item" href="/beallitasok">
-                <i class="bi bi-gear icon"></i>
-                Beállítások
+                <i class="bi bi-gear icon"></i> Beállítások
             </NavLink>
         </nav>
 
@@ -34,12 +40,12 @@
             <div class="user-profile">
                 <div class="avatar">A</div>
                 <div class="user-info">
-                    <span class="user-name">Adminisztrátor</span>
-                    <span class="user-role">Fő-admin</span>
+                    <span class="user-name">Admin Profil</span>
                 </div>
-                <div class="logout-icon">
+                <button class="logout-btn">
                     <i class="bi bi-box-arrow-right"></i>
-                </div>
+                    <span class="logout-text">Kijelentkezés</span>
+                </button>
             </div>
         </div>
     </aside>

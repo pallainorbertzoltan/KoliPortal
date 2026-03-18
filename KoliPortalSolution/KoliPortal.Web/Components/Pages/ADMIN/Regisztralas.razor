@@ -1,0 +1,55 @@
+﻿@page "/regisztralas"
+@layout AdminLayout
+
+<header class="page-header text-center">
+    <h1>Új Felhasználó Regisztrálása</h1>
+    <p>Kollégista, adminisztrátor vagy karbantartó hozzáadása a rendszerhez.</p>
+</header>
+
+<div class="content-wrapper">
+    <div class="card form-card">
+        <form class="registration-form">
+            <div class="form-row">
+                <div class="form-group half-width">
+                    <label for="vezetekNev">Vezetéknév <span class="required">*</span></label>
+                    <input type="text" id="vezetekNev" placeholder="Pl. Kovács" required />
+                </div>
+                <div class="form-group half-width">
+                    <label for="keresztNev">Keresztnév <span class="required">*</span></label>
+                    <input type="text" id="keresztNev" placeholder="Pl. János" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email cím <span class="required">*</span></label>
+                <input type="email" id="email" placeholder="pelda@email.com" required />
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half-width">
+                    <label for="role">Szerepkör <span class="required">*</span></label>
+                    <select id="role" required>
+                        <option value="" disabled selected>Válassz szerepkört...</option>
+                        <option value="student">Kollégista (Hallgató)</option>
+                        <option value="admin">Adminisztrátor</option>
+                        <option value="maintenance">Karbantartó</option>
+                    </select>
+                </div>
+                <div class="form-group half-width" id="roomSelectGroup">
+                    <label for="roomNumber">Szobaszám</label>
+                    <input type="text" id="roomNumber" placeholder="Pl. 204" />
+                    <small class="form-hint">Csak kollégisták esetén szükséges kitölteni.</small>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-cancel">Mégse</button>
+                <button type="submit" class="btn-submit">Felhasználó Létrehozása</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@code {
+
+}

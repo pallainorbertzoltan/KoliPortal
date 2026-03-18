@@ -1,0 +1,49 @@
+/* --- ŰRLAP KÁRTYA ÉS ELRENDEZÉS --- */
+.form-card[b-k856ki81q3] {
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.registration-form[b-k856ki81q3] {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* --- CÍMKÉK ÉS SEGÉDSZÖVEGEK --- */
+.required[b-k856ki81q3] {
+    color: #e74c3c;
+}
+
+.form-hint[b-k856ki81q3] {
+    font-size: 0.8rem;
+    color: #6b7785;
+    margin-top: 2px;
+}
+
+/* --- GOMBOK EXTRÁK --- */
+/* (A zöld mentés gomb már a globális app.css-ben van) */
+.form-actions[b-k856ki81q3] {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 10px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e9ec;
+}
+
+.btn-cancel[b-k856ki81q3] {
+    background: transparent;
+    border: 1px solid #e5e9ec;
+    color: #6b7785;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+    .btn-cancel:hover[b-k856ki81q3] {
+        background: #f4f6f9;
+        color: #1a233a;
+    }
