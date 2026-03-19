@@ -138,7 +138,6 @@ else
 
 @code {
     private bool betoltesAlatt = true;
-    private string hibaUzenet = "";
 
     // Adattároló listák az API-ból
     private List<KarbantartasiKeresek> osszesHiba = new();
@@ -178,7 +177,7 @@ else
         }
         catch (Exception ex)
         {
-            hibaUzenet = ex.Message;
+            Console.Error.WriteLine($"Hiba az adatok lekérésekor: {ex.Message}");
         }
         finally
         {

@@ -1,61 +1,190 @@
 ﻿@page "/szobak"
+@rendermode InteractiveServer
+@using KoliPortal.Lib.MODEL
+@using KoliPortal.Lib.SERVICE
 @layout AdminLayout
+@inject SzobakService Szoba
+@inject SzobaBeosztasokService SzobaBeosztasok
+@inject FelhasznalokService Felhasznalok
 
 <header class="page-header text-center">
     <h1>Szobák Állapota</h1>
     <p>Kapacitás és lakók áttekintése.</p>
 </header>
 
-<div class="content-wrapper">
-    <div class="filter-controls">
-        <button class="filter-btn active">Összes</button>
-        <button class="filter-btn">Szabad ágyak</button>
+@if (betoltesAlatt)
+{
+    <div class="text-center mt-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Betöltés...</span>
+        </div>
+        <p class="mt-2 text-muted">Szobák betöltése...</p>
     </div>
+}
+else
+{
+    <div class="content-wrapper">
+        @* Szűrő gombok *@
+        <div class="filter-controls">
+            <button class="filter-btn @(mutasdCsakSzabadokat ? "" : "active")"
+                    @onclick="() => SetSzuro(false)">
+                Összes
+            </button>
+            <button class="filter-btn @(mutasdCsakSzabadokat ? "active" : "")"
+                    @onclick="() => SetSzuro(true)">
+                Szabad ágyak
+            </button>
+        </div>
 
-    <div class="card">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Szoba</th>
-                    <th>Emelet</th>
-                    <th>Kapacitás</th>
-                    <th>Lakók</th>
-                    <th>Telítettség</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>101</td>
-                    <td>1. Emelet</td>
-                    <td>4 fő</td>
-                    <td>Kovács N., Nagy A.</td>
-                    <td>
-                        <span class="status-badge partial">50% (2/4)</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>102</td>
-                    <td>1. Emelet</td>
-                    <td>3 fő</td>
-                    <td>Szabó P., Varga J., Kiss M.</td>
-                    <td>
-                        <span class="status-badge full">100% (3/3)</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>205</td>
-                    <td>2. Emelet</td>
-                    <td>2 fő</td>
-                    <td>-</td>
-                    <td>
-                        <span class="status-badge empty">0% (0/2)</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="card shadow-sm">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Szoba</th>
+                        <th>Emelet</th>
+                        <th>Kapacitás</th>
+                        <th>Lakók</th>
+                        <th>Telítettség</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (szurtSzobak != null && szurtSzobak.Any())
+                    {
+                        @foreach (var szoba in szurtSzobak)
+                        {
+                            // Kiszámoljuk az adott szoba adatait
+                            int aktivLakok = GetAktivLakokSzam(szoba.ID);
+                            string lakoNevek = GetLakoNevek(szoba.ID);
+                            double szazalek = szoba.FerohelyMax > 0 ? ((double)aktivLakok / szoba.FerohelyMax) * 100 : 0;
+                            string badgeCss = GetStatuszCss(aktivLakok, szoba.FerohelyMax);
+
+                            <tr>
+                                <td>@szoba.Szobaszam</td>
+                                <td>@szoba.Emelet. Emelet</td>
+                                <td>@szoba.FerohelyMax fő</td>
+                                <td>@lakoNevek</td>
+                                <td>
+                                    <span class="status-badge @badgeCss">
+                                        @(Math.Round(szazalek))% (@aktivLakok/@szoba.FerohelyMax)
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center text-muted p-4">Nincs a szűrésnek megfelelő szoba.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+}
 
 @code {
+    private bool betoltesAlatt = true;
 
+    // Szűrő állapota: true = csak szabad ágyas szobák
+    private bool mutasdCsakSzabadokat = false;
+
+    // Alapadatok
+    private List<KoliPortal.Lib.MODEL.Szobak> szobakLista = new();
+    private List<SzobaBeosztasok> aktivBeosztasok = new();
+    private List<KoliPortal.Lib.MODEL.Felhasznalok> felhasznalokLista = new();
+
+    // Ezt a listát mutatjuk a táblázatban (a szűrő alapján frissül)
+    private IEnumerable<KoliPortal.Lib.MODEL.Szobak> szurtSzobak = new List<KoliPortal.Lib.MODEL.Szobak>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            szobakLista = await Szoba.GetSzobak();
+            felhasznalokLista = await Felhasznalok.GetFelhasznalok();
+
+            var beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok();
+
+            // Csak az aktív lakókat tartjuk meg (akik még nem költöztek ki)
+            aktivBeosztasok = beosztasok.Where(x => x.TenylegesKikoltozes == null).ToList();
+
+            // Kezdetben minden szobát mutatunk, szobaszám szerint sorba rendezve
+            FrissitSzurtListat();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Hiba az adatok lekérésekor: {ex.Message}");
+        }
+        finally
+        {
+            betoltesAlatt = false;
+        }
+    }
+
+    // --- LOGIKAI METÓDUSOK ---
+
+    // Gombnyomásra fut le: beállítja a szűrőt és frissíti a listát
+    private void SetSzuro(bool csakSzabad)
+    {
+        mutasdCsakSzabadokat = csakSzabad;
+        FrissitSzurtListat();
+        StateHasChanged();
+    }
+
+    // Frissíti a megjelenített szobák listáját a szűrő alapján
+    private void FrissitSzurtListat()
+    {
+        if (mutasdCsakSzabadokat)
+        {
+            // Csak azok a szobák kellenek, ahol kevesebb az aktív lakó, mint a férőhely
+            szurtSzobak = szobakLista
+                .Where(x => GetAktivLakokSzam(x.ID) < x.FerohelyMax)
+                .OrderBy(x => x.Szobaszam);
+        }
+        else
+        {
+            // Minden szoba
+            szurtSzobak = szobakLista.OrderBy(x => x.Szobaszam);
+        }
+    }
+
+    // Kiszámolja, hányan laknak az adott szobában
+    private int GetAktivLakokSzam(int roomId)
+    {
+        return aktivBeosztasok.Count(x => x.RoomID == roomId);
+    }
+
+    // Összefűzi az adott szobában lakók neveit vesszővel elválasztva
+    private string GetLakoNevek(int roomId)
+    {
+        // Kikeressük a szobában lakó user ID-kat
+        var lakoIdk = aktivBeosztasok.Where(x => x.RoomID == roomId).Select(x => x.UserID).ToList();
+
+        if (!lakoIdk.Any()) return "-";
+
+        // Megkeressük a neveket az ID-k alapján
+        var nevek = felhasznalokLista
+            .Where(x => lakoIdk.Contains(x.ID))
+            .Select(x => x.Nev);
+
+        return string.Join(", ", nevek);
+    }
+
+    // Visszaadja a megfelelő CSS osztályt a telítettség alapján (empty, partial, full)
+    private string GetStatuszCss(int lakokSzama, int ferohelyMax)
+    {
+        if (lakokSzama == 0)
+        {
+            return "empty";
+        }
+        else if (lakokSzama >= ferohelyMax)
+        {
+            return "full";
+        }
+        else 
+        {
+            return "partial";
+        }
+    }
 }

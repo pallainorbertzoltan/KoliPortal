@@ -4,7 +4,7 @@
     background-color: #f4f6f9;
 }
 
-/* --- SIDEBAR --- */
+/* --- ASZTALI OLDALSÁV --- */
 .sidebar[b-093ymkrhz2] {
     width: 250px;
     background-color: #ffffff;
@@ -14,6 +14,7 @@
     height: 100vh;
     position: sticky;
     top: 0;
+    z-index: 1000;
 }
 
 .sidebar-header[b-093ymkrhz2] {
@@ -22,7 +23,7 @@
     font-weight: 700;
     color: #0d8368;
     border-bottom: 1px solid #e5e9ec;
-    display: flex; /* Ez kell a brand elrendezéséhez */
+    display: flex;
     align-items: center;
 }
 
@@ -60,36 +61,10 @@
         color: #0d8368;
     }
 
-/* --- PROFIL ÉS FOOTER --- */
+/* --- KIJELENTKEZÉS GOMB --- */
 .sidebar-footer[b-093ymkrhz2] {
     padding: 16px;
     border-top: 1px solid #e5e9ec;
-}
-
-.user-profile[b-093ymkrhz2] {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.avatar[b-093ymkrhz2] {
-    width: 40px;
-    height: 40px;
-    background-color: #0d8368;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    flex-shrink: 0;
-}
-
-.user-name[b-093ymkrhz2] {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #1a233a;
-    display: block; /* Biztosítja a tördelést */
 }
 
 .logout-btn[b-093ymkrhz2] {
@@ -103,9 +78,16 @@
     padding: 8px 12px;
     border-radius: 8px;
     transition: 0.2s;
+    width: 100%;
 }
 
-/* --- MOBIL ÉS RESPONSIVE --- */
+/* --- FŐ TARTALOM DOBOZA --- */
+.main-content[b-093ymkrhz2] {
+    flex: 1;
+    padding: 32px 40px;
+}
+
+/* --- MOBIL FELSŐ SÁV (FIXÁLT) --- */
 .mobile-top-bar[b-093ymkrhz2] {
     display: none;
     background: white;
@@ -113,6 +95,13 @@
     border-bottom: 1px solid #e5e9ec;
     justify-content: space-between;
     align-items: center;
+    /* Fixálás a képernyő tetejére */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .hamburger-btn[b-093ymkrhz2] {
@@ -124,6 +113,7 @@
     color: #0d8368;
 }
 
+/* --- MOBIL NÉZET SZABÁLYAI --- */
 @media (max-width: 767.98px) {
     .dashboard-container[b-093ymkrhz2] {
         flex-direction: column;
@@ -133,31 +123,24 @@
         display: flex;
     }
 
+    /* Extra felső padding, hogy a fixált sáv ne takarja ki az oldal tetejét! */
+    .main-content[b-093ymkrhz2] {
+        padding: 80px 20px 32px 20px;
+    }
+
     .sidebar[b-093ymkrhz2] {
         width: 100% !important;
         height: auto;
-        position: static;
         border-right: none;
+        /* A legördülő menü a fix sáv alatt jelenjen meg */
+        position: fixed;
+        top: 61px;
+        left: 0;
+        z-index: 1040;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
         .sidebar.collapse:not(.show)[b-093ymkrhz2] {
             display: none !important;
         }
-}
-
-@media (min-width: 768px) {
-    .logout-btn span[b-093ymkrhz2] {
-        display: none;
-    }
-
-    .logout-btn[b-093ymkrhz2] {
-        background: transparent;
-        border: none;
-        padding: 6px;
-    }
-}
-
-.main-content[b-093ymkrhz2] {
-    flex: 1;
-    padding: 32px 40px;
 }
