@@ -81,6 +81,11 @@
     width: 100%;
 }
 
+.logout-btn:hover[b-093ymkrhz2] {
+    color: white;
+    background: #c43c3c
+}
+
 /* --- FŐ TARTALOM DOBOZA --- */
 .main-content[b-093ymkrhz2] {
     flex: 1;
@@ -95,7 +100,6 @@
     border-bottom: 1px solid #e5e9ec;
     justify-content: space-between;
     align-items: center;
-    /* Fixálás a képernyő tetejére */
     position: fixed;
     top: 0;
     left: 0;

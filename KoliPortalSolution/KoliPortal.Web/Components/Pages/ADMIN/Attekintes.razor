@@ -86,7 +86,7 @@ else
                         @foreach (var beosztas in legujabbLakok)
                         {
                             <tr>
-                                @* --- MÓDOSÍTVA: Itt hívjuk a kereső metódusokat --- *@
+                                @* Itt hívjuk a kereső metódusokat --- *@
                                 <td>@GetFelhasznaloNev(beosztas.UserID)</td>
                                 <td>@GetSzobaSzam(beosztas.RoomID)</td>
                                 <td>@beosztas.BekoltozesDatum?.ToShortDateString()</td>
@@ -144,7 +144,7 @@ else
     private List<SzobaBeosztasok> legujabbLakok = new();
     private List<EmeletKapacitas> emeletKapacitasok = new();
 
-    // --- ÚJ: Ezek kellenek a nevek megkereséséhez ---
+    // Ezek kellenek a nevek megkereséséhez
     private List<KoliPortal.Lib.MODEL.Felhasznalok> osszesFelhasznalo = new();
     private List<KoliPortal.Lib.MODEL.Szobak> osszesSzoba = new();
 
@@ -152,7 +152,7 @@ else
     {
         try
         {
-            // 1. Lekérjük az adatokat a generikus API-tól
+            // Lekérjük az adatokat a API-ból
             osszesSzoba = await Szobak.GetSzobak();
             var beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok() ?? new List<SzobaBeosztasok>();
             var hibak = await KarbantartasiKeresek.GetKarbantartasiKeresek() ?? new List<KarbantartasiKeresek>();
@@ -160,24 +160,24 @@ else
             // Lekérjük a felhasználókat is!
             osszesFelhasznalo = await FelhasznalokService.GetFelhasznalok();
 
-            // 2. Aktív lakók: Ahol a tényleges kiköltözés még nem történt meg (null)
+            // Aktív lakók: Ahol a tényleges kiköltözés még nem történt meg (null)
             var aktivBeosztasok = beosztasok.Where(b => b.TenylegesKikoltozes == null).ToList();
             aktivLakokSzama = aktivBeosztasok.Count;
 
-            // 3. Szabad ágyak: Szobak.FerohelyMax összege mínusz az aktív lakók
+            // Szabad ágyak: Szobak.FerohelyMax összege mínusz az aktív lakók
             int osszesFerohely = osszesSzoba.Sum(s => s.FerohelyMax);
             szabadAgyakSzama = osszesFerohely - aktivLakokSzama;
 
-            // 4. Nyitott hibák
+            // Nyitott hibák
             nyitottHibakSzama = hibak.Count(h => h.StatuszID != 3);
 
-            // 5. Legújabb lakók a táblázatba: Rendezzük a BekoltozesDatum szerint, a legújabb 5 ember
+            // Legújabb lakók a táblázatba: Rendezzük a BekoltozesDatum szerint, a legújabb 5 ember
             legujabbLakok = aktivBeosztasok
                 .OrderByDescending(b => b.BekoltozesDatum)
                 .Take(5)
                 .ToList();
 
-            // 7. Emelet kapacitások összekötve a lakókkal
+            // Emelet kapacitások összekötve a lakókkal
             emeletKapacitasok = osszesSzoba
                 .GroupBy(s => s.Emelet)
                 .Select(g => new EmeletKapacitas

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KoliPortal.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7ca4c75b3860391bdfce8379aba40d77011c22e1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d53bb01fe3cdc625250207b99093b5ed73ef1236")]
 [assembly: System.Reflection.AssemblyProductAttribute("KoliPortal.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KoliPortal.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

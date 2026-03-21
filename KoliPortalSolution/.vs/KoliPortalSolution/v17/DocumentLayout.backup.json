@@ -7,32 +7,20 @@
       "RelativeMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|solutionrelative:koliportal.web\\components\\pages\\admin\\szobak.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal.web\\components\\pages\\admin\\regisztralas.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|solutionrelative:koliportal.web\\components\\pages\\admin\\regisztralas.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal.web\\components\\pages\\admin\\karbantartas.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|solutionrelative:koliportal.web\\components\\pages\\admin\\karbantartas.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal.web\\components\\layout\\adminlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|solutionrelative:koliportal.web\\components\\layout\\adminlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal.web\\components\\layout\\adminlayout.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|solutionrelative:koliportal.web\\components\\layout\\adminlayout.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+      "AbsoluteMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal.web\\components\\pages\\admin\\attekintes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|solutionrelative:koliportal.web\\components\\pages\\admin\\attekintes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal.web\\components\\pages\\admin\\felhasznalok.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|solutionrelative:koliportal.web\\components\\pages\\admin\\felhasznalok.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal.web\\components\\pages\\admin\\karbantartas.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|solutionrelative:koliportal.web\\components\\pages\\admin\\karbantartas.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|solutionrelative:koliportal.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,8 +30,47 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Szobak.razor",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Szobak.razor",
+              "RelativeDocumentMoniker": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Szobak.razor",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Szobak.razor",
+              "RelativeToolTip": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Szobak.razor",
+              "ViewState": "AgIAAJYAAAAAAAAAAAAAAKAAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-21T12:37:52.171Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Regisztralas.razor",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Regisztralas.razor",
+              "RelativeDocumentMoniker": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Regisztralas.razor",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Regisztralas.razor",
+              "RelativeToolTip": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Regisztralas.razor",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-21T12:37:50.005Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Karbantartas.razor",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Karbantartas.razor",
+              "RelativeDocumentMoniker": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Karbantartas.razor",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Karbantartas.razor",
+              "RelativeToolTip": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Karbantartas.razor",
+              "ViewState": "AgIAAL0AAAAAAAAAAAAAANkAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-21T12:36:16.014Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
@@ -54,103 +81,29 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\appsettings.json",
-              "RelativeDocumentMoniker": "KoliPortal\\appsettings.json",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\appsettings.json",
-              "RelativeToolTip": "KoliPortal\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-03-18T21:12:06.47Z",
+              "DocumentIndex": 3,
+              "Title": "Attekintes.razor",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Attekintes.razor",
+              "RelativeDocumentMoniker": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Attekintes.razor",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Attekintes.razor",
+              "RelativeToolTip": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Attekintes.razor",
+              "ViewState": "AgIAALEAAAAAAAAAAAAAAJoAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-21T12:35:40.368Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "Felhasznalok.razor",
               "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Felhasznalok.razor",
               "RelativeDocumentMoniker": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Felhasznalok.razor",
               "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Felhasznalok.razor",
               "RelativeToolTip": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Felhasznalok.razor",
-              "ViewState": "AgIAAGMAAAAAAAAAAAAqwHQAAAAPAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-18T21:03:02.6Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "AdminLayout.razor.css",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Layout\\AdminLayout.razor.css",
-              "RelativeDocumentMoniker": "KoliPortal.Web\\Components\\Layout\\AdminLayout.razor.css",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Layout\\AdminLayout.razor.css",
-              "RelativeToolTip": "KoliPortal.Web\\Components\\Layout\\AdminLayout.razor.css",
-              "ViewState": "AgIAAHMAAAAAAAAAAAAqwJIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-03-18T20:59:22.799Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AdminLayout.razor",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Layout\\AdminLayout.razor",
-              "RelativeDocumentMoniker": "KoliPortal.Web\\Components\\Layout\\AdminLayout.razor",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Layout\\AdminLayout.razor",
-              "RelativeToolTip": "KoliPortal.Web\\Components\\Layout\\AdminLayout.razor",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAACoAAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-18T20:57:36.39Z",
+              "WhenOpened": "2026-03-21T11:58:08.149Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Szobak.razor",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Szobak.razor",
-              "RelativeDocumentMoniker": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Szobak.razor",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Szobak.razor",
-              "RelativeToolTip": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Szobak.razor",
-              "ViewState": "AgIAACEAAAAAAAAAAAAAAEAAAAAzAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-18T20:39:59.479Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Karbantartas.razor.css",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Karbantartas.razor.css",
-              "RelativeDocumentMoniker": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Karbantartas.razor.css",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Karbantartas.razor.css",
-              "RelativeToolTip": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Karbantartas.razor.css",
-              "ViewState": "AgIAACIAAAAAAAAAAADwv0wAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-03-18T20:28:36.64Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Karbantartas.razor",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Karbantartas.razor",
-              "RelativeDocumentMoniker": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Karbantartas.razor",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\ADMIN\\Karbantartas.razor",
-              "RelativeToolTip": "KoliPortal.Web\\Components\\Pages\\ADMIN\\Karbantartas.razor",
-              "ViewState": "AgIAAK8AAAAAAAAAAAAuwMEAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-18T20:14:22.235Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Program.cs",
-              "RelativeDocumentMoniker": "KoliPortal.Web\\Program.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Program.cs",
-              "RelativeToolTip": "KoliPortal.Web\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAABHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-18T20:14:03.62Z"
             }
           ]
         }

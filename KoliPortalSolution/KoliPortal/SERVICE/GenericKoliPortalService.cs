@@ -32,10 +32,14 @@ namespace KoliPortal.API.SERVICE
             return entity;
         }
 
-        public async Task Delete(T entity)
+        public async Task Delete(int id)
         {
-            _set.Remove(entity);
-            await _context.SaveChangesAsync();
+            var entity = await _set.FindAsync(id);
+            if (entity != null)
+            {
+                _set.Remove(entity);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task Update(T entity)

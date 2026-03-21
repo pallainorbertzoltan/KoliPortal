@@ -20,5 +20,17 @@ namespace KoliPortal.Lib.SERVICE
         {
             return await _httpClient.GetFromJsonAsync<List<Felhasznalok>>("api/Felhasznalok") ?? new List<Felhasznalok>();
         }
+
+        public async Task UpdateFelhasznalok(Felhasznalok adat)
+        {
+            var response = await _httpClient.PutAsJsonAsync("api/Felhasznalok", adat);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task DeleteFelhasznalok(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"api/Felhasznalok/{id}");
+            response.EnsureSuccessStatusCode();
+        }
     }
 }

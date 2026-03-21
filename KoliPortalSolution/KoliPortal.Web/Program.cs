@@ -21,6 +21,7 @@ namespace KoliPortal.Web
             builder.Services.AddScoped<FelhasznalokService>();
             builder.Services.AddScoped<SzerepkorokService>();
             builder.Services.AddScoped<KarbantartasStatuszokService>();
+            builder.Services.AddScoped<PenzugyekService>();
 
             var app = builder.Build();
 

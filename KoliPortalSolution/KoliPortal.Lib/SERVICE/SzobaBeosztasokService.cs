@@ -20,5 +20,22 @@ namespace KoliPortal.Lib.SERVICE
         {
             return await _httpClient.GetFromJsonAsync<List<SzobaBeosztasok>>("api/SzobaBeosztasok") ?? new List<SzobaBeosztasok>();
         }
+        public async Task UpdateSzobaBeosztasok(SzobaBeosztasok adat)
+        {
+            var response = await _httpClient.PutAsJsonAsync("api/SzobaBeosztasok", adat);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task CreateSzobaBeosztasok(SzobaBeosztasok adatok)
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/SzobaBeosztasok", adatok);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task DeleteSzobaBeosztasok(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"api/SzobaBeosztasok/{id}");
+            response.EnsureSuccessStatusCode();
+        }
     }
 }

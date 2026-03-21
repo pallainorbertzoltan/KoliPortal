@@ -20,5 +20,11 @@ namespace KoliPortal.Lib.SERVICE
         {
             return await _httpClient.GetFromJsonAsync<List<KarbantartasiKeresek>>("api/KarbantartasiKeresek") ?? new List<KarbantartasiKeresek>();
         }
+
+        public async Task DeleteKarbantartasiKeresek(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"api/KarbantartasiKeresek/{id}");
+            response.EnsureSuccessStatusCode();
+        }
     }
 } 

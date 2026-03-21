@@ -26,6 +26,22 @@ namespace KoliPortal.Lib.SERVICE
             return await _httpClient.GetFromJsonAsync<DiakAdatok>($"api/DiakAdatok/{id}");
         }
 
+        public async Task UpdateDiakAdatok(DiakAdatok adat)
+        {
+            var response = await _httpClient.PutAsJsonAsync("api/DiakAdatok", adat);
+            response.EnsureSuccessStatusCode();
+        }
 
+        public async Task CreateDiakAdatok(DiakAdatok adat)
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/DiakAdatok", adat);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task DeleteDiakAdatok(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"api/DiakAdatok/{id}");
+            response.EnsureSuccessStatusCode();
+        }
     }
 }

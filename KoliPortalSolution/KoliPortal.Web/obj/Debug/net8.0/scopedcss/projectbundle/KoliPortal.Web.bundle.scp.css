@@ -82,6 +82,11 @@
     width: 100%;
 }
 
+.logout-btn:hover[b-093ymkrhz2] {
+    color: white;
+    background: #c43c3c
+}
+
 /* --- FŐ TARTALOM DOBOZA --- */
 .main-content[b-093ymkrhz2] {
     flex: 1;
@@ -96,7 +101,6 @@
     border-bottom: 1px solid #e5e9ec;
     justify-content: space-between;
     align-items: center;
-    /* Fixálás a képernyő tetejére */
     position: fixed;
     top: 0;
     left: 0;
@@ -483,6 +487,61 @@ input:checked + .slider[b-vu13h7k8x3] {
     margin: 0 auto;
 }
 
+/* --- SZŰRŐ GOMBOK (Filter) --- */
+.filter-controls[b-47y4jzkb10] {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.filter-btn[b-47y4jzkb10] {
+    background-color: white;
+    border: 1px solid #e5e9ec;
+    color: #6b7785;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover[b-47y4jzkb10] {
+    background-color: #f4f6f9;
+}
+
+.filter-btn.active[b-47y4jzkb10] {
+    background-color: #0d8368;
+    color: white;
+    border-color: #0d8368;
+}
+
+/* --- ÁLLAPOT JELVÉNYEK (Szoba oszlophoz) --- */
+.status-badge[b-47y4jzkb10] {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.status-badge.kikoltozott[b-47y4jzkb10] {
+    background-color: #fef2f2;
+    color: #ef4444; /* Pirosas */
+    border: 1px solid #fecaca;
+}
+
+.status-badge.nincs-szoba[b-47y4jzkb10] {
+    background-color: #f1f5f9;
+    color: #64748b; /* Szürkés */
+    border: 1px solid #e2e8f0;
+}
+
+    .status-badge.van-szoba[b-47y4jzkb10] {
+        background-color: #dcfce7;
+        color: #16a34a;
+        border: 1px solid #c7ffdb;
+    }
+
 /* --- SZEREPKÖR JELVÉNYEK (Badges) --- */
 .role-badge[b-47y4jzkb10] {
     padding: 6px 12px;
@@ -519,10 +578,62 @@ input:checked + .slider[b-vu13h7k8x3] {
     transition: all 0.2s;
 }
 
-    .action-btn:hover[b-47y4jzkb10] {
-        background-color: #f1f5f9;
-        color: #0f172a;
-    }
+.action-btn:hover[b-47y4jzkb10] {
+    background-color: #f1f5f9;
+    color: #0f172a;
+}
+
+/* --- FELUGRÓ ABLAK (MODAL) --- */
+.custom-modal-backdrop[b-47y4jzkb10] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.custom-modal[b-47y4jzkb10] {
+    background-color: white;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}
+
+.modal-header[b-47y4jzkb10] {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e9ec;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3[b-47y4jzkb10] {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #1d252f;
+}
+
+.modal-body[b-47y4jzkb10] {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.modal-footer[b-47y4jzkb10] {
+    padding: 16px 20px;
+    border-top: 1px solid #e5e9ec;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
 /* _content/KoliPortal.Web/Components/Pages/ADMIN/Karbantartas.razor.rz.scp.css */
 /* --- SZEKCIÓK (Sections) --- */
 .maintenance-section[b-ppfzthiqgg] {

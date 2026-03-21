@@ -25,7 +25,7 @@
 else
 {
     <div class="content-wrapper">
-        @* --- 1. AKTIV FELADATOK (Nem lezártak) --- *@
+        @* AKTIV FELADATOK (Nem lezártak) *@
         <section class="maintenance-section">
             <div class="section-header">
                 <h2>Aktuális Feladatok</h2>
@@ -84,7 +84,7 @@ else
             </div>
         </section>
 
-        @* --- 2. ELŐZMÉNYEK (Lezárt feladatok) --- *@
+        @* ELŐZMÉNYEK (Lezárt feladatok) *@
         <section class="maintenance-section mt-5">
             <div class="section-header">
                 <h2>Előzmények</h2>
@@ -157,14 +157,14 @@ else
     {
         try
         {
-            // 1. Minden adatot letöltünk
+            // Minden adatot letöltünk
             osszesHiba = await KarbantartasiKeresek.GetKarbantartasiKeresek();
             statuszok = await KarbantartasStatuszok.GetKarbantartasiStatuszok();
             felhasznalok = await Felhasznalok.GetFelhasznalok();
             beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok();
             szobak = await Szobak.GetSzobak();
 
-            // 2. Szétválogatjuk a hibákat aktívra és lezártra (rendezve dátum szerint)
+            // Szétválogatjuk a hibákat aktívra és lezártra (rendezve dátum szerint)
             aktivHibak = osszesHiba
                 .Where(x => x.StatuszID != LEZART_STATUSZ_ID)
                 .OrderByDescending(x => x.LetrehozasDatum)
@@ -185,7 +185,7 @@ else
         }
     }
 
-    // --- SEGÉDMETÓDUSOK ---
+    // SEGÉDMETÓDUSOK 
 
     private string GetBejelentoNeve(int userId)
     {
@@ -202,7 +202,7 @@ else
             var szoba = szobak.FirstOrDefault(x => x.ID == aktivBeosztas.RoomID);
             return szoba != null ? $"{szoba.Szobaszam} szoba" : "Ismeretlen szoba";
         }
-        return "Közösségi tér"; // Ha nem diák jelentette be
+        return "Ismeretlen"; // Ha nem diák jelentette be
     }
 
     private string GetStatuszNev(int statuszId)
@@ -214,7 +214,7 @@ else
     // Színezi a jelvényt a státusz alapján
     private string GetStatuszCss(int statuszId)
     {
-        // Ha nem lezárt (tehát 1 vagy 2), akkor legyen kék/sárga
+        // Ha nem lezárt (tehát 1 vagy 2), akkor legyen sárga
         if (statuszId == 1 || statuszId == 2)
         {
             return "p-active"; // Új, még nem kezdődött el vagy folyamatban van

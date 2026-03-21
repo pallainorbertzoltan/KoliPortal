@@ -81,6 +81,11 @@
     width: 100%;
 }
 
+.logout-btn:hover {
+    color: white;
+    background: #c43c3c
+}
+
 /* --- FŐ TARTALOM DOBOZA --- */
 .main-content {
     flex: 1;

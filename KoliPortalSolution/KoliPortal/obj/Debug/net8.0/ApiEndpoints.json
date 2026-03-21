@@ -63,22 +63,6 @@
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.DiakAdatok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "Delete",
-    "RelativePath": "api/DiakAdatok",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "entity",
-        "Type": "KoliPortal.Lib.MODEL.DiakAdatok",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.DiakAdatok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
     "Method": "GetById",
     "RelativePath": "api/DiakAdatok/{id}",
     "HttpMethod": "GET",
@@ -102,6 +86,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.DiakAdatok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Delete",
+    "RelativePath": "api/DiakAdatok/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Felhasznalok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
@@ -167,22 +167,6 @@
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Felhasznalok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "Delete",
-    "RelativePath": "api/Felhasznalok",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "entity",
-        "Type": "KoliPortal.Lib.MODEL.Felhasznalok",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Felhasznalok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
     "Method": "GetById",
     "RelativePath": "api/Felhasznalok/{id}",
     "HttpMethod": "GET",
@@ -206,6 +190,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Felhasznalok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Delete",
+    "RelativePath": "api/Felhasznalok/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.FizetesTipusok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
@@ -271,22 +271,6 @@
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.FizetesTipusok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "Delete",
-    "RelativePath": "api/FizetesTipusok",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "entity",
-        "Type": "KoliPortal.Lib.MODEL.FizetesTipusok",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.FizetesTipusok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
     "Method": "GetById",
     "RelativePath": "api/FizetesTipusok/{id}",
     "HttpMethod": "GET",
@@ -310,6 +294,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.FizetesTipusok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Delete",
+    "RelativePath": "api/FizetesTipusok/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.KarbantartasiKeresek, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
@@ -375,22 +375,6 @@
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.KarbantartasiKeresek, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "Delete",
-    "RelativePath": "api/KarbantartasiKeresek",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "entity",
-        "Type": "KoliPortal.Lib.MODEL.KarbantartasiKeresek",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.KarbantartasiKeresek, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
     "Method": "GetById",
     "RelativePath": "api/KarbantartasiKeresek/{id}",
     "HttpMethod": "GET",
@@ -414,6 +398,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.KarbantartasiKeresek, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Delete",
+    "RelativePath": "api/KarbantartasiKeresek/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.KarbantartasStatuszok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
@@ -479,22 +479,6 @@
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.KarbantartasStatuszok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "Delete",
-    "RelativePath": "api/KarbantartasStatuszok",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "entity",
-        "Type": "KoliPortal.Lib.MODEL.KarbantartasStatuszok",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.KarbantartasStatuszok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
     "Method": "GetById",
     "RelativePath": "api/KarbantartasStatuszok/{id}",
     "HttpMethod": "GET",
@@ -518,6 +502,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.KarbantartasStatuszok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Delete",
+    "RelativePath": "api/KarbantartasStatuszok/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Penzugyek, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
@@ -583,22 +583,6 @@
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Penzugyek, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "Delete",
-    "RelativePath": "api/Penzugyek",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "entity",
-        "Type": "KoliPortal.Lib.MODEL.Penzugyek",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Penzugyek, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
     "Method": "GetById",
     "RelativePath": "api/Penzugyek/{id}",
     "HttpMethod": "GET",
@@ -622,6 +606,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Penzugyek, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Delete",
+    "RelativePath": "api/Penzugyek/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Szerepkorok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
@@ -687,22 +687,6 @@
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Szerepkorok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "Delete",
-    "RelativePath": "api/Szerepkorok",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "entity",
-        "Type": "KoliPortal.Lib.MODEL.Szerepkorok",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Szerepkorok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
     "Method": "GetById",
     "RelativePath": "api/Szerepkorok/{id}",
     "HttpMethod": "GET",
@@ -726,6 +710,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Szerepkorok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Delete",
+    "RelativePath": "api/Szerepkorok/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.SzobaBeosztasok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
@@ -791,22 +791,6 @@
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.SzobaBeosztasok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "Delete",
-    "RelativePath": "api/SzobaBeosztasok",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "entity",
-        "Type": "KoliPortal.Lib.MODEL.SzobaBeosztasok",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.SzobaBeosztasok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
     "Method": "GetById",
     "RelativePath": "api/SzobaBeosztasok/{id}",
     "HttpMethod": "GET",
@@ -830,6 +814,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.SzobaBeosztasok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Delete",
+    "RelativePath": "api/SzobaBeosztasok/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Szobak, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
@@ -895,22 +895,6 @@
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Szobak, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "Delete",
-    "RelativePath": "api/Szobak",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "entity",
-        "Type": "KoliPortal.Lib.MODEL.Szobak",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Szobak, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
     "Method": "GetById",
     "RelativePath": "api/Szobak/{id}",
     "HttpMethod": "GET",
@@ -934,5 +918,21 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Szobak, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Delete",
+    "RelativePath": "api/Szobak/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
