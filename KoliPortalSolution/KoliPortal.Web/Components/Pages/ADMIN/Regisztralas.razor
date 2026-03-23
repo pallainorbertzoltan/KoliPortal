@@ -1,55 +1,339 @@
 ﻿@page "/regisztralas"
+@using KoliPortal.Lib.MODEL
+@using KoliPortal.Lib.SERVICE
 @layout AdminLayout
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inject SzerepkorokService Szerepkorok
+@inject AuthControllerService AuthController
+@inject SzobakService Szobak
+@inject SzobaBeosztasokService SzobaBeosztasok
+@inject DiakAdatokService DiakAdatok
+@inject FelhasznalokService Felhasznalok
+@inject NavigationManager Nav
+@inject IJSRuntime JS
 
 <header class="page-header text-center">
     <h1>Új Felhasználó Regisztrálása</h1>
     <p>Kollégista, adminisztrátor vagy karbantartó hozzáadása a rendszerhez.</p>
 </header>
 
-<div class="content-wrapper">
-    <div class="card form-card">
-        <form class="registration-form">
-            <div class="form-row">
-                <div class="form-group half-width">
-                    <label for="vezetekNev">Vezetéknév <span class="required">*</span></label>
-                    <input type="text" id="vezetekNev" placeholder="Pl. Kovács" required />
-                </div>
-                <div class="form-group half-width">
-                    <label for="keresztNev">Keresztnév <span class="required">*</span></label>
-                    <input type="text" id="keresztNev" placeholder="Pl. János" required />
-                </div>
-            </div>
+@if (betoltesAlatt)
+{
+    <div class="text-center mt-5">
+        <div class="spinner-border text-success" role="status"></div>
+        <p class="mt-2 text-muted">Űrlap előkészítése...</p>
+    </div>
+}
+else
+{
+    <div class="content-wrapper">
+        <div class="card form-card shadow-sm p-4" style="max-width: 600px; margin: 0 auto;">
+            @if (!string.IsNullOrEmpty(hibaUzenet))
+            {
+                <div class="alert alert-danger">@hibaUzenet</div>
+            }
 
-            <div class="form-group">
-                <label for="email">Email cím <span class="required">*</span></label>
-                <input type="email" id="email" placeholder="pelda@email.com" required />
-            </div>
+            <form @onsubmit="FelhasznaloLeltrehozasa">
+                <div class="form-row d-flex gap-3 mb-3">
+                    <div class="form-group flex-fill">
+                        <label>Vezetéknév <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" @bind="vezetekNev" placeholder="Pl. Kovács" required />
+                    </div>
+                    <div class="form-group flex-fill">
+                        <label>Keresztnév <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" @bind="keresztNev" placeholder="Pl. János" required />
+                    </div>
+                </div>
 
-            <div class="form-row">
-                <div class="form-group half-width">
-                    <label for="role">Szerepkör <span class="required">*</span></label>
-                    <select id="role" required>
-                        <option value="" disabled selected>Válassz szerepkört...</option>
-                        <option value="student">Kollégista (Hallgató)</option>
-                        <option value="admin">Adminisztrátor</option>
-                        <option value="maintenance">Karbantartó</option>
+                <div class="form-group mb-3">
+                    <label>Email cím <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" @bind="email" placeholder="pelda@email.com" required />
+                </div>
+
+                <div class="form-row d-flex gap-3 mb-3">
+                    <div class="form-group flex-fill">
+                        <label>Jelszó <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" @bind="jelszo" placeholder="Legalább 6 karakter" required />
+                    </div>
+                    <div class="form-group flex-fill">
+                        <label>Jelszó megerősítése <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" @bind="jelszoUjra" placeholder="Jelszó újra" required />
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label>Szerepkör <span class="text-danger">*</span></label>
+                    <select class="form-select" @bind="valasztottSzerepkorId" required>
+                        <option value="0" disabled selected>Válassz szerepkört...</option>
+                        @foreach (var role in szerepkorokLista)
+                        {
+                            <option value="@role.ID">@role.Nev</option>
+                        }
                     </select>
                 </div>
-                <div class="form-group half-width" id="roomSelectGroup">
-                    <label for="roomNumber">Szobaszám</label>
-                    <input type="text" id="roomNumber" placeholder="Pl. 204" />
-                    <small class="form-hint">Csak kollégisták esetén szükséges kitölteni.</small>
-                </div>
-            </div>
 
-            <div class="form-actions">
-                <button type="button" class="btn-cancel">Mégse</button>
-                <button type="submit" class="btn-submit">Felhasználó Létrehozása</button>
-            </div>
-        </form>
+                @* Csak akkor jelenik meg, ha a Lakó szerepkört választja *@
+                @if (IsLako(valasztottSzerepkorId))
+                {
+                    <hr class="my-4" />
+                    <h5 class="mb-3">Diák extra adatok</h5>
+
+                    <div class="form-row d-flex gap-3 mb-3">
+                        <div class="form-group flex-fill">
+                            <label>Évfolyam <span class="text-danger">*</span></label>
+                            <select class="form-select" @bind="valasztottEvfolyam" required>
+                                <option value="" disabled selected>Válassz évfolyamot...</option>
+                                <option value="1. évf.">1. évfolyam</option>
+                                <option value="2. évf.">2. évfolyam</option>
+                                <option value="3. évf.">3. évfolyam</option>
+                                <option value="4. évf.">4. évfolyam</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group flex-fill">
+                            <label>Szoba beosztás</label>
+                            <select class="form-select" @bind="valasztottSzobaId">
+                                <option value="0" selected>Később osztom be</option>
+                                @foreach (var szoba in GetSzabadSzobak())
+                                {
+                                    <option value="@szoba.ID">@szoba.Szobaszam (Szabad hely: @(szoba.FerohelyMax - GetAktivLakokSzam(szoba.ID)))</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    @* Lakcím *@
+                    <div class="form-group mb-3">
+                        <label>Lakcím</label>
+                        <input type="text" class="form-control" @bind="valasztottLakcim" placeholder="Pl. 1051 Budapest, Fő utca 1." />
+                    </div>
+                }
+
+                <div class="form-actions d-flex justify-content-end gap-2 mt-4">
+                    <button type="button" class="btn btn-secondary" @onclick="Megse">Mégse</button>
+                    <button type="submit" class="btn btn-success px-4">Létrehozás</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+}
 
 @code {
+    private string token = "";
+    private bool betoltesAlatt = true;
+    private string hibaUzenet = "";
 
+    // Form mezők
+    private string vezetekNev = "";
+    private string keresztNev = "";
+    private string email = "";
+    private string jelszo = "";
+    private string jelszoUjra = "";
+    private int valasztottSzerepkorId = 0;
+
+    // Új Diák mezők
+    private string valasztottEvfolyam = "";
+    private string valasztottLakcim = "";
+    private int valasztottSzobaId = 0;
+
+    // Adatok az API-ból
+    private List<Szerepkorok> szerepkorokLista = new();
+    private List<KoliPortal.Lib.MODEL.Szobak> szobakLista = new();
+    private List<SzobaBeosztasok> beosztasokLista = new();
+
+    protected override async Task OnAfterRenderAsync(bool elsoBetoltes)
+    {
+        if (elsoBetoltes)
+        {
+            try
+            {
+                token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    Nav.NavigateTo("/");
+                    return;
+                }
+
+                // SZIGORÚ SZEREPKÖR ELLENŐRZÉS CSAK ADMIN!
+                var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+                var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+
+                if (szerepkor != "1" && szerepkor?.ToLower() != "admin")
+                {
+                    Nav.NavigateTo("/");
+                    return;
+                }
+
+                // Adatok lekérése a tokennel
+                szerepkorokLista = await Szerepkorok.GetSzerepkorok(token) ?? new();
+                szobakLista = await Szobak.GetSzobak(token) ?? new();
+                beosztasokLista = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new();
+            }
+            catch (Exception ex)
+            {
+                hibaUzenet = $"Hiba a betöltéskor: {ex.Message}";
+            }
+            finally
+            {
+                betoltesAlatt = false;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private async Task FelhasznaloLeltrehozasa()
+    {
+        hibaUzenet = "";
+
+        if (valasztottSzerepkorId == 0)
+        {
+            hibaUzenet = "Kérlek, válassz egy szerepkört!";
+            return;
+        }
+
+        // Évfolyam kötelező ellenőrzése, ha Lakó a szerepkör
+        if (IsLako(valasztottSzerepkorId) && string.IsNullOrEmpty(valasztottEvfolyam))
+        {
+            hibaUzenet = "Diák regisztrálásakor kötelező megadni az évfolyamot!";
+            return;
+        }
+
+        if (jelszo != jelszoUjra)
+        {
+            hibaUzenet = "A megadott jelszavak nem egyeznek!";
+            return;
+        }
+
+        if (jelszo.Length < 6)
+        {
+            hibaUzenet = "A jelszónak legalább 6 karakter hosszúnak kell lennie!";
+            return;
+        }
+
+        try
+        {
+            var ujUser = new KoliPortal.Lib.MODEL.Felhasznalok
+            {
+                Nev = $"{vezetekNev} {keresztNev}",
+                Email = email,
+                Jelszo = jelszo,
+                SzerepkorID = valasztottSzerepkorId
+            };
+
+            // Regisztráció hívása
+            bool sikeres = await AuthController.RegisterAsync(ujUser, token);
+
+            if (sikeres)
+            {
+                // Ha a felhasználó Lakó
+                if (IsLako(valasztottSzerepkorId))
+                {
+
+                    // Lekérjük az új felhasználó adatait email alapján
+                    var osszesUser = await Felhasznalok.GetFelhasznalok(token) ?? new();
+                    var frissUser = osszesUser.FirstOrDefault(u => u.Email == email);
+
+                    if (frissUser != null)
+                    {
+                        try
+                        {
+                            // Évfolyam és Lakcím mentése
+                            // Ha üresen hagyták a lakcímet, "Nincs megadva" kerül be
+                            string veglegesLakcim = string.IsNullOrWhiteSpace(valasztottLakcim) ? "Nincs megadva" : valasztottLakcim;
+
+                            var ujDiakAdat = new DiakAdatok
+                            {
+                                UserID = frissUser.ID,
+                                Evfolyam = valasztottEvfolyam,
+                                Lakcim = veglegesLakcim
+                            };
+                            await DiakAdatok.CreateDiakAdatok(ujDiakAdat, token);
+
+                            // Szoba beosztás mentése
+                            if (valasztottSzobaId > 0)
+                            {
+                                int varhatoKikoltozes = 1;
+
+                                switch (valasztottEvfolyam)
+                                {
+                                    case "1. évf.":
+                                        varhatoKikoltozes = 3;
+                                        break;
+                                    case "2. évf.":
+                                        varhatoKikoltozes = 2;
+                                        break;
+                                    case "3. évf.":
+                                        varhatoKikoltozes = 1;
+                                        break;
+                                    default:
+                                        // Ha 4. évf.
+                                        varhatoKikoltozes = 1;
+                                        break;
+                                }
+
+                                var ujBeosztas = new SzobaBeosztasok
+                                {
+                                    UserID = frissUser.ID,
+                                    RoomID = valasztottSzobaId,
+                                    BekoltozesDatum = DateTime.Now,
+                                    VarhatoKikoltozes = DateTime.Now.AddYears(varhatoKikoltozes)
+                                };
+                                await SzobaBeosztasok.CreateSzobaBeosztasok(ujBeosztas, token);
+                            }
+                        }
+                        catch (Exception Hiba)
+                        {
+                            hibaUzenet = $"A fiók létrejött, de a plusz adatokat nem sikerült menteni! ({Hiba.Message})";
+                            return; // Kilépünk, hogy az admin lássa a hibaüzenetet
+                        }
+                    }
+                }
+
+                // Visszadobjuk az Áttekintés oldalra
+                Nav.NavigateTo("/adminAttekintes");
+            }
+            else
+            {
+                hibaUzenet = "Hiba történt! Lehet, hogy ez az email cím már foglalt.";
+            }
+        }
+        catch (Exception ex)
+        {
+            hibaUzenet = $"Rendszerhiba: {ex.Message}";
+        }
+    }
+
+    // Eldönti, hogy a kiválasztott szerepkör Lakó típusú-e
+    private bool IsLako(int roleId)
+    {
+        var role = szerepkorokLista.FirstOrDefault(x => x.ID == roleId);
+        return role != null && !role.Nev.ToLower().Contains("admin") && !role.Nev.ToLower().Contains("karbantarto");
+    }
+
+    // Visszaadja azokat a szobákat, ahol van még szabad ágy
+    private List<KoliPortal.Lib.MODEL.Szobak> GetSzabadSzobak()
+    {
+        var szabadok = new List<KoliPortal.Lib.MODEL.Szobak>();
+        foreach (var szoba in szobakLista)
+        {
+            if (GetAktivLakokSzam(szoba.ID) < szoba.FerohelyMax)
+            {
+                szabadok.Add(szoba);
+            }
+        }
+        return szabadok.OrderBy(s => s.Szobaszam).ToList();
+    }
+
+    // Kiszámolja a lakókat egy szobában
+    private int GetAktivLakokSzam(int roomId)
+    {
+        return beosztasokLista.Count(x => x.RoomID == roomId && x.TenylegesKikoltozes == null);
+    }
+
+    private void Megse()
+    {
+        Nav.NavigateTo("/adminAttekintes");
+    }
 }

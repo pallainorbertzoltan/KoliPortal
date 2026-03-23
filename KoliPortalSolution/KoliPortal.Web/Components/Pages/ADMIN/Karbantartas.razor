@@ -2,16 +2,26 @@
 @using KoliPortal.Lib.MODEL
 @using KoliPortal.Lib.SERVICE
 @layout AdminLayout
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @inject KarbantartasiKeresekService KarbantartasiKeresek
 @inject KarbantartasStatuszokService KarbantartasStatuszok
 @inject FelhasznalokService Felhasznalok
 @inject SzobaBeosztasokService SzobaBeosztasok
 @inject SzobakService Szobak
+@inject IJSRuntime JS
+@inject NavigationManager Nav
 
 <header class="page-header text-center">
     <h1>Karbantartás</h1>
     <p>Hibajegyek felügyelete.</p>
 </header>
+
+@if (sikeresMentes)
+{
+    <div class="alert alert-success m-3">
+        <i class="bi bi-check-circle-fill"></i> <strong>Siker:</strong> @sikerUzenet
+    </div>
+}
 
 @if (betoltesAlatt)
 {
@@ -29,7 +39,7 @@ else
         <section class="maintenance-section">
             <div class="section-header">
                 <h2>Aktuális Feladatok</h2>
-                <p>Itt látod a hozzád rendelt hibajegyeket.</p>
+                <p>Itt látod a folyamatban lévő vagy új hibajegyeket.</p>
             </div>
             <div class="card">
                 <div class="table-scroll-container">
@@ -61,13 +71,14 @@ else
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            @* A szín dinamikusan változik a státusz ID alapján *@
                                             <span class="priority-badge @GetStatuszCss(hiba.StatuszID)">
                                                 @GetStatuszNev(hiba.StatuszID)
                                             </span>
                                         </td>
                                         <td class="text-center">
-                                            <button class="action-btn" title="Kezelés"><i class="bi bi-pencil"></i></button>
+                                            <button class="action-btn" title="Kezelés" @onclick="() => MegnyitSzerkesztes(hiba.ID)">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 }
@@ -102,6 +113,7 @@ else
                                     <th>Bejelentő</th>
                                     <th>Leírás</th>
                                     <th class="text-center">Állapot</th>
+                                    <th class="text-center">Művelet</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -109,7 +121,10 @@ else
                                 {
                                     <tr class="text-muted">
                                         <td>@hiba.ID</td>
-                                        <td>@GetBejelentoNeve(hiba.BejelentoID)</td>
+                                        <td>
+                                            <strong>@GetBejelentoNeve(hiba.BejelentoID)</strong><br />
+                                            <small class="text-muted">@GetHelyszin(hiba.BejelentoID)</small>
+                                        </td>
                                         <td>
                                             <div class="task-desc">
                                                 <span class="desc-text">@hiba.Leiras</span>
@@ -118,6 +133,11 @@ else
                                         </td>
                                         <td class="text-center">
                                             <span class="priority-badge p-done">@GetStatuszNev(hiba.StatuszID)</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <button class="action-btn" title="Kezelés" @onclick="() => MegnyitSzerkesztes(hiba.ID)">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 }
@@ -136,8 +156,65 @@ else
     </div>
 }
 
+@* MODAL ABLAK A SZERKESZTÉSHEZ *@
+@if (isModalOpen)
+{
+    <div class="custom-modal-backdrop">
+        <div class="custom-modal">
+            <div class="modal-header">
+                <h3>Hibajegy Kezelése (#@szerkesztettHiba.ID)</h3>
+                <button type="button" class="btn-close" @onclick="BezarModal"></button>
+            </div>
+
+            <div class="modal-body">
+                @if (!string.IsNullOrEmpty(hibaUzenet))
+                {
+                    <div class="alert alert-danger">@hibaUzenet</div>
+                }
+
+                <div class="form-group mb-3">
+                    <label class="text-muted small">Bejelentő / Helyszín</label>
+                    <div class="fw-bold">@GetBejelentoNeve(szerkesztettHiba.BejelentoID) (@GetHelyszin(szerkesztettHiba.BejelentoID))</div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="text-muted small">Hiba leírása</label>
+                    <div class="p-2 bg-light border rounded">@szerkesztettHiba.Leiras</div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label>Státusz megváltoztatása</label>
+                    <select class="form-select fw-bold" @bind="szerkesztettHiba.StatuszID">
+                        @foreach (var stat in statuszok)
+                        {
+                            <option value="@stat.ID">@stat.Nev</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-danger me-auto" @onclick="TorlesGomb">Törlés</button>
+                <button class="btn btn-secondary" @onclick="BezarModal">Mégse</button>
+                <button class="btn btn-success" @onclick="MentesGomb">Mentés</button>
+            </div>
+        </div>
+    </div>
+}
+
+
 @code {
+    private string token = "";
     private bool betoltesAlatt = true;
+
+    // Üzenetek és modal
+    private bool isModalOpen = false;
+    private string hibaUzenet = "";
+    private bool sikeresMentes = false;
+    private string sikerUzenet = "";
+
+    // Itt tároljuk az éppen szerkesztett hibajegyet
+    private KarbantartasiKeresek szerkesztettHiba = new();
 
     // Adattároló listák az API-ból
     private List<KarbantartasiKeresek> osszesHiba = new();
@@ -153,16 +230,46 @@ else
     // A Lezárt státusz ID-je
     private readonly int LEZART_STATUSZ_ID = 3;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Kérjük el a tokent a böngészőtől
+            token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                Nav.NavigateTo("/");
+                return;
+            }
+
+            // SZIGORÚ SZEREPKÖR ELLENŐRZÉS
+            var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+
+            // Ha NEM Admin (1) ÉS NEM Karbantartó (3), akkor kidobjuk!
+            if (szerepkor != "1" && szerepkor?.ToLower() != "admin")
+            {
+                Nav.NavigateTo("/");
+                return;
+            }
+
+            await AdatokBetoltese();
+            StateHasChanged();
+        }
+    }
+
+    private async Task AdatokBetoltese()
     {
         try
         {
-            // Minden adatot letöltünk
-            osszesHiba = await KarbantartasiKeresek.GetKarbantartasiKeresek();
-            statuszok = await KarbantartasStatuszok.GetKarbantartasiStatuszok();
-            felhasznalok = await Felhasznalok.GetFelhasznalok();
-            beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok();
-            szobak = await Szobak.GetSzobak();
+            betoltesAlatt = true;
+            osszesHiba = await KarbantartasiKeresek.GetKarbantartasiKeresek(token) ?? new();
+            statuszok = await KarbantartasStatuszok.GetKarbantartasiStatuszok(token) ?? new();
+            felhasznalok = await Felhasznalok.GetFelhasznalok(token) ?? new();
+            beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new();
+            szobak = await Szobak.GetSzobak(token) ?? new();
 
             // Szétválogatjuk a hibákat aktívra és lezártra (rendezve dátum szerint)
             aktivHibak = osszesHiba
@@ -185,7 +292,86 @@ else
         }
     }
 
-    // SEGÉDMETÓDUSOK 
+    private void MegnyitSzerkesztes(int hibaId)
+    {
+        var hiba = osszesHiba.FirstOrDefault(x => x.ID == hibaId);
+        if (hiba != null)
+        {
+            szerkesztettHiba = new KarbantartasiKeresek
+            {
+                ID = hiba.ID,
+                BejelentoID = hiba.BejelentoID,
+                KarbantartoID = hiba.KarbantartoID,
+                StatuszID = hiba.StatuszID,
+                Leiras = hiba.Leiras,
+                LetrehozasDatum = hiba.LetrehozasDatum
+            };
+
+            hibaUzenet = "";
+            isModalOpen = true;
+        }
+    }
+
+    private void BezarModal()
+    {
+        isModalOpen = false;
+    }
+
+    private async Task MentesGomb()
+    {
+        try
+        {
+            await KarbantartasiKeresek.UpdateKarbantartasiKeresek(szerkesztettHiba, token);
+            isModalOpen = false;
+
+            await AdatokBetoltese();
+
+            sikerUzenet = "Hibajegy sikeresen frissítve!";
+            sikeresMentes = true;
+
+            // 3 másodperc múlva eltüntetjük a zöld üzenetet
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(3000);
+                sikeresMentes = false;
+                await InvokeAsync(StateHasChanged);
+            });
+        }
+        catch (Exception ex)
+        {
+            hibaUzenet = $"Hiba a mentés során: {ex.Message}";
+        }
+    }
+
+    private async Task TorlesGomb()
+    {
+        bool isConfirmed = await JS.InvokeAsync<bool>("confirm", $"Biztosan véglegesen törölni szeretnéd a(z) #{szerkesztettHiba.ID} azonosítójú hibajegyet?");
+
+        if (isConfirmed)
+        {
+            try
+            {
+                await KarbantartasiKeresek.DeleteKarbantartasiKeresek(szerkesztettHiba.ID, token);
+
+                isModalOpen = false;
+                await AdatokBetoltese();
+
+                sikerUzenet = "Hibajegy véglegesen törölve!";
+                sikeresMentes = true;
+
+                _ = Task.Run(async () =>
+                {
+                    await Task.Delay(3000);
+                    sikeresMentes = false;
+                    await InvokeAsync(StateHasChanged);
+                });
+            }
+            catch (Exception ex)
+            {
+                hibaUzenet = $"Hiba a törlés során: {ex.Message}";
+            }
+        }
+    }
 
     private string GetBejelentoNeve(int userId)
     {
@@ -202,7 +388,7 @@ else
             var szoba = szobak.FirstOrDefault(x => x.ID == aktivBeosztas.RoomID);
             return szoba != null ? $"{szoba.Szobaszam} szoba" : "Ismeretlen szoba";
         }
-        return "Ismeretlen"; // Ha nem diák jelentette be
+        return "Egyéb"; // Ha nem egy diák saját szobájából jött a hiba
     }
 
     private string GetStatuszNev(int statuszId)
@@ -214,7 +400,6 @@ else
     // Színezi a jelvényt a státusz alapján
     private string GetStatuszCss(int statuszId)
     {
-        // Ha nem lezárt (tehát 1 vagy 2), akkor legyen sárga
         if (statuszId == 1 || statuszId == 2)
         {
             return "p-active"; // Új, még nem kezdődött el vagy folyamatban van

@@ -346,3 +346,5 @@ C:\Users\user\OneDrive\Desktop\api teszt\KoliPortal\KoliPortalSolution\KoliPorta
 C:\Users\user\OneDrive\Desktop\api teszt\KoliPortal\KoliPortalSolution\KoliPortal\obj\Debug\net8.0\KoliPortal.API.pdb
 C:\Users\user\OneDrive\Desktop\api teszt\KoliPortal\KoliPortalSolution\KoliPortal\obj\Debug\net8.0\KoliPortal.API.genruntimeconfig.cache
 C:\Users\user\OneDrive\Desktop\api teszt\KoliPortal\KoliPortalSolution\KoliPortal\obj\Debug\net8.0\ref\KoliPortal.API.dll
+C:\Users\user\OneDrive\Desktop\api teszt\KoliPortal\KoliPortalSolution\KoliPortal\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\user\OneDrive\Desktop\api teszt\KoliPortal\KoliPortalSolution\KoliPortal\bin\Debug\net8.0\BCrypt.Net-Next.dll

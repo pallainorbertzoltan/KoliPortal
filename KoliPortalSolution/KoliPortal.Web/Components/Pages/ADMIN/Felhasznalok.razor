@@ -1,23 +1,23 @@
 ﻿@page "/felhasznalok"
-@rendermode InteractiveServer
 @using KoliPortal.Lib.MODEL
 @using KoliPortal.Lib.SERVICE
 @layout AdminLayout
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @inject FelhasznalokService Felhasznalo
 @inject SzerepkorokService Szerepkorok
 @inject SzobaBeosztasokService SzobaBeosztasok
 @inject SzobakService Szoba
 @inject DiakAdatokService DiakAdatok
 @inject KarbantartasiKeresekService KarbantartasiKeresek
-@inject PenzugyekService Penzugyek 
+@inject PenzugyekService Penzugyek
 @inject IJSRuntime JS
+@inject NavigationManager Nav
 
 <header class="page-header text-center">
     <h1>Felhasználók Kezelése</h1>
     <p>Kollégisták adatbázisa.</p>
 </header>
 
-@* --- Siker üzenet megjelenítése --- *@
 @if (sikeresMentes)
 {
     <div class="alert alert-success m-3">
@@ -35,7 +35,6 @@
 else
 {
     <div class="content-wrapper">
-        @* --- SZŰRŐ GOMBOK --- *@
         <div class="filter-controls mb-3">
             <button class="filter-btn @(szurtMod == 0 ? "active" : "")" @onclick="() => Szures(0)">Összes</button>
             <button class="filter-btn @(szurtMod == 1 ? "active" : "")" @onclick="() => Szures(1)">Bent lakók</button>
@@ -61,7 +60,6 @@ else
                             <tr>
                                 <td>@user.Nev</td>
                                 <td>
-                                    @* JELVÉNY LOGIKÁJA *@
                                     @{
                                         var szobaStatusz = GetAktualisSzoba(user.ID);
                                         if (szobaStatusz == "Kiköltözött")
@@ -104,7 +102,6 @@ else
     </div>
 }
 
-@* FELUGRÓ ABLAK SZERKESZTÉSHEZ (Modal) *@
 @if (isModalOpen)
 {
     <div class="custom-modal-backdrop">
@@ -126,7 +123,6 @@ else
                         <input type="email" class="form-control" @bind="editModel.Email" />
                     </div>
 
-                    @* CSAK KARBANTARTÓKNÁL ÉS DIÁKOKNÁL JELENIK MEG EZ A RÉSZ*@
                     @if (Karbantarto(editModel.SzerepkorID))
                     {
                         <div class="form-group mb-3">
@@ -140,15 +136,20 @@ else
                         </div>
                     }
 
-                    @* CSAK DIÁKOKNÁL JELENIK MEG EZ A RÉSZ *@
                     @if (Diak(editModel.SzerepkorID))
                     {
-                        <hr/>
+                        <hr />
                         <h5>Diák adatok</h5>
 
                         <div class="form-group mb-3">
                             <label>Évfolyam</label>
-                            <input type="text" class="form-control" @bind="editModel.Evfolyam" />
+                            <select class="form-select" @bind="editModel.Evfolyam">
+                                <option value="" disabled>Válassz évfolyamot...</option>
+                                <option value="1. évf.">1. évfolyam</option>
+                                <option value="2. évf.">2. évfolyam</option>
+                                <option value="3. évf.">3. évfolyam</option>
+                                <option value="4. évf.">4. évfolyam</option>
+                            </select>
                         </div>
 
                         <div class="form-group mb-3">
@@ -201,6 +202,7 @@ else
 }
 
 @code {
+    private string token = "";
     private bool betoltesAlatt = true;
     private string hibaUzenet = "";
     private bool sikeresMentes = false;
@@ -208,7 +210,6 @@ else
 
     private int szurtMod = 0;
     private List<KoliPortal.Lib.MODEL.Felhasznalok> szurtFelhasznalok = new();
-
     private bool isModalOpen = false;
     private EditViewModel editModel = new();
 
@@ -220,9 +221,35 @@ else
     private List<KarbantartasiKeresek> karbantartasiKeresekLista = new();
     private List<Penzugyek> penzugyekLista = new();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool elsoBetoltes)
     {
-        await AdatokBetoltese();
+        if (elsoBetoltes)
+        {
+            // Kérjük el a tokent a böngészőtől
+            token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                Nav.NavigateTo("/");
+                return; // Ha nincs token, visszadob a bejelentkező oldalra
+            }
+
+            // SZIGORÚ SZEREPKÖR ELLENŐRZÉS CSAK ADMIN!
+            var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+
+            // Ha a szerepkör NEM 1-es és NEM admin, akkor login oldal!
+            if (szerepkor != "1" && szerepkor?.ToLower() != "admin")
+            {
+                // Mindenki más repül a kezdőlapra
+                Nav.NavigateTo("/");
+                return;
+            }
+
+            await AdatokBetoltese();
+            StateHasChanged(); // Frissítjük az oldalt, ha betöltött
+        }
     }
 
     private async Task AdatokBetoltese()
@@ -230,13 +257,13 @@ else
         try
         {
             betoltesAlatt = true;
-            felhasznalokLista = await Felhasznalo.GetFelhasznalok() ?? new();
-            szerepkorokLista = await Szerepkorok.GetSzerepkorok() ?? new();
-            beosztasokLista = await SzobaBeosztasok.GetSzobaBeosztasok() ?? new();
-            szobakLista = await Szoba.GetSzobak() ?? new();
-            diakAdatokLista = await DiakAdatok.GetDiakAdatok() ?? new();
-            karbantartasiKeresekLista = await KarbantartasiKeresek.GetKarbantartasiKeresek() ?? new();
-            penzugyekLista = await Penzugyek.GetPenzugyek() ?? new();
+            felhasznalokLista = await Felhasznalo.GetFelhasznalok(token) ?? new();
+            szerepkorokLista = await Szerepkorok.GetSzerepkorok(token) ?? new();
+            beosztasokLista = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new();
+            szobakLista = await Szoba.GetSzobak(token) ?? new();
+            diakAdatokLista = await DiakAdatok.GetDiakAdatok(token) ?? new();
+            karbantartasiKeresekLista = await KarbantartasiKeresek.GetKarbantartasiKeresek(token) ?? new();
+            penzugyekLista = await Penzugyek.GetPenzugyek(token) ?? new();
 
             FrissitSzurot();
         }
@@ -315,54 +342,49 @@ else
             return;
         }
 
-        bool isConfirmed = await JS.InvokeAsync<bool>("confirm", $"Biztosan véglegesen törölni szeretnéd '{editModel.Nev}' felhasználót? FIGYELEM: A hozzá tartozó összes adat (pénzügyek, szobabeosztás, karbantartási jegyek) is törlődni fog az adatbázisból!");
+        bool isConfirmed = await JS.InvokeAsync<bool>("confirm", $"Biztosan véglegesen törölni szeretnéd '{editModel.Nev}' felhasználót? FIGYELEM: A hozzá tartozó összes adat is törlődni fog!");
 
         if (isConfirmed)
         {
             try
             {
-                // Kapcsolódó Pénzügyi adatok törlése
+                // TÖRLÉSEK TOKENNEL
                 var penzugyL = penzugyekLista.Where(x => x.UserID == editModel.UserID).ToList();
                 foreach (var item in penzugyL)
                 {
-                    await Penzugyek.DeletePenzugyek(item.ID);
+                    await Penzugyek.DeletePenzugyek(item.ID, token);
                 }
 
-                // Kapcsolódó DiákAdatok törlése ID ALAPJÁN
                 var diakAdat = diakAdatokLista.FirstOrDefault(x => x.UserID == editModel.UserID);
                 if (diakAdat != null)
                 {
-                    await DiakAdatok.DeleteDiakAdatok(diakAdat.UserID);
+                    await DiakAdatok.DeleteDiakAdatok(diakAdat.UserID, token);
                 }
 
-                // Kapcsolódó SzobaBeosztások törlése ID ALAPJÁN
                 var beosztasok = beosztasokLista.Where(x => x.UserID == editModel.UserID).ToList();
                 foreach (var item in beosztasok)
                 {
-                    await SzobaBeosztasok.DeleteSzobaBeosztasok(item.ID);
+                    await SzobaBeosztasok.DeleteSzobaBeosztasok(item.ID, token);
                 }
 
-                // Kapcsolódó Karbantartási kérések törlése
                 var erintettKeresek = karbantartasiKeresekLista
                     .Where(x => x.BejelentoID == editModel.UserID || x.KarbantartoID == editModel.UserID)
                     .ToList();
 
                 foreach (var keres in erintettKeresek)
                 {
-                    await KarbantartasiKeresek.DeleteKarbantartasiKeresek(keres.ID);
+                    await KarbantartasiKeresek.DeleteKarbantartasiKeresek(keres.ID, token);
                 }
 
-                // Maga a Felhasználó törlése ID ALAPJÁN
-                await Felhasznalo.DeleteFelhasznalok(editModel.UserID);
+                await Felhasznalo.DeleteFelhasznalok(editModel.UserID, token);
 
-                // Bezárjuk az ablakot és frissítjük a listát
                 isModalOpen = false;
                 await AdatokBetoltese();
 
-                // Megjelenítjük a zöld "Sikeres törlés" sávot
                 sikerUzenet = "Felhasználó és adatai véglegesen törölve!";
                 sikeresMentes = true;
 
+				// 3másodpercig ott marad az üzenet, majd eltűnik
                 _ = Task.Run(async () =>
                 {
                     await Task.Delay(3000);
@@ -381,13 +403,14 @@ else
     {
         try
         {
+            // MENTÉSEK TOKENNEL
             var eredetiUser = felhasznalokLista.FirstOrDefault(x => x.ID == editModel.UserID);
             if (eredetiUser != null)
             {
                 eredetiUser.Nev = editModel.Nev;
                 eredetiUser.Email = editModel.Email;
                 eredetiUser.SzerepkorID = editModel.SzerepkorID;
-                await Felhasznalo.UpdateFelhasznalok(eredetiUser);
+                await Felhasznalo.UpdateFelhasznalok(eredetiUser, token);
             }
 
             if (Diak(editModel.SzerepkorID))
@@ -397,12 +420,12 @@ else
                 {
                     eredetiDiakAdat.Evfolyam = editModel.Evfolyam;
                     eredetiDiakAdat.Lakcim = editModel.Lakcim;
-                    await DiakAdatok.UpdateDiakAdatok(eredetiDiakAdat);
+                    await DiakAdatok.UpdateDiakAdatok(eredetiDiakAdat, token);
                 }
                 else if (!string.IsNullOrEmpty(editModel.Evfolyam) || !string.IsNullOrEmpty(editModel.Lakcim))
                 {
                     var ujDiakAdat = new DiakAdatok { UserID = editModel.UserID, Evfolyam = editModel.Evfolyam, Lakcim = editModel.Lakcim };
-                    await DiakAdatok.CreateDiakAdatok(ujDiakAdat);
+                    await DiakAdatok.CreateDiakAdatok(ujDiakAdat, token);
                 }
 
                 var aktivBeosztas = beosztasokLista.FirstOrDefault(x => x.UserID == editModel.UserID && x.TenylegesKikoltozes == null);
@@ -410,20 +433,71 @@ else
                 if (editModel.RoomID == -1 && aktivBeosztas != null)
                 {
                     aktivBeosztas.TenylegesKikoltozes = DateTime.Now;
-                    await SzobaBeosztasok.UpdateSzobaBeosztasok(aktivBeosztas);
+                    await SzobaBeosztasok.UpdateSzobaBeosztasok(aktivBeosztas, token);
                 }
                 else if (editModel.RoomID > 0)
                 {
                     if (aktivBeosztas != null && editModel.RoomID != editModel.EredetiRoomID)
                     {
-                        aktivBeosztas.RoomID = editModel.RoomID;
-                        aktivBeosztas.TenylegesKikoltozes = null;
-                        await SzobaBeosztasok.UpdateSzobaBeosztasok(aktivBeosztas);
+                        aktivBeosztas.TenylegesKikoltozes = DateTime.Now;
+                        await SzobaBeosztasok.UpdateSzobaBeosztasok(aktivBeosztas, token);
+
+                        int varhatoKikoltozes = 1;
+
+                        switch (editModel.Evfolyam)
+                        {
+                            case "1. évf.":
+                                varhatoKikoltozes = 3;
+                                break;
+                            case "2. évf.":
+                                varhatoKikoltozes = 2;
+                                break;
+                            case "3. évf.":
+                                varhatoKikoltozes = 1;
+                                break;
+                            default:
+                                varhatoKikoltozes = 1;
+                                break;
+                        }
+
+                        var ujBeosztas = new SzobaBeosztasok
+                        {
+                            UserID = editModel.UserID,
+                            RoomID = editModel.RoomID,
+                            BekoltozesDatum = DateTime.Now,
+                            VarhatoKikoltozes = DateTime.Now.AddYears(varhatoKikoltozes)
+                        };
+                        await SzobaBeosztasok.CreateSzobaBeosztasok(ujBeosztas, token);
+
                     }
                     else if (aktivBeosztas == null)
                     {
-                        var ujBeosztas = new SzobaBeosztasok { UserID = editModel.UserID, RoomID = editModel.RoomID, BekoltozesDatum = DateTime.Now };
-                        await SzobaBeosztasok.CreateSzobaBeosztasok(ujBeosztas);
+                        int varhatoKikoltozes = 1;
+
+                        switch (editModel.Evfolyam)
+                        {
+                            case "1. évf.":
+                                varhatoKikoltozes = 3;
+                                break;
+                            case "2. évf.":
+                                varhatoKikoltozes = 2;
+                                break;
+                            case "3. évf.":
+                                varhatoKikoltozes = 1;
+                                break;
+                            default:
+                                varhatoKikoltozes = 1;
+                                break;
+                        }
+
+                        var ujBeosztas = new SzobaBeosztasok
+                        {
+                            UserID = editModel.UserID,
+                            RoomID = editModel.RoomID,
+                            BekoltozesDatum = DateTime.Now,
+                            VarhatoKikoltozes = DateTime.Now.AddYears(varhatoKikoltozes)
+                        };
+                        await SzobaBeosztasok.CreateSzobaBeosztasok(ujBeosztas, token);
                     }
                 }
             }

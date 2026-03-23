@@ -1,11 +1,13 @@
 ﻿@page "/szobak"
-@rendermode InteractiveServer
 @using KoliPortal.Lib.MODEL
 @using KoliPortal.Lib.SERVICE
 @layout AdminLayout
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 @inject SzobakService Szoba
 @inject SzobaBeosztasokService SzobaBeosztasok
 @inject FelhasznalokService Felhasznalok
+@inject IJSRuntime JS
+@inject NavigationManager Nav
 
 <header class="page-header text-center">
     <h1>Szobák Állapota</h1>
@@ -24,7 +26,6 @@
 else
 {
     <div class="content-wrapper">
-        @* Szűrő gombok *@
         <div class="filter-controls">
             <button class="filter-btn @(mutasdCsakSzabadokat ? "" : "active")"
                     @onclick="() => SetSzuro(false)">
@@ -84,9 +85,9 @@ else
 }
 
 @code {
+    private string token = "";
     private bool betoltesAlatt = true;
 
-    // Szűrő állapota: true = csak szabad ágyas szobák
     private bool mutasdCsakSzabadokat = false;
 
     // Alapadatok
@@ -97,39 +98,62 @@ else
     // Ezt a listát mutatjuk a táblázatban (a szűrő alapján frissül)
     private IEnumerable<KoliPortal.Lib.MODEL.Szobak> szurtSzobak = new List<KoliPortal.Lib.MODEL.Szobak>();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool elsoBetoltes)
     {
-        try
+        if (elsoBetoltes)
         {
-            szobakLista = await Szoba.GetSzobak();
-            felhasznalokLista = await Felhasznalok.GetFelhasznalok();
+            try
+            {
+                // Kérjük el a tokent a böngészőtől
+                token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
 
-            var beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok();
+                if (string.IsNullOrEmpty(token))
+                {
+                    Nav.NavigateTo("/", forceLoad: true);
+                    return; // Ha nincs token, visszadob a bejelentkező oldalra
+                }
 
-            // Csak az aktív lakókat tartjuk meg (akik még nem költöztek ki)
-            aktivBeosztasok = beosztasok.Where(x => x.TenylegesKikoltozes == null).ToList();
+                // SZIGORÚ SZEREPKÖR ELLENŐRZÉS CSAK ADMIN!
+                var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+                var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
 
-            // Kezdetben minden szobát mutatunk, szobaszám szerint sorba rendezve
-            FrissitSzurtListat();
-        }
-        catch (Exception ex)
-        {
-            Console.Error.WriteLine($"Hiba az adatok lekérésekor: {ex.Message}");
-        }
-        finally
-        {
-            betoltesAlatt = false;
+                // Ha a szerepkör NEM 1-es és NEM admin, akkor login oldal!
+                if (szerepkor != "1" && szerepkor?.ToLower() != "admin")
+                {
+                    // Mindenki más repül a kezdőlapra
+                    Nav.NavigateTo("/");
+                    return;
+                }
+
+                // Adatok letöltése a tokennel
+                szobakLista = await Szoba.GetSzobak(token) ?? new();
+                felhasznalokLista = await Felhasznalok.GetFelhasznalok(token) ?? new();
+                var beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new();
+
+                // Csak az aktív lakókat tartjuk meg
+                aktivBeosztasok = beosztasok.Where(x => x.TenylegesKikoltozes == null).ToList();
+
+                // Kezdetben minden szobát mutatunk, szobaszám szerint sorba rendezve
+                FrissitSzurtListat();
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Hiba az adatok lekérésekor: {ex.Message}");
+            }
+            finally
+            {
+                betoltesAlatt = false;
+                StateHasChanged();
+            }
         }
     }
-
-    // LOGIKAI METÓDUSOK
 
     // Gombnyomásra fut le: beállítja a szűrőt és frissíti a listát
     private void SetSzuro(bool csakSzabad)
     {
         mutasdCsakSzabadokat = csakSzabad;
         FrissitSzurtListat();
-        StateHasChanged();
     }
 
     // Frissíti a megjelenített szobák listáját a szűrő alapján
@@ -182,7 +206,7 @@ else
         {
             return "full";
         }
-        else 
+        else
         {
             return "partial";
         }

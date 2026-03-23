@@ -1,5 +1,37 @@
 [
   {
+    "ContainingType": "KoliPortal.API.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/Login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loginAdat",
+        "Type": "KoliPortal.Lib.MODEL.Login",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "KoliPortal.API.Controllers.AuthController",
+    "Method": "Register",
+    "RelativePath": "api/Auth/Register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "ujUser",
+        "Type": "KoliPortal.Lib.MODEL.Felhasznalok",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.DiakAdatok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
     "Method": "GetAll",
     "RelativePath": "api/DiakAdatok",

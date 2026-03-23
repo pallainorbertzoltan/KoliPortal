@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,13 +17,17 @@ namespace KoliPortal.Lib.SERVICE
             _httpClient = client;
         }
 
-        public async Task<List<Penzugyek>> GetPenzugyek()
+        public async Task<List<Penzugyek>> GetPenzugyek(string token)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             return await _httpClient.GetFromJsonAsync<List<Penzugyek>>("api/Penzugyek") ?? new List<Penzugyek>();
         }
 
-        public async Task DeletePenzugyek(int id)
+        public async Task DeletePenzugyek(int id, string token)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var response = await _httpClient.DeleteAsync($"api/Penzugyek/{id}");
             response.EnsureSuccessStatusCode();
         }

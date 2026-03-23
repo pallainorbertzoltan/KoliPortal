@@ -1,0 +1,169 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@using KoliPortal.Lib.MODEL
+@using KoliPortal.Lib.SERVICE
+@using System.IdentityModel.Tokens.Jwt @* Ez a csomag kell a Token visszafejtéséhez *@
+@inject AuthControllerService AuthController
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+
+<div class="login-container">
+    <div class="login-card">
+        <div class="card-header">
+            <div class="logo-container">
+                <i class="bi bi-building logo-icon" style="font-size: 2.5rem;"></i>
+                <h1 class="logo-text">KoliPortál</h1>
+            </div>
+
+            <h2 class="welcome-text">Üdv újra itt!</h2>
+            <p class="subtitle-text">Jelentkezz be a fiókodba.</p>
+        </div>
+
+        @if (!string.IsNullOrEmpty(hibaUzenet))
+        {
+            <div class="alert alert-danger">
+                @hibaUzenet
+            </div>
+        }
+
+        <div class="form-container">
+            <div class="form-group">
+                <label for="email">Email cím</label>
+                <div class="input-wrapper">
+                    <i class="bi bi-envelope input-icon" style="font-size: 1.2rem;"></i>
+                    <input type="email" id="email" placeholder="diak@koliportal.hu" @bind="beviteliAdatok.Email" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Jelszó</label>
+                <div class="input-wrapper">
+                    <i class="bi bi-lock input-icon" style="font-size: 1.2rem;"></i>
+                    <input type="password" id="password" placeholder="••••••••••••" @bind="beviteliAdatok.Jelszo" />
+                </div>
+            </div>
+
+            <button type="button" class="btn-submit" disabled="@toltesAlatt" @onclick="HandleLogin">
+                @if (toltesAlatt)
+                {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    <span>Kérlek várj...</span>
+                }
+                else
+                {
+                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                    <span>Bejelentkezés</span>
+                }
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    // Saját, ideiglenes tároló a form adatainak
+    public class LoginDto
+    {
+        public string Email { get; set; } = "";
+        public string Jelszo { get; set; } = "";
+    }
+
+    private LoginDto beviteliAdatok = new LoginDto();
+    private string hibaUzenet = "";
+    private bool toltesAlatt = false;
+
+    private async Task HandleLogin()
+    {
+        hibaUzenet = "";
+
+        if (string.IsNullOrWhiteSpace(beviteliAdatok.Email) || string.IsNullOrWhiteSpace(beviteliAdatok.Jelszo))
+        {
+            hibaUzenet = "Kérlek tölts ki minden mezőt!";
+            return;
+        }
+
+        toltesAlatt = true;
+
+        try
+        {
+            // Áttöltjük a beírt adatokat az API által várt modellbe
+            var loginCsomag = new KoliPortal.Lib.MODEL.Login
+            {
+                Email = beviteliAdatok.Email,
+                Jelszo = beviteliAdatok.Jelszo
+            };
+
+            // Elküldjük a kérést
+            string kapottToken = await AuthController.LoginAsync(loginCsomag);
+
+            if (!string.IsNullOrEmpty(kapottToken))
+            {
+                // Eltesszük a tokent a böngésző "zsebébe", hogy a többi oldal is lássa
+                await JS.InvokeVoidAsync("localStorage.setItem", "authToken", kapottToken);
+
+                // Kinyerjük a szerepkört a tokenből
+                string szerepkor = SzerepkorKinyerese(kapottToken);
+
+                // Szerepkör alapján átírányítja a felhasználót
+                if (szerepkor == "1" || szerepkor.ToLower() == "admin")
+                {
+                    Nav.NavigateTo("/adminAttekintes");
+                }
+                else if (szerepkor == "3" || szerepkor.ToLower() == "karbantarto")
+                {
+                    Nav.NavigateTo("/karbantartas");
+                }
+                else if (szerepkor == "2" || szerepkor.ToLower() == "lako")
+                {
+                    Nav.NavigateTo("/");
+                }
+            }
+            else
+            {
+                hibaUzenet = "Hibás email vagy jelszó!";
+            }
+        }
+        catch (Exception ex)
+        {
+            hibaUzenet = "Hiba történt a szerverhez való kapcsolódáskor.";
+        }
+        finally
+        {
+            toltesAlatt = false;
+        }
+    }
+
+    // JWT TOKEN VISSZAFEJTŐ
+    private string SzerepkorKinyerese(string jwtCsomag)
+    {
+        try
+        {
+            // Létrehozunk egy "olvasót", ami a Microsoft beépített eszköze JWT tokenekhez.
+            // Ez tudja, hogyan kell a három részből álló, kódolt szöveget biztonságosan szétbontani.
+            var handler = new JwtSecurityTokenHandler();
+
+            // Az olvasóval feldolgoztatjuk a nyers, kódolt tokent (pl. "eyJhbGciOi...").
+            // Eredményül kapunk egy 'token' objektumot, amiben már olvasható formában vannak az adatok (Claims).
+            var token = handler.ReadJwtToken(jwtCsomag);
+
+            // Keresés az adatok (Claims) között.
+            // A FirstOrDefault végigmegy a tokenben lévő összes adaton, és megkeresi a szerepkört.
+            // A .NET kétféleképpen mentheti el a szerepkört:
+            // - Vagy egyszerűen "role" néven.
+            // - Vagy a hivatalos XML séma URL-jével
+            // A || miatt mindkét esetben megtaláljuk!
+            var szerepkorAdat = token.Claims.FirstOrDefault(x =>
+                x.Type == "role" ||
+                x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+
+            // Ha találtunk szerepkört, visszaadjuk annak az értékét (pl. az "1"-es számot szövegként).
+            // A '?.' megvéd a hibáktól: ha a szerepkorAdat null (nem talált semmit), nem omlik össze,
+            // hanem a '??' utáni üres stringet ("") adja vissza.
+            return szerepkorAdat?.Value ?? "";
+        }
+        catch
+        {
+            // Ha a token formátuma teljesen rossz vagy hibás, biztonsági okokból üres szöveget adunk vissza.
+            return "";
+        }
+    }
+}

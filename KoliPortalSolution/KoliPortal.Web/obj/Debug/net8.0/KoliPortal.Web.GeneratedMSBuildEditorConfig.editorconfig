@@ -63,3 +63,7 @@ build_metadata.AdditionalFiles.CssScope = b-k856ki81q3
 [C:/Users/user/OneDrive/Desktop/api teszt/KoliPortal/KoliPortalSolution/KoliPortal.Web/Components/Pages/ADMIN/Szobak.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBRE1JTlxTem9iYWsucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-8j6y9jmal6
+
+[C:/Users/user/OneDrive/Desktop/api teszt/KoliPortal/KoliPortalSolution/KoliPortal.Web/Components/Pages/LOGIN/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMT0dJTlxMb2dpbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-90b39c88gh

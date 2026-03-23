@@ -1,4 +1,7 @@
 ﻿@inherits LayoutComponentBase
+@using System.IdentityModel.Tokens.Jwt
+@inject IJSRuntime JS
+@inject NavigationManager Nav
 
 <div class="dashboard-container">
     <header class="mobile-top-bar d-md-none">
@@ -16,7 +19,7 @@
         </div>
 
         <nav class="sidebar-nav">
-            <NavLink class="nav-item" href="/" Match="NavLinkMatch.All">
+            <NavLink class="nav-item" href="/adminAttekintes" Match="NavLinkMatch.All">
                 <i class="bi bi-grid-fill icon"></i> Áttekintés
             </NavLink>
             <NavLink class="nav-item" href="/felhasznalok">
@@ -37,13 +40,72 @@
         </nav>
 
         <div class="sidebar-footer">
-                <button class="logout-btn">
-                    <i class="bi bi-box-arrow-right"></i>
-                    <span class="logout-text">Kijelentkezés</span>
-                </button>
+            @* Javascript, kijelentkezés nyomására kijelentkeztet *@
+            <button class="logout-btn" onclick="localStorage.removeItem('authToken'); window.location.replace('/');">
+                <i class="bi bi-box-arrow-right"></i>
+                <span class="logout-text">Kijelentkezés</span>
+            </button>
         </div>
     </aside>
+
     <main class="main-content">
         @Body
     </main>
 </div>
+
+@code {
+    // Az oldal betöltésekor lefutó védelem az illetéktelenek ellen
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                // Megnézzük a tokent
+                var token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+
+                // Ha nincs token (nincs bejelentkezve), vissza a login oldalra
+                if (string.IsNullOrWhiteSpace(token))
+                {
+                    Nav.NavigateTo("/");
+                    return;
+                }
+
+                // Kinyerjük a szerepkört
+                string szerepkor = SzerepkorKinyerese(token);
+
+                // Ha a szerepkör NEM Admin (nem 1-es az ID-ja), akkor is repül!
+                if (szerepkor != "1" && szerepkor.ToLower() != "admin")
+                {
+                    Nav.NavigateTo("/");
+                    return;
+                }
+            }
+            catch
+            {
+                // Bármilyen hiba esetén biztonsági kidobás
+                Nav.NavigateTo("/");
+            }
+        }
+    }
+
+    // JWT Token visszafejtő
+    private string SzerepkorKinyerese(string jwtCsomag)
+    {
+        try
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(jwtCsomag);
+
+            var szerepkorAdat = token.Claims.FirstOrDefault(x =>
+                x.Type == "role" ||
+                x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+
+            return szerepkorAdat?.Value ?? "";
+        }
+        catch
+        {
+            return "";
+        }
+    }
+}

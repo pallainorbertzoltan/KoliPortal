@@ -635,26 +635,26 @@ input:checked + .slider[b-vu13h7k8x3] {
     gap: 12px;
 }
 /* _content/KoliPortal.Web/Components/Pages/ADMIN/Karbantartas.razor.rz.scp.css */
-/* --- SZEKCIÓK (Sections) --- */
+/* --- SZEKCIÓK --- */
 .maintenance-section[b-ppfzthiqgg] {
-    margin-bottom: 40px;
+    margin-bottom: 2rem;
 }
 
 .section-header[b-ppfzthiqgg] {
-    margin-bottom: 16px;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.5rem;
 }
 
     .section-header h2[b-ppfzthiqgg] {
         margin: 0;
         font-size: 1.25rem;
-        font-weight: 700;
-        color: #0f172a;
     }
 
     .section-header p[b-ppfzthiqgg] {
-        margin: 4px 0 0 0;
+        margin: 0;
+        color: #666;
         font-size: 0.9rem;
-        color: #64748b;
     }
 
 /* --- TÁBLÁZAT EXTRÁK --- */
@@ -665,69 +665,104 @@ input:checked + .slider[b-vu13h7k8x3] {
 .task-desc[b-ppfzthiqgg] {
     display: flex;
     flex-direction: column;
-    gap: 4px;
 }
 
 .desc-text[b-ppfzthiqgg] {
-    font-weight: 500;
-    color: #0f172a;
+    font-weight: bold;
 }
 
 .desc-date[b-ppfzthiqgg] {
     font-size: 0.8rem;
-    color: #64748b;
+    color: #666;
 }
 
-/* --- PRIORITÁS / STÁTUSZ JELVÉNYEK --- */
+/* --- JELVÉNYEK --- */
 .priority-badge[b-ppfzthiqgg] {
-    padding: 6px 16px;
-    border-radius: 20px;
+    padding: 4px 10px;
+    border-radius: 12px;
     font-size: 0.85rem;
-    font-weight: 600;
-    display: inline-block;
+    font-weight: bold;
+}
+
+.p-active[b-ppfzthiqgg] {
+    background-color: #fef3c7;
+    color: #d97706;
 }
 
 .p-done[b-ppfzthiqgg] {
-    background-color: #e6fced; /* Nagyon világos mentazöld háttér */
-    color: #26c267; /* Élénk zöld szöveg */
+    background-color: #dcfce7;
+    color: #16a34a;
 }
 
-/* Folyamatban / Normál (Sárgás-narancs) */
-.p-active[b-ppfzthiqgg] {
-    background-color: #fef3c7; /* Világos sárgás háttér */
-    color: #d97706; /* Narancssárga szöveg */
-}
-
-.action-text[b-ppfzthiqgg] {
-    color: #64748b;
-    font-weight: 500;
-    font-size: 0.9rem;
-}
-
-/* --- ÜRES ÁLLAPOT (Előzményeknél) --- */
+/* --- ÜRES ÁLLAPOT --- */
 .empty-state-card[b-ppfzthiqgg] {
     text-align: center;
-    color: #64748b;
-    font-style: italic;
-    padding: 40px 24px;
+    color: #666;
+    padding: 2rem;
+    border: 1px dashed #ccc;
 }
 
-/* --- MŰVELET GOMBOK --- */
+/* --- MŰVELET GOMB --- */
 .action-btn[b-ppfzthiqgg] {
-    background: transparent;
+    background: none;
     border: none;
-    color: #64748b;
+    color: #555;
     cursor: pointer;
-    font-size: 1.1rem;
-    padding: 8px;
-    border-radius: 6px;
-    transition: all 0.2s;
+    font-size: 1.2rem;
 }
 
     .action-btn:hover[b-ppfzthiqgg] {
-        background-color: #f1f5f9;
-        color: #0f172a;
+        color: #000;
     }
+
+/* --- MODÁLIS ABLAK (Szerkesztés Popup) --- */
+.custom-modal-backdrop[b-ppfzthiqgg] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Sima sötétítés */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+}
+
+.custom-modal[b-ppfzthiqgg] {
+    background: #fff;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 6px;
+    margin: 1rem;
+}
+
+.modal-header[b-ppfzthiqgg] {
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .modal-header h3[b-ppfzthiqgg] {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+.modal-body[b-ppfzthiqgg] {
+    padding: 1rem;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.modal-footer[b-ppfzthiqgg] {
+    padding: 1rem;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
 /* _content/KoliPortal.Web/Components/Pages/ADMIN/Regisztralas.razor.rz.scp.css */
 /* --- ŰRLAP KÁRTYA ÉS ELRENDEZÉS --- */
 .form-card[b-k856ki81q3] {
@@ -831,4 +866,127 @@ input:checked + .slider[b-vu13h7k8x3] {
     .status-badge.empty[b-8j6y9jmal6] {
         background-color: #dcfce7;
         color: #16a34a; /* Zöld, ha teljesen üres */
+    }
+/* _content/KoliPortal.Web/Components/Pages/LOGIN/Login.razor.rz.scp.css */
+/* Háttér és a kártya középre igazítása */
+.login-container[b-90b39c88gh] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #e6f3ef; /* Ezt írd át, ha az app.css-ből akarod örökölni a hátteret */
+}
+
+/* Maga a fehér doboz */
+.login-card[b-90b39c88gh] {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 400px;
+    padding: 2.5rem 2rem;
+}
+
+.card-header[b-90b39c88gh] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    margin-bottom: 2rem;
+}
+
+.logo-container[b-90b39c88gh] {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #0d8368;
+    margin-bottom: 8px;
+}
+
+.logo-text[b-90b39c88gh] {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.welcome-text[b-90b39c88gh] {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+    color: #1d252f;
+}
+
+.subtitle-text[b-90b39c88gh] {
+    font-size: 0.9rem;
+    color: #6b7785;
+    margin: 0;
+}
+
+/* Űrlap elemek */
+.form-group[b-90b39c88gh] {
+    margin-bottom: 1.2rem;
+}
+
+    .form-group label[b-90b39c88gh] {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #1d252f;
+    }
+
+/* Ikonok pozicionálása az input mezőben */
+.input-wrapper[b-90b39c88gh] {
+    position: relative;
+}
+
+.input-icon[b-90b39c88gh] {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7785;
+}
+
+.input-wrapper input[b-90b39c88gh] {
+    width: 100%;
+    padding: 12px 14px 12px 42px;
+    border: 1px solid #e5e9ec;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    outline: none;
+    box-sizing: border-box;
+}
+
+    .input-wrapper input:focus[b-90b39c88gh] {
+        border-color: #0d8368;
+        background-color: #fff;
+        box-shadow: 0 0 0 3px #e6f3ef;
+    }
+
+/* Gomb */
+.btn-submit[b-90b39c88gh] {
+    width: 100%;
+    background-color: #0d8368;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1rem;
+}
+
+    .btn-submit:hover:not(:disabled)[b-90b39c88gh] {
+        background-color: #0a6953;
+    }
+
+    .btn-submit:disabled[b-90b39c88gh] {
+        opacity: 0.7;
+        cursor: not-allowed;
     }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,13 +17,17 @@ namespace KoliPortal.Lib.SERVICE
             _httpClient = client;
         }
 
-        public async Task<List<Szobak>> GetSzobak()
+        public async Task<List<Szobak>> GetSzobak(string token)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             return await _httpClient.GetFromJsonAsync<List<Szobak>>("api/Szobak") ?? new List<Szobak>();
         }
 
-        public async Task<Szobak?> GetByIdAsync(int id)
+        public async Task<Szobak?> GetByIdAsync(int id, string token)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             return await _httpClient.GetFromJsonAsync<Szobak>($"api/Szobak/{id}");
         }
     }
