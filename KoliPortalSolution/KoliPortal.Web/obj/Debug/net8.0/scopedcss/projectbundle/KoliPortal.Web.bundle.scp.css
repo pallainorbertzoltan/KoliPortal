@@ -149,6 +149,308 @@
             display: none !important;
         }
 }
+/* _content/KoliPortal.Web/Components/Layout/KarbantartoLayout.razor.rz.scp.css */
+.dashboard-container[b-op9yoq7kvf] {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f4f6f9;
+}
+
+/* --- ASZTALI OLDALSÁV --- */
+.sidebar[b-op9yoq7kvf] {
+    width: 250px;
+    background-color: #ffffff;
+    border-right: 1px solid #e5e9ec;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.sidebar-header[b-op9yoq7kvf] {
+    padding: 24px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0d8368;
+    border-bottom: 1px solid #e5e9ec;
+    display: flex;
+    align-items: center;
+}
+
+.brand[b-op9yoq7kvf] {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar-nav[b-op9yoq7kvf] {
+    padding: 16px 0;
+    flex: 1;
+}
+
+[b-op9yoq7kvf] .nav-item {
+    padding: 12px 24px;
+    margin: 4px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #6b7785;
+    font-weight: 500;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+    [b-op9yoq7kvf] .nav-item:hover {
+        background-color: #f4f6f9;
+        color: #1d252f;
+    }
+
+    [b-op9yoq7kvf] .nav-item.active {
+        background-color: #e6f3ef;
+        color: #0d8368;
+    }
+
+/* --- KIJELENTKEZÉS GOMB --- */
+.sidebar-footer[b-op9yoq7kvf] {
+    padding: 16px;
+    border-top: 1px solid #e5e9ec;
+}
+
+.logout-btn[b-op9yoq7kvf] {
+    background: #fff5f5;
+    border: 1px solid #fed7d7;
+    color: #e74c3c;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: 0.2s;
+    width: 100%;
+}
+
+    .logout-btn:hover[b-op9yoq7kvf] {
+        color: white;
+        background: #c43c3c
+    }
+
+/* --- FŐ TARTALOM DOBOZA --- */
+.main-content[b-op9yoq7kvf] {
+    flex: 1;
+    padding: 32px 40px;
+}
+
+/* --- MOBIL FELSŐ SÁV (FIXÁLT) --- */
+.mobile-top-bar[b-op9yoq7kvf] {
+    display: none;
+    background: white;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e5e9ec;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.hamburger-btn[b-op9yoq7kvf] {
+    background: #f4f6f9;
+    border: 1px solid #e5e9ec;
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 1.5rem;
+    color: #0d8368;
+}
+
+/* --- MOBIL NÉZET SZABÁLYAI --- */
+@media (max-width: 767.98px) {
+    .dashboard-container[b-op9yoq7kvf] {
+        flex-direction: column;
+    }
+
+    .mobile-top-bar[b-op9yoq7kvf] {
+        display: flex;
+    }
+
+    /* Extra felső padding, hogy a fixált sáv ne takarja ki az oldal tetejét! */
+    .main-content[b-op9yoq7kvf] {
+        padding: 80px 20px 32px 20px;
+    }
+
+    .sidebar[b-op9yoq7kvf] {
+        width: 100% !important;
+        height: auto;
+        border-right: none;
+        /* A legördülő menü a fix sáv alatt jelenjen meg */
+        position: fixed;
+        top: 61px;
+        left: 0;
+        z-index: 1040;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+        .sidebar.collapse:not(.show)[b-op9yoq7kvf] {
+            display: none !important;
+        }
+}
+/* _content/KoliPortal.Web/Components/Layout/LakoLayout.razor.rz.scp.css */
+.dashboard-container[b-3n698wnspf] {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f4f6f9;
+}
+
+/* --- ASZTALI OLDALSÁV --- */
+.sidebar[b-3n698wnspf] {
+    width: 250px;
+    background-color: #ffffff;
+    border-right: 1px solid #e5e9ec;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.sidebar-header[b-3n698wnspf] {
+    padding: 24px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0d8368;
+    border-bottom: 1px solid #e5e9ec;
+    display: flex;
+    align-items: center;
+}
+
+.brand[b-3n698wnspf] {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar-nav[b-3n698wnspf] {
+    padding: 16px 0;
+    flex: 1;
+}
+
+[b-3n698wnspf] .nav-item {
+    padding: 12px 24px;
+    margin: 4px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #6b7785;
+    font-weight: 500;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+    [b-3n698wnspf] .nav-item:hover {
+        background-color: #f4f6f9;
+        color: #1d252f;
+    }
+
+    [b-3n698wnspf] .nav-item.active {
+        background-color: #e6f3ef;
+        color: #0d8368;
+    }
+
+/* --- KIJELENTKEZÉS GOMB --- */
+.sidebar-footer[b-3n698wnspf] {
+    padding: 16px;
+    border-top: 1px solid #e5e9ec;
+}
+
+.logout-btn[b-3n698wnspf] {
+    background: #fff5f5;
+    border: 1px solid #fed7d7;
+    color: #e74c3c;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: 0.2s;
+    width: 100%;
+}
+
+    .logout-btn:hover[b-3n698wnspf] {
+        color: white;
+        background: #c43c3c
+    }
+
+/* --- FŐ TARTALOM DOBOZA --- */
+.main-content[b-3n698wnspf] {
+    flex: 1;
+    padding: 32px 40px;
+}
+
+/* --- MOBIL FELSŐ SÁV (FIXÁLT) --- */
+.mobile-top-bar[b-3n698wnspf] {
+    display: none;
+    background: white;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e5e9ec;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.hamburger-btn[b-3n698wnspf] {
+    background: #f4f6f9;
+    border: 1px solid #e5e9ec;
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 1.5rem;
+    color: #0d8368;
+}
+
+/* --- MOBIL NÉZET SZABÁLYAI --- */
+@media (max-width: 767.98px) {
+    .dashboard-container[b-3n698wnspf] {
+        flex-direction: column;
+    }
+
+    .mobile-top-bar[b-3n698wnspf] {
+        display: flex;
+    }
+
+    /* Extra felső padding, hogy a fixált sáv ne takarja ki az oldal tetejét! */
+    .main-content[b-3n698wnspf] {
+        padding: 80px 20px 32px 20px;
+    }
+
+    .sidebar[b-3n698wnspf] {
+        width: 100% !important;
+        height: auto;
+        border-right: none;
+        /* A legördülő menü a fix sáv alatt jelenjen meg */
+        position: fixed;
+        top: 61px;
+        left: 0;
+        z-index: 1040;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+        .sidebar.collapse:not(.show)[b-3n698wnspf] {
+            display: none !important;
+        }
+}
 /* _content/KoliPortal.Web/Components/Layout/MainLayout.razor.rz.scp.css */
 .page[b-a1h8p0fllz] {
     position: relative;
@@ -314,10 +616,20 @@ main[b-a1h8p0fllz] {
 
 /* --- TARTALOM RÁCS (Dashboard specifikus) --- */
 .content-grid[b-i4iuf4rnfy] {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 24px;
+    display: flex;
+    flex-wrap: wrap; /* Ez teszi lehetővé az egymás alá ugrást */
+    gap: 20px; /* Távolság a kártyák között */
     margin-top: 32px;
+}
+
+.recent-residents-card[b-i4iuf4rnfy] {
+    flex: 2; /* Nagyobb helyet foglal (pl. a szélesség 2/3-át) */
+    min-width: 300px; /* Ha ennél szűkebb lenne, leugrik a következő sorba */
+}
+
+.capacity-card[b-i4iuf4rnfy] {
+    flex: 1; /* Kevesebb helyet foglal (pl. a szélesség 1/3-át) */
+    min-width: 250px; /* Minimum szélesség */
 }
 
 /* --- STÁTUSZ JELVÉNYEK --- */
@@ -354,6 +666,11 @@ main[b-a1h8p0fllz] {
 .floor-capacity[b-i4iuf4rnfy] {
     color: #64748b;
     font-size: 0.9rem;
+}
+
+/* --- TÁBLÁZAT EXTRÁK --- */
+.table-scroll-container[b-i4iuf4rnfy] {
+    overflow-x: auto;
 }
 /* _content/KoliPortal.Web/Components/Pages/ADMIN/Beallitas.razor.rz.scp.css */
 /* --- ELRENDEZÉS (Rács) --- */
@@ -634,6 +951,11 @@ input:checked + .slider[b-vu13h7k8x3] {
     justify-content: flex-end;
     gap: 12px;
 }
+
+/* --- TÁBLÁZAT EXTRÁK --- */
+.table-scroll-container[b-47y4jzkb10] {
+    overflow-x: auto;
+}
 /* _content/KoliPortal.Web/Components/Pages/ADMIN/Karbantartas.razor.rz.scp.css */
 /* --- SZEKCIÓK --- */
 .maintenance-section[b-ppfzthiqgg] {
@@ -745,10 +1067,10 @@ input:checked + .slider[b-vu13h7k8x3] {
     align-items: center;
 }
 
-    .modal-header h3[b-ppfzthiqgg] {
+.modal-header h3[b-ppfzthiqgg] {
         margin: 0;
         font-size: 1.2rem;
-    }
+}
 
 .modal-body[b-ppfzthiqgg] {
     padding: 1rem;
@@ -866,6 +1188,732 @@ input:checked + .slider[b-vu13h7k8x3] {
     .status-badge.empty[b-8j6y9jmal6] {
         background-color: #dcfce7;
         color: #16a34a; /* Zöld, ha teljesen üres */
+    }
+
+/* --- TÁBLÁZAT EXTRÁK --- */
+.table-scroll-container[b-8j6y9jmal6] {
+    overflow-x: auto;
+}
+/* _content/KoliPortal.Web/Components/Pages/KARBANTARTO/Elozmenyek.razor.rz.scp.css */
+/* Fő konténer */
+.view-section[b-nro16syz08] {
+    padding: 3rem 2rem;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* Fejléc betűstílusai (A balra igazítást a HTML inline style már tartalmazza) */
+.section-header h2[b-nro16syz08] {
+    color: #101828;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.section-header p[b-nro16syz08] {
+    color: #475467;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Kártya stílus */
+.content-panel[b-nro16syz08] {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #eaecf0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem 2rem; /* Bőséges belső margó a képen látható módon */
+    width: 100%;
+    /* Ha a táblázathoz hasonlóan azt akarod, hogy a képernyő végéig érjen: */
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+    /* A kártyán belüli (üres állapot) szöveg */
+    .content-panel p[b-nro16syz08] {
+        color: #101828; /* Sötétkék/fekete szöveg */
+        font-size: 1rem;
+        margin: 0;
+    }
+/* _content/KoliPortal.Web/Components/Pages/KARBANTARTO/Feladatok.razor.rz.scp.css */
+/* Fő konténer és fejléc */
+.view-section[b-40zl0gvbg3] {
+    padding: 3rem 2rem; /* Kicsit nagyobb oldalsó margó a szélesebb nézethez */
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* A fejléc balra igazítását az inline style már megoldja a HTML-ben, 
+   itt csak a betűszíneket és méreteket adjuk meg */
+.section-header h2[b-40zl0gvbg3] {
+    color: #101828;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.section-header p[b-40zl0gvbg3] {
+    color: #475467;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Kártya és táblázat konténer */
+.content-panel[b-40zl0gvbg3] {
+    width: 100%;
+    /* Itt nem adunk meg max-width-et, vagy nagyon nagyot adunk, hogy elnyúljon */
+    max-width: 100%;
+}
+
+.table-container[b-40zl0gvbg3] {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #eaecf0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    overflow: hidden; /* Sarkok levágása a lekerekítés miatt */
+}
+
+/* Táblázat stílusok */
+#tasks-table[b-40zl0gvbg3] {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+    #tasks-table thead[b-40zl0gvbg3] {
+        background-color: #fcfcfd;
+        border-bottom: 1px solid #eaecf0;
+    }
+
+    #tasks-table th[b-40zl0gvbg3] {
+        color: #475467;
+        font-size: 0.875rem;
+        font-weight: 600;
+        padding: 1rem 1.5rem;
+        white-space: nowrap; /* A fejlécek ne törjenek több sorba */
+    }
+
+    #tasks-table td[b-40zl0gvbg3] {
+        padding: 1.25rem 1.5rem;
+        color: #101828;
+        font-size: 0.875rem;
+        border-bottom: 1px solid #eaecf0;
+        vertical-align: middle;
+    }
+
+    #tasks-table tbody tr:last-child td[b-40zl0gvbg3] {
+        border-bottom: none;
+    }
+
+/* Segédosztály a "Leírás" oszlop kétsoros megjelenéséhez (JS-ből így generáld le!) */
+.task-title[b-40zl0gvbg3] {
+    font-weight: 500;
+    color: #101828;
+    margin-bottom: 0.25rem;
+}
+
+.task-date[b-40zl0gvbg3] {
+    font-size: 0.75rem;
+    color: #475467;
+}
+
+/* Státusz Badge-ek (Pill formátum) */
+.badge[b-40zl0gvbg3] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 9999px;
+}
+
+.badge-success[b-40zl0gvbg3] {
+    background-color: #ecfdf3;
+    color: #027a48; /* Zöld (Lezárt) */
+}
+
+.badge-danger[b-40zl0gvbg3] {
+    background-color: #fef3f2;
+    color: #b42318; /* Piros/Pink (Nyitott) */
+}
+
+/* Művelet gomb és szöveg */
+.action-text[b-40zl0gvbg3] {
+    color: #475467; /* "Lezárva" szöveg színe */
+}
+
+.btn-sm[b-40zl0gvbg3] {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-family: inherit;
+}
+
+.btn-primary[b-40zl0gvbg3] {
+    background-color: #10947e;
+    color: #ffffff;
+}
+
+    .btn-primary:hover[b-40zl0gvbg3] {
+        background-color: #0d7a68;
+    }
+/* _content/KoliPortal.Web/Components/Pages/KARBANTARTO/Profil.razor.rz.scp.css */
+/* Fejléc és fő konténer (ha már benne van a globális CSS-edben, ezeket átugorhatod) */
+.view-section[b-b12zkppvur] {
+    background-color: #f8f9fa;
+    padding: 3rem 1rem;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.section-header[b-b12zkppvur] {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+    .section-header h2[b-b12zkppvur] {
+        color: #101828;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        margin-top: 0;
+    }
+
+    .section-header p[b-b12zkppvur] {
+        color: #475467;
+        font-size: 1rem;
+        margin: 0;
+    }
+
+/* Profil kártya */
+.content-panel[b-b12zkppvur] {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #eaecf0;
+    padding: 2.5rem; /* Egy picit nagyobb belső margó, hogy szellős legyen */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    /* Itt megadhatsz egy max-width-et, ha nem akarod, hogy a képernyő széléig érjen */
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Űrlap sorok */
+.input-group[b-b12zkppvur] {
+    margin-bottom: 1.5rem;
+}
+
+    .input-group label[b-b12zkppvur] {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #344054;
+        margin-bottom: 0.5rem;
+    }
+
+/* Alap beviteli mező */
+.input-field[b-b12zkppvur] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    color: #101828;
+    background-color: #ffffff;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: inherit;
+    transition: border-color 0.2s ease;
+}
+
+    /* KIFEJEZETTEN a readonly (csak olvasható) mezők stílusa */
+    .input-field[readonly][b-b12zkppvur] {
+        background-color: #f9fafb; /* Nagyon halvány szürke háttér */
+        color: #475467; /* Egy picit tompább szövegszín */
+        cursor: default; /* Az egérmutató ne legyen "szövegkijelölő" vonal */
+        border-color: #eaecf0;
+    }
+
+        /* Ha valaki mégis rákattint, ne kapjon fókusz-keretet, mert nem szerkeszthető */
+        .input-field[readonly]:focus[b-b12zkppvur] {
+            outline: none;
+            box-shadow: none;
+            border-color: #eaecf0;
+        }
+
+/* Gombok */
+.btn[b-b12zkppvur] {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-family: inherit;
+    margin-top: 1rem; /* Kicsi extra távolság az utolsó inputtól */
+}
+
+.btn-primary[b-b12zkppvur] {
+    background-color: #10947e;
+    color: #ffffff;
+}
+
+    .btn-primary:hover[b-b12zkppvur] {
+        background-color: #0d7a68;
+    }
+/* _content/KoliPortal.Web/Components/Pages/LAKO/Adataim.razor.rz.scp.css */
+/* Fejléc és fő konténer (ha már benne van a globális CSS-edben, ezeket átugorhatod) */
+.view-section[b-8qhu655ch5] {
+    background-color: #f8f9fa;
+    padding: 3rem 1rem;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.section-header[b-8qhu655ch5] {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+    .section-header h2[b-8qhu655ch5] {
+        color: #101828;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        margin-top: 0;
+    }
+
+    .section-header p[b-8qhu655ch5] {
+        color: #475467;
+        font-size: 1rem;
+        margin: 0;
+    }
+
+/* Profil kártya */
+.content-panel[b-8qhu655ch5] {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #eaecf0;
+    padding: 2.5rem; /* Egy picit nagyobb belső margó, hogy szellős legyen */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    /* Itt megadhatsz egy max-width-et, ha nem akarod, hogy a képernyő széléig érjen */
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Űrlap sorok */
+.input-group[b-8qhu655ch5] {
+    margin-bottom: 1.5rem;
+}
+
+    .input-group label[b-8qhu655ch5] {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #344054;
+        margin-bottom: 0.5rem;
+    }
+
+/* Alap beviteli mező */
+.input-field[b-8qhu655ch5] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    color: #101828;
+    background-color: #ffffff;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: inherit;
+    transition: border-color 0.2s ease;
+}
+
+    /* KIFEJEZETTEN a readonly (csak olvasható) mezők stílusa */
+    .input-field[readonly][b-8qhu655ch5] {
+        background-color: #f9fafb; /* Nagyon halvány szürke háttér */
+        color: #475467; /* Egy picit tompább szövegszín */
+        cursor: default; /* Az egérmutató ne legyen "szövegkijelölő" vonal */
+        border-color: #eaecf0;
+    }
+
+        /* Ha valaki mégis rákattint, ne kapjon fókusz-keretet, mert nem szerkeszthető */
+        .input-field[readonly]:focus[b-8qhu655ch5] {
+            outline: none;
+            box-shadow: none;
+            border-color: #eaecf0;
+        }
+
+/* Gombok */
+.btn[b-8qhu655ch5] {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-family: inherit;
+    margin-top: 1rem; /* Kicsi extra távolság az utolsó inputtól */
+}
+
+.btn-primary[b-8qhu655ch5] {
+    background-color: #10947e;
+    color: #ffffff;
+}
+
+    .btn-primary:hover[b-8qhu655ch5] {
+        background-color: #0d7a68;
+    }
+/* _content/KoliPortal.Web/Components/Pages/LAKO/Attekintes.razor.rz.scp.css */
+/* --- STATISZTIKAI KÁRTYÁK RÁCS --- */
+.stats-grid[b-wl12oum73k] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-top: 32px;
+}
+
+.stat-card[b-wl12oum73k] {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.stat-icon[b-wl12oum73k] {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-large[b-wl12oum73k] {
+    font-size: 1.5rem;
+}
+
+.stat-icon.purple[b-wl12oum73k] {
+    background-color: #f3e8ff;
+    color: #9333ea;
+}
+
+.stat-icon.blue[b-wl12oum73k] {
+    background-color: #e0f2fe;
+    color: #0284c7;
+}
+
+.stat-icon.orange[b-wl12oum73k] {
+    background-color: #ffedd5;
+    color: #ea580c;
+}
+
+.stat-icon.green[b-wl12oum73k] {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+.stat-details h3[b-wl12oum73k] {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.stat-details p[b-wl12oum73k] {
+    margin: 4px 0 0 0;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+/* --- TARTALOM RÁCS (Dashboard specifikus) --- */
+.content-grid[b-wl12oum73k] {
+    display: flex;
+    flex-wrap: wrap; /* Ez teszi lehetővé az egymás alá ugrást */
+    gap: 20px; /* Távolság a kártyák között */
+    margin-top: 32px;
+}
+
+.recent-residents-card[b-wl12oum73k] {
+    flex: 2; /* Nagyobb helyet foglal (pl. a szélesség 2/3-át) */
+    min-width: 300px; /* Ha ennél szűkebb lenne, leugrik a következő sorba */
+}
+
+.capacity-card[b-wl12oum73k] {
+    flex: 1; /* Kevesebb helyet foglal (pl. a szélesség 1/3-át) */
+    min-width: 250px; /* Minimum szélesség */
+}
+
+/* --- STÁTUSZ JELVÉNYEK --- */
+.status-badge[b-wl12oum73k] {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+    .status-badge.aktív[b-wl12oum73k] {
+        background-color: #dcfce7;
+        color: #16a34a;
+    }
+
+/* --- KAPACITÁS LISTA --- */
+.capacity-list[b-wl12oum73k] {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.capacity-item[b-wl12oum73k] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.floor-name[b-wl12oum73k] {
+    font-weight: 500;
+    color: #0f172a;
+}
+
+.floor-capacity[b-wl12oum73k] {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+/* --- TÁBLÁZAT EXTRÁK --- */
+.table-scroll-container[b-wl12oum73k] {
+    overflow-x: auto;
+}
+/* _content/KoliPortal.Web/Components/Pages/LAKO/Befizetesek.razor.rz.scp.css */
+/* Teljes nézet és háttér */
+.view-section[b-q7sayelby2] {
+    background-color: #f8f9fa; /* Világos háttér a kártya mögött */
+    padding: 3rem 1rem;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Fejléc középre igazítása */
+.section-header[b-q7sayelby2] {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+    .section-header h2[b-q7sayelby2] {
+        color: #101828; /* Sötétkék/fekete */
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        margin-top: 0;
+    }
+
+    .section-header p[b-q7sayelby2] {
+        color: #475467; /* Szürke alcím */
+        font-size: 1rem;
+        margin: 0;
+    }
+
+/* Tartalom és kártya stílus */
+.content-panel[b-q7sayelby2] {
+    width: 100%;
+    max-width: 100%;
+}
+
+.table-container[b-q7sayelby2] {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eaecf0;
+    padding: 0;
+    overflow: hidden; /* Lekerekítés miatt a táblázat sarkai ne lógjanak ki */
+}
+
+/* Táblázat stílusok */
+table[b-q7sayelby2] {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+thead[b-q7sayelby2] {
+    background-color: #fcfcfd;
+    border-bottom: 1px solid #eaecf0;
+}
+
+th[b-q7sayelby2] {
+    color: #475467;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 1.25rem 1.5rem;
+}
+
+td[b-q7sayelby2] {
+    color: #101828;
+    font-size: 0.875rem;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #eaecf0;
+}
+
+/* Utolsó sor alsó szegélyének eltávolítása, hogy ne csússzon rá a kártya szélére */
+tbody tr:last-child td[b-q7sayelby2] {
+    border-bottom: none;
+}
+
+/* Badge (Státusz jelző) stílusok */
+.badge[b-q7sayelby2] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 9999px; /* Teljesen kerekített (pill form) */
+}
+
+.badge-success[b-q7sayelby2] {
+    background-color: #ecfdf3; /* Világoszöld háttér */
+    color: #027a48; /* Sötétzöld szöveg */
+}
+/* _content/KoliPortal.Web/Components/Pages/LAKO/Hibajelentes.razor.rz.scp.css */
+/* Teljes nézet és háttér */
+.view-section[b-dn83gzbzt3] {
+    background-color: #f8f9fa; /* Világos háttér a kártya mögött */
+    padding: 3rem 1rem;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Fejléc középre igazítása */
+.section-header[b-dn83gzbzt3] {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+    .section-header h2[b-dn83gzbzt3] {
+        color: #101828; /* Sötétkék/fekete */
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        margin-top: 0;
+    }
+
+    .section-header p[b-dn83gzbzt3] {
+        color: #475467; /* Szürke alcím */
+        font-size: 1rem;
+        margin: 0;
+    }
+
+/* Ha a korábbi kártya stílust nem a .content-panel-re tetted, 
+   akkor itt beállítjuk a fehér hátteret és a lekerekítést az űrlaphoz */
+.content-panel[b-dn83gzbzt3] {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #eaecf0;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin: 0 auto; /* Középre igazítás */
+    width: 100%;
+    /* A HTML-ben van egy beágyazott style="max-width: 600px;", 
+       ezért azt itt opcionálisan kihagyhatod, de jó, ha CSS-ből van vezérelve */
+}
+
+/* Űrlap elemek csoportosítása (térközök) */
+.input-group[b-dn83gzbzt3] {
+    margin-bottom: 1.5rem;
+}
+
+    /* Címkék (Labels) */
+    .input-group label[b-dn83gzbzt3] {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #344054; /* Sötétszürke */
+        margin-bottom: 0.5rem;
+    }
+
+/* Beviteli mezők (Select és Textarea) */
+.input-field[b-dn83gzbzt3] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    color: #101828;
+    background-color: #ffffff;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    box-sizing: border-box; /* Ne lógjon ki a padding miatt a konténerből */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-family: inherit;
+}
+
+    /* Kijelölés (Focus) effekt a mezőkre */
+    .input-field:focus[b-dn83gzbzt3] {
+        outline: none;
+        border-color: #10947e; /* A gomb színéhez igazított keret */
+        box-shadow: 0 0 0 4px rgba(16, 148, 126, 0.1); /* Halvány teal ragyogás */
+    }
+
+/* Kifejezetten a leírás szövegdobozához (ahogy a képen is látszik) */
+textarea.input-field[b-dn83gzbzt3] {
+    resize: vertical; /* Csak függőlegesen lehessen átméretezni */
+    font-family: 'Courier New', Courier, monospace; /* Írógépes betűtípus a kódhoz/leíráshoz */
+    min-height: 120px;
+}
+
+/* Gomb alapstílus */
+.btn[b-dn83gzbzt3] {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-family: inherit;
+}
+
+/* Elsődleges (Zöld/Teal) gomb stílus */
+.btn-primary[b-dn83gzbzt3] {
+    background-color: #10947e; /* A képen látható kékes-zöld (teal) szín */
+    color: #ffffff;
+}
+
+    .btn-primary:hover[b-dn83gzbzt3] {
+        background-color: #0d7a68; /* Sötétebb árnyalat ha fölé viszed az egeret */
     }
 /* _content/KoliPortal.Web/Components/Pages/LOGIN/Login.razor.rz.scp.css */
 /* Háttér és a kártya középre igazítása */

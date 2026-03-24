@@ -37,3 +37,16 @@ C:\Users\user\OneDrive\Desktop\api teszt\KoliPortal\KoliPortalSolution\KoliPorta
 C:\Users\user\OneDrive\Desktop\api teszt\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\refint\KoliPortal.Lib.dll
 C:\Users\user\OneDrive\Desktop\api teszt\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.pdb
 C:\Users\user\OneDrive\Desktop\api teszt\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\ref\KoliPortal.Lib.dll
+C:\Users\palla\Desktop\KoliPortal\KoliPortalSolution\KoliPortal.Lib\bin\Debug\net8.0\KoliPortal.Lib.deps.json
+C:\Users\palla\Desktop\KoliPortal\KoliPortalSolution\KoliPortal.Lib\bin\Debug\net8.0\KoliPortal.Lib.dll
+C:\Users\palla\Desktop\KoliPortal\KoliPortalSolution\KoliPortal.Lib\bin\Debug\net8.0\KoliPortal.Lib.pdb
+C:\Users\palla\Desktop\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.csproj.AssemblyReference.cache
+C:\Users\palla\Desktop\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\palla\Desktop\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.AssemblyInfoInputs.cache
+C:\Users\palla\Desktop\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.AssemblyInfo.cs
+C:\Users\palla\Desktop\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.csproj.CoreCompileInputs.cache
+C:\Users\palla\Desktop\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.sourcelink.json
+C:\Users\palla\Desktop\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.dll
+C:\Users\palla\Desktop\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\refint\KoliPortal.Lib.dll
+C:\Users\palla\Desktop\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\KoliPortal.Lib.pdb
+C:\Users\palla\Desktop\KoliPortal\KoliPortalSolution\KoliPortal.Lib\obj\Debug\net8.0\ref\KoliPortal.Lib.dll

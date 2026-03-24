@@ -1,0 +1,34 @@
+﻿@page "/adataim"
+@using KoliPortal.Lib.MODEL
+@using KoliPortal.Lib.SERVICE
+@layout LakoLayout
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inject SzobakService Szobak
+@inject KarbantartasiKeresekService KarbantartasiKeresek
+@inject SzobaBeosztasokService SzobaBeosztasok
+@inject FelhasznalokService FelhasznalokService
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+
+<div id="view-profile" class="view-section">
+    <div class="section-header">
+        <h2>Saját Adataim</h2>
+        <p>Személyes információk és szoba beosztás.</p>
+    </div>
+    <div class="content-panel">
+        <div class="input-group">
+            <label>Teljes Név</label>
+            <input type="text" class="input-field" value="Kovács Norbert" readonly>
+        </div>
+        <div class="input-group">
+            <label>E-mail cím</label>
+            <input type="text" class="input-field" value="diak@koliportal.hu" readonly>
+        </div>
+        <div class="input-group">
+            <label>Szoba száma</label>
+            <input type="text" class="input-field" value="204" readonly>
+        </div>
+        <button class="btn btn-primary">Jelszó módosítása</button>
+    </div>
+</div>

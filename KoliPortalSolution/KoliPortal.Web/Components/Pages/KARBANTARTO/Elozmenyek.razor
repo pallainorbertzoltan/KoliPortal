@@ -1,0 +1,21 @@
+﻿@page "/elozmenyek"
+@using KoliPortal.Lib.MODEL
+@using KoliPortal.Lib.SERVICE
+@layout KarbantartoLayout
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inject SzobakService Szobak
+@inject KarbantartasiKeresekService KarbantartasiKeresek
+@inject SzobaBeosztasokService SzobaBeosztasok
+@inject FelhasznalokService FelhasznalokService
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+<div id="view-history" class="view-section">
+    <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+        <h2>Előzmények</h2>
+        <p>Lezárt feladatok listája.</p>
+    </div>
+    <div class="content-panel">
+        <p>Nincs megjeleníthető előzmény.</p>
+    </div>
+</div>

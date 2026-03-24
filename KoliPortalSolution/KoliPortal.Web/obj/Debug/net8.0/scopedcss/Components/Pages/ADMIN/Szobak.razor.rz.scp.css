@@ -51,3 +51,8 @@
         background-color: #dcfce7;
         color: #16a34a; /* Zöld, ha teljesen üres */
     }
+
+/* --- TÁBLÁZAT EXTRÁK --- */
+.table-scroll-container[b-8j6y9jmal6] {
+    overflow-x: auto;
+}

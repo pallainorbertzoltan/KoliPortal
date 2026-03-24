@@ -1,0 +1,217 @@
+﻿@page "/lakoAttekintes"
+@using KoliPortal.Lib.MODEL
+@using KoliPortal.Lib.SERVICE
+@layout LakoLayout
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inject SzobakService Szobak
+@inject KarbantartasiKeresekService KarbantartasiKeresek
+@inject SzobaBeosztasokService SzobaBeosztasok
+@inject FelhasznalokService FelhasznalokService
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+<header class="page-header">
+    <h1>Üdvözlünk a KoliPortál oldalán!</h1>
+    <p>Itt áttekintheted a kollégiumi státuszodat.</p>
+</header>
+
+@if (betoltesAlatt)
+{
+    <div class="text-center mt-5">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Betöltés...</span>
+        </div>
+        <p class="mt-2 text-muted">Adatok lekérése az API-tól...</p>
+    </div>
+}
+else
+{
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon purple">
+                <i class="bi bi-person-check-fill icon-large"></i>
+            </div>
+            <div class="stat-details">
+                <h3>@aktivLakokSzama</h3> @*jelenlegiSzoba*@
+                <p>Jelenlegi szobád</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <i class="bi bi-house-door-fill icon-large"></i>
+            </div>
+            <div class="stat-details">
+                <h3>@szabadAgyakSzama</h3> @*haviLakber*@
+                <p>Havi lakbér</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon orange">
+                <i class="bi bi-exclamation-triangle-fill icon-large"></i>
+            </div>
+            <div class="stat-details">
+                <h3>@nyitottHibakSzama</h3> @*hibajelentes*@
+                <p>Hibajelentés</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-grid">
+        <div class="card recent-residents-card">
+            <div class="table-scroll-container">
+                <div class="card-header">
+                    <h2>Legutóbbi Befizetések</h2>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Dátum</th>
+                            <th>Jogcím</th>
+                            <th>Összeg</th>
+                            <th>Státusz</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (legujabbLakok != null && legujabbLakok.Any())
+                        {
+                            @foreach (var beosztas in legujabbLakok)
+                            {
+                                <tr>
+                                    <td>@GetFelhasznaloNev(beosztas.UserID)</td>
+                                    <td>@GetSzobaSzam(beosztas.RoomID)</td>
+                                    <td>@beosztas.BekoltozesDatum?.ToShortDateString()</td>
+                                    <td>
+                                        <span class="status-badge aktív">Aktív</span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">Nincsenek aktív lakók a rendszerben.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private bool betoltesAlatt = true;
+    private string token = "";
+
+    // Statisztika változók
+    private int aktivLakokSzama = 0;
+    private int szabadAgyakSzama = 0;
+    private int nyitottHibakSzama = 0;
+    private int befizetesiArany = 0;
+
+    // Lista változók
+    private List<SzobaBeosztasok> legujabbLakok = new();
+    private List<EmeletKapacitas> emeletKapacitasok = new();
+
+    // Nevek megkereséséhez
+    private List<KoliPortal.Lib.MODEL.Felhasznalok> osszesFelhasznalo = new();
+    private List<KoliPortal.Lib.MODEL.Szobak> osszesSzoba = new();
+
+    protected override async Task OnAfterRenderAsync(bool elsoBetoltes)
+    {
+        if (elsoBetoltes)
+        {
+            try
+            {
+                // Kérjük el a tokent a böngészőtől
+                token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    Nav.NavigateTo("/");
+                    return; // Ha nincs token, visszadob a bejelentkező oldalra
+                }
+
+                // SZIGORÚ SZEREPKÖR ELLENŐRZÉS CSAK ADMIN!
+                var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+                var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+
+                // Ha a szerepkör NEM 1-es és NEM admin, akkor login oldal!
+                if (szerepkor != "2" && szerepkor?.ToLower() != "lako")
+                {
+                    // Mindenki más repül a kezdőlapra
+                    Nav.NavigateTo("/");
+                    return;
+                }
+
+                // Lekérjük az adatokat a API-ból A TOKENNEL EGYÜTT
+                osszesSzoba = await Szobak.GetSzobak(token) ?? new List<KoliPortal.Lib.MODEL.Szobak>();
+                var beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new List<SzobaBeosztasok>();
+                var hibak = await KarbantartasiKeresek.GetKarbantartasiKeresek(token) ?? new List<KarbantartasiKeresek>();
+                osszesFelhasznalo = await FelhasznalokService.GetFelhasznalok(token) ?? new List<KoliPortal.Lib.MODEL.Felhasznalok>();
+
+                // Aktív lakók: Ahol a tényleges kiköltözés még nem történt meg
+                var aktivBeosztasok = beosztasok.Where(b => b.TenylegesKikoltozes == null).ToList();
+                aktivLakokSzama = aktivBeosztasok.Count;
+
+                // Szabad ágyak: Szobak.FerohelyMax összege mínusz az aktív lakók
+                int osszesFerohely = osszesSzoba.Sum(s => s.FerohelyMax);
+                szabadAgyakSzama = osszesFerohely - aktivLakokSzama;
+
+                // Nyitott hibák
+                nyitottHibakSzama = hibak.Count(h => h.StatuszID != 3);
+
+                // Legújabb lakók a táblázatba: Rendezzük a BekoltozesDatum szerint, a legújabb 5 ember
+                legujabbLakok = aktivBeosztasok
+                    .OrderByDescending(b => b.BekoltozesDatum)
+                    .Take(5)
+                    .ToList();
+
+                // Emelet kapacitások összekötve a lakókkal
+                emeletKapacitasok = osszesSzoba
+                    .GroupBy(s => s.Emelet)
+                    .Select(g => new EmeletKapacitas
+                        {
+                            EmeletNev = $"{g.Key}. Emelet",
+                            MaxFerohely = g.Sum(s => s.FerohelyMax),
+                            AktivLakokSzama = aktivBeosztasok.Count(b => g.Select(sz => sz.ID).Contains(b.RoomID))
+                        })
+                    .OrderBy(e => e.EmeletNev)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Hiba az adatok lekérésekor: {ex.Message}");
+            }
+            finally
+            {
+                betoltesAlatt = false;
+                // Mivel ez OnAfterRenderAsyncben van, szólni kell a Blazornak, hogy frissítse az oldalt
+                StateHasChanged();
+            }
+        }
+    }
+
+    private string GetFelhasznaloNev(int userId)
+    {
+        var user = osszesFelhasznalo.FirstOrDefault(u => u.ID == userId);
+        return user != null ? user.Nev : $"User #{userId}";
+    }
+
+    private string GetSzobaSzam(int roomId)
+    {
+        var szoba = osszesSzoba.FirstOrDefault(s => s.ID == roomId);
+        return szoba != null ? szoba.Szobaszam : $"Szoba #{roomId}";
+    }
+
+    public class EmeletKapacitas
+    {
+        public string EmeletNev { get; set; } = "";
+        public int MaxFerohely { get; set; }
+        public int AktivLakokSzama { get; set; }
+    }
+}

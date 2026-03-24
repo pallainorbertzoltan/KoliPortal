@@ -108,10 +108,10 @@
     align-items: center;
 }
 
-    .modal-header h3 {
+.modal-header h3 {
         margin: 0;
         font-size: 1.2rem;
-    }
+}
 
 .modal-body {
     padding: 1rem;

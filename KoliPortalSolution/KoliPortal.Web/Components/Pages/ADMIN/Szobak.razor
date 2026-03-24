@@ -38,48 +38,50 @@ else
         </div>
 
         <div class="card shadow-sm">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Szoba</th>
-                        <th>Emelet</th>
-                        <th>Kapacitás</th>
-                        <th>Lakók</th>
-                        <th>Telítettség</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (szurtSzobak != null && szurtSzobak.Any())
-                    {
-                        @foreach (var szoba in szurtSzobak)
+            <div class="table-scroll-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Szoba</th>
+                            <th>Emelet</th>
+                            <th>Kapacitás</th>
+                            <th>Lakók</th>
+                            <th>Telítettség</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (szurtSzobak != null && szurtSzobak.Any())
                         {
-                            // Kiszámoljuk az adott szoba adatait
-                            int aktivLakok = GetAktivLakokSzam(szoba.ID);
-                            string lakoNevek = GetLakoNevek(szoba.ID);
-                            double szazalek = szoba.FerohelyMax > 0 ? ((double)aktivLakok / szoba.FerohelyMax) * 100 : 0;
-                            string badgeCss = GetStatuszCss(aktivLakok, szoba.FerohelyMax);
+                            @foreach (var szoba in szurtSzobak)
+                            {
+                                // Kiszámoljuk az adott szoba adatait
+                                int aktivLakok = GetAktivLakokSzam(szoba.ID);
+                                string lakoNevek = GetLakoNevek(szoba.ID);
+                                double szazalek = szoba.FerohelyMax > 0 ? ((double)aktivLakok / szoba.FerohelyMax) * 100 : 0;
+                                string badgeCss = GetStatuszCss(aktivLakok, szoba.FerohelyMax);
 
+                                <tr>
+                                    <td>@szoba.Szobaszam</td>
+                                    <td>@szoba.Emelet. Emelet</td>
+                                    <td>@szoba.FerohelyMax fő</td>
+                                    <td>@lakoNevek</td>
+                                    <td>
+                                        <span class="status-badge @badgeCss">
+                                            @(Math.Round(szazalek))% (@aktivLakok/@szoba.FerohelyMax)
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
                             <tr>
-                                <td>@szoba.Szobaszam</td>
-                                <td>@szoba.Emelet. Emelet</td>
-                                <td>@szoba.FerohelyMax fő</td>
-                                <td>@lakoNevek</td>
-                                <td>
-                                    <span class="status-badge @badgeCss">
-                                        @(Math.Round(szazalek))% (@aktivLakok/@szoba.FerohelyMax)
-                                    </span>
-                                </td>
+                                <td colspan="5" class="text-center text-muted p-4">Nincs a szűrésnek megfelelő szoba.</td>
                             </tr>
                         }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="5" class="text-center text-muted p-4">Nincs a szűrésnek megfelelő szoba.</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 }

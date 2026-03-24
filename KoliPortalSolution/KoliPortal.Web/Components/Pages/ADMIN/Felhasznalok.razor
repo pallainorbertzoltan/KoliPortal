@@ -42,62 +42,65 @@ else
         </div>
 
         <div class="card shadow-sm">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Név</th>
-                        <th>Szoba</th>
-                        <th>Email</th>
-                        <th>Szerepkör</th>
-                        <th>Művelet</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (szurtFelhasznalok != null && szurtFelhasznalok.Any())
-                    {
-                        @foreach (var user in szurtFelhasznalok)
+            <div class="table-scroll-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Név</th>
+                            <th>Szoba</th>
+                            <th>Email</th>
+                            <th>Szerepkör</th>
+                            <th>Művelet</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (szurtFelhasznalok != null && szurtFelhasznalok.Any())
+                        {
+                            @foreach (var user in szurtFelhasznalok)
+                            {
+                                <tr>
+                                    <td>@user.Nev</td>
+                                    <td>
+                                        @{
+                                            var szobaStatusz = GetAktualisSzoba(user.ID);
+                                            if (szobaStatusz == "Kiköltözött")
+                                            {
+                                                <span class="status-badge kikoltozott">Kiköltözött</span>
+                                            }
+                                            else if (szobaStatusz == "Nincs szobája")
+                                            {
+                                                <span class="status-badge nincs-szoba">Nincs szobája</span>
+                                            }
+                                            else
+                                            {
+                                                <strong class="status-badge van-szoba">@szobaStatusz</strong>
+                                            }
+                                        }
+                                    </td>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        <span class="role-badge @GetSzerepkorCss(user.SzerepkorID)">
+                                            @GetSzerepkorNev(user.SzerepkorID)
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button class="action-btn" title="Szerkesztés" @onclick="() => MegnyitSzerkesztes(user.ID)">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
                         {
                             <tr>
-                                <td>@user.Nev</td>
-                                <td>
-                                    @{
-                                        var szobaStatusz = GetAktualisSzoba(user.ID);
-                                        if (szobaStatusz == "Kiköltözött")
-                                        {
-                                            <span class="status-badge kikoltozott">Kiköltözött</span>
-                                        }
-                                        else if (szobaStatusz == "Nincs szobája")
-                                        {
-                                            <span class="status-badge nincs-szoba">Nincs szobája</span>
-                                        }
-                                        else
-                                        {
-                                            <strong class="status-badge van-szoba">@szobaStatusz</strong>
-                                        }
-                                    }
-                                </td>
-                                <td>@user.Email</td>
-                                <td>
-                                    <span class="role-badge @GetSzerepkorCss(user.SzerepkorID)">
-                                        @GetSzerepkorNev(user.SzerepkorID)
-                                    </span>
-                                </td>
-                                <td>
-                                    <button class="action-btn" title="Szerkesztés" @onclick="() => MegnyitSzerkesztes(user.ID)">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                </td>
+                                <td colspan="5" class="text-center text-muted">Nincsenek a szűrésnek megfelelő felhasználók.</td>
                             </tr>
                         }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="5" class="text-center text-muted">Nincsenek a szűrésnek megfelelő felhasználók.</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+            
         </div>
     </div>
 }

@@ -1,0 +1,83 @@
+﻿@page "/karbantartoFeladatok"
+@using KoliPortal.Lib.MODEL
+@using KoliPortal.Lib.SERVICE
+@layout KarbantartoLayout
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inject SzobakService Szobak
+@inject KarbantartasiKeresekService KarbantartasiKeresek
+@inject SzobaBeosztasokService SzobaBeosztasok
+@inject FelhasznalokService FelhasznalokService
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+<div id="view-tasks" class="view-section active">
+    <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+        <h2>Aktuális Feladatok</h2>
+        <p>Itt látod a hozzád rendelt hibajegyeket.</p>
+    </div>
+
+    <div class="content-panel">
+        <div class="table-container">
+            <table id="tasks-table">
+                <thead>
+                    <tr>
+                        <th>Azonosító</th>
+                        <th>Helyszín</th>
+                        <th>Leírás</th>
+                        <th>Prioritás</th>
+                        <th>Művelet</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Populated by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool betoltesAlatt = true;
+    private string token = "";
+
+    protected override async Task OnAfterRenderAsync(bool elsoBetoltes)
+    {
+        if (elsoBetoltes)
+        {
+            try
+            {
+                // Kérjük el a tokent a böngészőtől
+                token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    Nav.NavigateTo("/");
+                    return; // Ha nincs token, visszadob a bejelentkező oldalra
+                }
+
+                // SZIGORÚ SZEREPKÖR ELLENŐRZÉS CSAK ADMIN!
+                var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+                var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+
+                // Ha a szerepkör NEM 1-es és NEM admin, akkor login oldal!
+                if (szerepkor != "3" && szerepkor?.ToLower() != "karbantarto")
+                {
+                    // Mindenki más repül a kezdőlapra
+                    Nav.NavigateTo("/");
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Hiba az adatok lekérésekor: {ex.Message}");
+            }
+            finally
+            {
+                betoltesAlatt = false;
+                // Mivel ez OnAfterRenderAsyncben van, szólni kell a Blazornak, hogy frissítse az oldalt
+                StateHasChanged();
+            }
+        }
+    }
+}

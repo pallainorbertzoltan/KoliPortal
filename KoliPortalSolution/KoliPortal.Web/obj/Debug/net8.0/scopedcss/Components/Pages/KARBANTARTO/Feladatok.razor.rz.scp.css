@@ -1,0 +1,128 @@
+/* Fő konténer és fejléc */
+.view-section[b-40zl0gvbg3] {
+    padding: 3rem 2rem; /* Kicsit nagyobb oldalsó margó a szélesebb nézethez */
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* A fejléc balra igazítását az inline style már megoldja a HTML-ben, 
+   itt csak a betűszíneket és méreteket adjuk meg */
+.section-header h2[b-40zl0gvbg3] {
+    color: #101828;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.section-header p[b-40zl0gvbg3] {
+    color: #475467;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Kártya és táblázat konténer */
+.content-panel[b-40zl0gvbg3] {
+    width: 100%;
+    /* Itt nem adunk meg max-width-et, vagy nagyon nagyot adunk, hogy elnyúljon */
+    max-width: 100%;
+}
+
+.table-container[b-40zl0gvbg3] {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #eaecf0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    overflow: hidden; /* Sarkok levágása a lekerekítés miatt */
+}
+
+/* Táblázat stílusok */
+#tasks-table[b-40zl0gvbg3] {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+    #tasks-table thead[b-40zl0gvbg3] {
+        background-color: #fcfcfd;
+        border-bottom: 1px solid #eaecf0;
+    }
+
+    #tasks-table th[b-40zl0gvbg3] {
+        color: #475467;
+        font-size: 0.875rem;
+        font-weight: 600;
+        padding: 1rem 1.5rem;
+        white-space: nowrap; /* A fejlécek ne törjenek több sorba */
+    }
+
+    #tasks-table td[b-40zl0gvbg3] {
+        padding: 1.25rem 1.5rem;
+        color: #101828;
+        font-size: 0.875rem;
+        border-bottom: 1px solid #eaecf0;
+        vertical-align: middle;
+    }
+
+    #tasks-table tbody tr:last-child td[b-40zl0gvbg3] {
+        border-bottom: none;
+    }
+
+/* Segédosztály a "Leírás" oszlop kétsoros megjelenéséhez (JS-ből így generáld le!) */
+.task-title[b-40zl0gvbg3] {
+    font-weight: 500;
+    color: #101828;
+    margin-bottom: 0.25rem;
+}
+
+.task-date[b-40zl0gvbg3] {
+    font-size: 0.75rem;
+    color: #475467;
+}
+
+/* Státusz Badge-ek (Pill formátum) */
+.badge[b-40zl0gvbg3] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 9999px;
+}
+
+.badge-success[b-40zl0gvbg3] {
+    background-color: #ecfdf3;
+    color: #027a48; /* Zöld (Lezárt) */
+}
+
+.badge-danger[b-40zl0gvbg3] {
+    background-color: #fef3f2;
+    color: #b42318; /* Piros/Pink (Nyitott) */
+}
+
+/* Művelet gomb és szöveg */
+.action-text[b-40zl0gvbg3] {
+    color: #475467; /* "Lezárva" szöveg színe */
+}
+
+.btn-sm[b-40zl0gvbg3] {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-family: inherit;
+}
+
+.btn-primary[b-40zl0gvbg3] {
+    background-color: #10947e;
+    color: #ffffff;
+}
+
+    .btn-primary:hover[b-40zl0gvbg3] {
+        background-color: #0d7a68;
+    }

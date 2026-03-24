@@ -1,0 +1,111 @@
+/* Teljes nézet és háttér */
+.view-section[b-dn83gzbzt3] {
+    background-color: #f8f9fa; /* Világos háttér a kártya mögött */
+    padding: 3rem 1rem;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Fejléc középre igazítása */
+.section-header[b-dn83gzbzt3] {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+    .section-header h2[b-dn83gzbzt3] {
+        color: #101828; /* Sötétkék/fekete */
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        margin-top: 0;
+    }
+
+    .section-header p[b-dn83gzbzt3] {
+        color: #475467; /* Szürke alcím */
+        font-size: 1rem;
+        margin: 0;
+    }
+
+/* Ha a korábbi kártya stílust nem a .content-panel-re tetted, 
+   akkor itt beállítjuk a fehér hátteret és a lekerekítést az űrlaphoz */
+.content-panel[b-dn83gzbzt3] {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #eaecf0;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin: 0 auto; /* Középre igazítás */
+    width: 100%;
+    /* A HTML-ben van egy beágyazott style="max-width: 600px;", 
+       ezért azt itt opcionálisan kihagyhatod, de jó, ha CSS-ből van vezérelve */
+}
+
+/* Űrlap elemek csoportosítása (térközök) */
+.input-group[b-dn83gzbzt3] {
+    margin-bottom: 1.5rem;
+}
+
+    /* Címkék (Labels) */
+    .input-group label[b-dn83gzbzt3] {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #344054; /* Sötétszürke */
+        margin-bottom: 0.5rem;
+    }
+
+/* Beviteli mezők (Select és Textarea) */
+.input-field[b-dn83gzbzt3] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    color: #101828;
+    background-color: #ffffff;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    box-sizing: border-box; /* Ne lógjon ki a padding miatt a konténerből */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-family: inherit;
+}
+
+    /* Kijelölés (Focus) effekt a mezőkre */
+    .input-field:focus[b-dn83gzbzt3] {
+        outline: none;
+        border-color: #10947e; /* A gomb színéhez igazított keret */
+        box-shadow: 0 0 0 4px rgba(16, 148, 126, 0.1); /* Halvány teal ragyogás */
+    }
+
+/* Kifejezetten a leírás szövegdobozához (ahogy a képen is látszik) */
+textarea.input-field[b-dn83gzbzt3] {
+    resize: vertical; /* Csak függőlegesen lehessen átméretezni */
+    font-family: 'Courier New', Courier, monospace; /* Írógépes betűtípus a kódhoz/leíráshoz */
+    min-height: 120px;
+}
+
+/* Gomb alapstílus */
+.btn[b-dn83gzbzt3] {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-family: inherit;
+}
+
+/* Elsődleges (Zöld/Teal) gomb stílus */
+.btn-primary[b-dn83gzbzt3] {
+    background-color: #10947e; /* A képen látható kékes-zöld (teal) szín */
+    color: #ffffff;
+}
+
+    .btn-primary:hover[b-dn83gzbzt3] {
+        background-color: #0d7a68; /* Sötétebb árnyalat ha fölé viszed az egeret */
+    }

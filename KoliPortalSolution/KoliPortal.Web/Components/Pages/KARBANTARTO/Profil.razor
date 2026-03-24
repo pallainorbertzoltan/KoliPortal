@@ -1,0 +1,33 @@
+﻿@page "/profil"
+@using KoliPortal.Lib.MODEL
+@using KoliPortal.Lib.SERVICE
+@layout KarbantartoLayout
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inject SzobakService Szobak
+@inject KarbantartasiKeresekService KarbantartasiKeresek
+@inject SzobaBeosztasokService SzobaBeosztasok
+@inject FelhasznalokService FelhasznalokService
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+
+<div id="view-profile" class="view-section">
+    <div class="section-header">
+        <h2>Saját Adataim</h2>
+        <p>Személyes információk.</p>
+    </div>
+    <div class="content-panel">
+        <div class="input-group">
+            <label>Név</label>
+            <input type="text" class="input-field" value="Kovács Norbert" readonly>
+        </div>
+        <div class="input-group">
+            <label>Beosztás</label>
+            <input type="text" class="input-field" value="Karbantartó" readonly>
+        </div>
+        <div class="input-group">
+            <label>E-mail cím</label>
+            <input type="text" class="input-field" value="karbantarto@koliportal.hu" readonly>
+        </div>
+    </div>
+</div>

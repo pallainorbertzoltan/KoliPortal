@@ -65,10 +65,20 @@
 
 /* --- TARTALOM RÁCS (Dashboard specifikus) --- */
 .content-grid[b-i4iuf4rnfy] {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 24px;
+    display: flex;
+    flex-wrap: wrap; /* Ez teszi lehetővé az egymás alá ugrást */
+    gap: 20px; /* Távolság a kártyák között */
     margin-top: 32px;
+}
+
+.recent-residents-card[b-i4iuf4rnfy] {
+    flex: 2; /* Nagyobb helyet foglal (pl. a szélesség 2/3-át) */
+    min-width: 300px; /* Ha ennél szűkebb lenne, leugrik a következő sorba */
+}
+
+.capacity-card[b-i4iuf4rnfy] {
+    flex: 1; /* Kevesebb helyet foglal (pl. a szélesség 1/3-át) */
+    min-width: 250px; /* Minimum szélesség */
 }
 
 /* --- STÁTUSZ JELVÉNYEK --- */
@@ -105,4 +115,9 @@
 .floor-capacity[b-i4iuf4rnfy] {
     color: #64748b;
     font-size: 0.9rem;
+}
+
+/* --- TÁBLÁZAT EXTRÁK --- */
+.table-scroll-container[b-i4iuf4rnfy] {
+    overflow-x: auto;
 }

@@ -1,0 +1,52 @@
+﻿@page "/befizetesek"
+@using KoliPortal.Lib.MODEL
+@using KoliPortal.Lib.SERVICE
+@layout LakoLayout
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inject SzobakService Szobak
+@inject KarbantartasiKeresekService KarbantartasiKeresek
+@inject SzobaBeosztasokService SzobaBeosztasok
+@inject FelhasznalokService FelhasznalokService
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+<div id="view-payments" class="view-section">
+    <div class="section-header">
+        <h2>Befizetések</h2>
+        <p>Korábbi tranzakciók és számlák.</p>
+    </div>
+    <div class="content-panel">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dátum</th>
+                        <th>Jogcím</th>
+                        <th>Összeg</th>
+                        <th>Státusz</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2026.01.10.</td>
+                        <td>Lakbér - Január</td>
+                        <td>25 000 Ft</td>
+                        <td><span class="badge badge-success">Fizetve</span></td>
+                    </tr>
+                    <tr>
+                        <td>2025.12.12.</td>
+                        <td>Lakbér - December</td>
+                        <td>25 000 Ft</td>
+                        <td><span class="badge badge-success">Fizetve</span></td>
+                    </tr>
+                    <tr>
+                        <td>2025.11.15.</td>
+                        <td>Mosási keret</td>
+                        <td>2 000 Ft</td>
+                        <td><span class="badge badge-success">Fizetve</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

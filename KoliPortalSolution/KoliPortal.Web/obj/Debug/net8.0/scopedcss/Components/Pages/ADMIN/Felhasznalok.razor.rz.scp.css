@@ -155,3 +155,8 @@
     justify-content: flex-end;
     gap: 12px;
 }
+
+/* --- TÁBLÁZAT EXTRÁK --- */
+.table-scroll-container[b-47y4jzkb10] {
+    overflow-x: auto;
+}

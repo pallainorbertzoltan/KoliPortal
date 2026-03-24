@@ -1,0 +1,39 @@
+﻿@page "/hibajelentes"
+@using KoliPortal.Lib.MODEL
+@using KoliPortal.Lib.SERVICE
+@layout LakoLayout
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inject SzobakService Szobak
+@inject KarbantartasiKeresekService KarbantartasiKeresek
+@inject SzobaBeosztasokService SzobaBeosztasok
+@inject FelhasznalokService FelhasznalokService
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+
+<div id="view-maintenance" class="view-section">
+    <div class="section-header">
+        <h2>Hibabejelentés</h2>
+        <p>Műszaki probléma jelzése a karbantartóknak.</p>
+    </div>
+    <div class="content-panel" style="max-width: 600px;">
+        <form action="#"
+              onsubmit="document.querySelector('#view-dashboard form').dispatchEvent(new Event('submit')); return false;">
+            <div class="input-group">
+                <label>Típus</label>
+                <select class="input-field">
+                    <option>Válassz...</option>
+                    <option>Vízszerelés</option>
+                    <option>Villanyszerelés</option>
+                    <option>Egyéb</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Leírás</label>
+                <textarea class="input-field" rows="5"
+                          placeholder="Részletezd a problémát..."></textarea>
+            </div>
+            <button class="btn btn-primary">Jelentés küldése</button>
+        </form>
+    </div>
+</div>

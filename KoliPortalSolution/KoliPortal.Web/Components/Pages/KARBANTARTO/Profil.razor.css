@@ -1,0 +1,109 @@
+﻿/* Fejléc és fő konténer (ha már benne van a globális CSS-edben, ezeket átugorhatod) */
+.view-section {
+    background-color: #f8f9fa;
+    padding: 3rem 1rem;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+    .section-header h2 {
+        color: #101828;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        margin-top: 0;
+    }
+
+    .section-header p {
+        color: #475467;
+        font-size: 1rem;
+        margin: 0;
+    }
+
+/* Profil kártya */
+.content-panel {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #eaecf0;
+    padding: 2.5rem; /* Egy picit nagyobb belső margó, hogy szellős legyen */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    /* Itt megadhatsz egy max-width-et, ha nem akarod, hogy a képernyő széléig érjen */
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Űrlap sorok */
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+    .input-group label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #344054;
+        margin-bottom: 0.5rem;
+    }
+
+/* Alap beviteli mező */
+.input-field {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    color: #101828;
+    background-color: #ffffff;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-family: inherit;
+    transition: border-color 0.2s ease;
+}
+
+    /* KIFEJEZETTEN a readonly (csak olvasható) mezők stílusa */
+    .input-field[readonly] {
+        background-color: #f9fafb; /* Nagyon halvány szürke háttér */
+        color: #475467; /* Egy picit tompább szövegszín */
+        cursor: default; /* Az egérmutató ne legyen "szövegkijelölő" vonal */
+        border-color: #eaecf0;
+    }
+
+        /* Ha valaki mégis rákattint, ne kapjon fókusz-keretet, mert nem szerkeszthető */
+        .input-field[readonly]:focus {
+            outline: none;
+            box-shadow: none;
+            border-color: #eaecf0;
+        }
+
+/* Gombok */
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-family: inherit;
+    margin-top: 1rem; /* Kicsi extra távolság az utolsó inputtól */
+}
+
+.btn-primary {
+    background-color: #10947e;
+    color: #ffffff;
+}
+
+    .btn-primary:hover {
+        background-color: #0d7a68;
+    }
