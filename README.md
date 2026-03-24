@@ -1,5 +1,5 @@
-##Koliportál
+## Koliportál
 
-##Projekmunka tagjai:
+## Projekmunka tagjai:
 - Kercsó Norbert
 - Pallai Norbert Zoltán
