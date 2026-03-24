@@ -1,83 +1,345 @@
 ﻿@page "/karbantartoFeladatok"
 @using KoliPortal.Lib.MODEL
 @using KoliPortal.Lib.SERVICE
+@using System.Security.Claims
+@using System.IdentityModel.Tokens.Jwt
 @layout KarbantartoLayout
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @inject SzobakService Szobak
 @inject KarbantartasiKeresekService KarbantartasiKeresek
+@inject KarbantartasStatuszokService KarbantartasStatuszok
 @inject SzobaBeosztasokService SzobaBeosztasok
 @inject FelhasznalokService FelhasznalokService
 @inject IJSRuntime JS
 @inject NavigationManager Nav
 
-<div id="view-tasks" class="view-section active">
-    <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
-        <h2>Aktuális Feladatok</h2>
-        <p>Itt látod a hozzád rendelt hibajegyeket.</p>
-    </div>
+@if (sikeresMentes)
+{
+	<div class="alert alert-success m-3">
+		<i class="bi bi-check-circle-fill"></i> <strong>Siker:</strong> @sikerUzenet
+	</div>
+}
 
-    <div class="content-panel">
-        <div class="table-container">
-            <table id="tasks-table">
-                <thead>
-                    <tr>
-                        <th>Azonosító</th>
-                        <th>Helyszín</th>
-                        <th>Leírás</th>
-                        <th>Prioritás</th>
-                        <th>Művelet</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Populated by JS -->
-                </tbody>
-            </table>
-        </div>
-    </div>
+<div id="view-tasks" class="view-section active">
+	<div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+		<h2>Aktuális Feladatok</h2>
+		<p>Itt látod a folyamatban lévő vagy új hibajegyeket.</p>
+	</div>
+
+	@if (betoltesAlatt)
+	{
+		<div class="text-center mt-5">
+			<div class="spinner-border text-primary" role="status">
+				<span class="visually-hidden">Betöltés...</span>
+			</div>
+			<p class="mt-2 text-muted">Feladatok letöltése...</p>
+		</div>
+	}
+	else
+	{
+		<div class="content-panel">
+			<div class="table-scroll-container">
+				<table class="data-table" style="width: 100%;">
+					<thead>
+						<tr>
+							<th>Azonosító</th>
+							<th>Bejelentő / Helyszín</th>
+							<th>Leírás</th>
+							<th>Felelős</th>
+							<th class="text-center">Állapot</th>
+							<th class="text-center">Művelet</th>
+						</tr>
+					</thead>
+					<tbody>
+						@if (aktivHibak != null && aktivHibak.Any())
+						{
+							@foreach (var hiba in aktivHibak)
+							{
+								<tr>
+									<td>#@hiba.ID</td>
+									<td>
+										<strong>@GetBejelentoNeve(hiba.BejelentoID)</strong><br />
+										<small class="text-muted">@GetHelyszin(hiba.BejelentoID)</small>
+									</td>
+									<td>
+										<div class="task-desc">
+											<span class="desc-text">@hiba.Leiras</span>
+											<span class="desc-date">@hiba.LetrehozasDatum.ToShortDateString()</span>
+										</div>
+									</td>
+									<td>
+										@if (hiba.KarbantartoID != null && hiba.KarbantartoID > 0)
+										{
+											<span class="badge bg-secondary">@GetBejelentoNeve(hiba.KarbantartoID.Value)</span>
+										}
+										else
+										{
+											<span class="text-muted small fst-italic">Nincs gazdája</span>
+										}
+									</td>
+									<td class="text-center">
+										<span class="priority-badge @GetStatuszCss(hiba.StatuszID)">
+											@GetStatuszNev(hiba.StatuszID)
+										</span>
+									</td>
+									<td class="text-center">
+										<button class="action-btn" title="Kezelés" @onclick="() => MegnyitSzerkesztes(hiba.ID)">
+											<i class="bi bi-pencil"></i>
+										</button>
+									</td>
+								</tr>
+							}
+						}
+						else
+						{
+							<tr>
+								<td colspan="6" class="text-center text-muted p-4">Jelenleg nincs aktív hibajegy! Szép munka!</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	}
 </div>
 
+@* --- MODÁLIS ABLAK A SZERKESZTÉSHEZ --- *@
+@if (isModalOpen)
+{
+	<div class="custom-modal-backdrop">
+		<div class="custom-modal">
+			<div class="modal-header">
+				<h3>Hibajegy Kezelése (#@szerkesztettHiba.ID)</h3>
+				<button type="button" class="btn-close" @onclick="BezarModal"></button>
+			</div>
+
+			<div class="modal-body">
+				@if (!string.IsNullOrEmpty(hibaUzenet))
+				{
+					<div class="alert alert-danger">@hibaUzenet</div>
+				}
+
+				<div class="form-group mb-3">
+					<label class="text-muted small">Bejelentő / Helyszín</label>
+					<div class="fw-bold">@GetBejelentoNeve(szerkesztettHiba.BejelentoID) (@GetHelyszin(szerkesztettHiba.BejelentoID))</div>
+				</div>
+
+				<div class="form-group mb-3">
+					<label class="text-muted small">Hiba leírása</label>
+					<div class="p-2 bg-light border rounded">@szerkesztettHiba.Leiras</div>
+				</div>
+
+				<div class="form-group mb-3">
+					<label>Státusz megváltoztatása</label>
+					<select class="form-select fw-bold" @bind="szerkesztettHiba.StatuszID">
+						@foreach (var stat in statuszok)
+						{
+							<option value="@stat.ID">@stat.Nev</option>
+						}
+					</select>
+					<small class="text-muted mt-1 d-block">Ha elmented, a feladat automatikusan hozzád lesz rendelve.</small>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button class="btn btn-secondary" @onclick="BezarModal">Mégse</button>
+				<button class="btn btn-success" @onclick="MentesGomb">Mentés</button>
+			</div>
+		</div>
+	</div>
+}
+
 @code {
-    private bool betoltesAlatt = true;
-    private string token = "";
+	private bool betoltesAlatt = true;
+	private string token = "";
 
-    protected override async Task OnAfterRenderAsync(bool elsoBetoltes)
-    {
-        if (elsoBetoltes)
-        {
-            try
-            {
-                // Kérjük el a tokent a böngészőtől
-                token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+	// Üzenetek és modal
+	private bool isModalOpen = false;
+	private string hibaUzenet = "";
+	private bool sikeresMentes = false;
+	private string sikerUzenet = "";
 
-                if (string.IsNullOrEmpty(token))
-                {
-                    Nav.NavigateTo("/");
-                    return; // Ha nincs token, visszadob a bejelentkező oldalra
-                }
+	// A BEJELENTKEZETT KARBANTARTÓ AZONOSÍTÓJA
+	private int bejelentkezettKarbantartoId = 0;
 
-                // SZIGORÚ SZEREPKÖR ELLENŐRZÉS CSAK ADMIN!
-                var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-                var jwtToken = handler.ReadJwtToken(token);
-                var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+	// Itt tároljuk az éppen szerkesztett hibajegyet
+	private KarbantartasiKeresek szerkesztettHiba = new();
 
-                // Ha a szerepkör NEM 1-es és NEM admin, akkor login oldal!
-                if (szerepkor != "3" && szerepkor?.ToLower() != "karbantarto")
-                {
-                    // Mindenki más repül a kezdőlapra
-                    Nav.NavigateTo("/");
-                    return;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine($"Hiba az adatok lekérésekor: {ex.Message}");
-            }
-            finally
-            {
-                betoltesAlatt = false;
-                // Mivel ez OnAfterRenderAsyncben van, szólni kell a Blazornak, hogy frissítse az oldalt
-                StateHasChanged();
-            }
-        }
-    }
+	// Adattároló listák az API-ból
+	private List<KarbantartasiKeresek> aktivHibak = new();
+	private List<KarbantartasStatuszok> statuszok = new();
+	private List<KoliPortal.Lib.MODEL.Felhasznalok> felhasznalok = new();
+	private List<SzobaBeosztasok> beosztasok = new();
+	private List<KoliPortal.Lib.MODEL.Szobak> szobak = new();
+
+	// A Lezárt státusz ID-je az adatbázisban
+	private readonly int LEZART_STATUSZ_ID = 3;
+
+	protected override async Task OnAfterRenderAsync(bool elsoBetoltes)
+	{
+		if (elsoBetoltes)
+		{
+			try
+			{
+				token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+
+				if (string.IsNullOrEmpty(token))
+				{
+					Nav.NavigateTo("/");
+					return;
+				}
+
+				// SZIGORÚ SZEREPKÖR ELLENŐRZÉS CSAK KARBANTARTÓ!
+				var handler = new JwtSecurityTokenHandler();
+				var jwtToken = handler.ReadJwtToken(token);
+				var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+
+				if (szerepkor != "3" && szerepkor?.ToLower() != "karbantarto")
+				{
+					Nav.NavigateTo("/");
+					return;
+				}
+
+				// KINYERJÜK A BEJELENTKEZETT FELHASZNÁLÓ ID-JÁT A TOKENBŐL
+				var idClaim = jwtToken.Claims.FirstOrDefault(x =>
+		  x.Type == ClaimTypes.NameIdentifier ||
+		  x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+
+				if (idClaim != null && int.TryParse(idClaim.Value, out int parsedId))
+				{
+					bejelentkezettKarbantartoId = parsedId;
+				}
+
+				await AdatokBetoltese();
+			}
+			catch (Exception ex)
+			{
+				Console.Error.WriteLine($"Hiba az ellenőrzéskor: {ex.Message}");
+			}
+			finally
+			{
+				betoltesAlatt = false;
+				StateHasChanged();
+			}
+		}
+	}
+
+	private async Task AdatokBetoltese()
+	{
+		try
+		{
+			var osszesHiba = await KarbantartasiKeresek.GetKarbantartasiKeresek(token) ?? new();
+			statuszok = await KarbantartasStatuszok.GetKarbantartasiStatuszok(token) ?? new();
+			felhasznalok = await FelhasznalokService.GetFelhasznalok(token) ?? new();
+			beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new();
+			szobak = await Szobak.GetSzobak(token) ?? new();
+
+			// Csak az aktív hibákat listázzuk ki ezen az oldalon
+			aktivHibak = osszesHiba
+		.Where(x => x.StatuszID != LEZART_STATUSZ_ID)
+		.OrderByDescending(x => x.LetrehozasDatum)
+		.ToList();
+		}
+		catch (Exception ex)
+		{
+			Console.Error.WriteLine($"Hiba az adatok lekérésekor: {ex.Message}");
+		}
+	}
+
+	// --- MODÁLIS ABLAK LOGIKÁK ---
+
+	private void MegnyitSzerkesztes(int hibaId)
+	{
+		var hiba = aktivHibak.FirstOrDefault(x => x.ID == hibaId);
+		if (hiba != null)
+		{
+			szerkesztettHiba = new KarbantartasiKeresek
+			{
+				ID = hiba.ID,
+				BejelentoID = hiba.BejelentoID,
+				KarbantartoID = hiba.KarbantartoID,
+				StatuszID = hiba.StatuszID,
+				Leiras = hiba.Leiras,
+				LetrehozasDatum = hiba.LetrehozasDatum
+			};
+
+			hibaUzenet = "";
+			isModalOpen = true;
+		}
+	}
+
+	private void BezarModal()
+	{
+		isModalOpen = false;
+	}
+
+	private async Task MentesGomb()
+	{
+		try
+		{
+			// Ha a karbantartó módosítja, ő lesz a felelős!
+			if (bejelentkezettKarbantartoId > 0)
+			{
+				szerkesztettHiba.KarbantartoID = bejelentkezettKarbantartoId;
+			}
+
+			await KarbantartasiKeresek.UpdateKarbantartasiKeresek(szerkesztettHiba, token);
+
+			isModalOpen = false;
+
+			// Újratöltjük az adatokat, így a "Lezárt" jegyek automatikusan eltűnnek innen
+			await AdatokBetoltese();
+
+			sikerUzenet = "Feladat sikeresen frissítve!";
+			sikeresMentes = true;
+
+			_ = Task.Run(async () =>
+			{
+				await Task.Delay(3000);
+				sikeresMentes = false;
+				await InvokeAsync(StateHasChanged);
+			});
+		}
+		catch (Exception ex)
+		{
+			hibaUzenet = $"Hiba a mentés során: {ex.Message}";
+		}
+	}
+
+	// --- SEGÉDMETÓDUSOK ---
+
+	private string GetBejelentoNeve(int userId)
+	{
+		var user = felhasznalok.FirstOrDefault(x => x.ID == userId);
+		return user != null ? user.Nev : "Ismeretlen";
+	}
+
+	private string GetHelyszin(int userId)
+	{
+		var aktivBeosztas = beosztasok.FirstOrDefault(x => x.UserID == userId && x.TenylegesKikoltozes == null);
+		if (aktivBeosztas != null)
+		{
+			var szoba = szobak.FirstOrDefault(x => x.ID == aktivBeosztas.RoomID);
+			return szoba != null ? $"{szoba.Szobaszam} szoba" : "Ismeretlen szoba";
+		}
+		return "Közösségi tér / Egyéb";
+	}
+
+	private string GetStatuszNev(int statuszId)
+	{
+		var statusz = statuszok.FirstOrDefault(x => x.ID == statuszId);
+		return statusz != null ? statusz.Nev : "Ismeretlen";
+	}
+
+	private string GetStatuszCss(int statuszId)
+	{
+		if (statuszId == 1 || statuszId == 2)
+		{
+			return "p-active";
+		}
+		else
+		{
+			return "p-done";
+		}
+	}
 }

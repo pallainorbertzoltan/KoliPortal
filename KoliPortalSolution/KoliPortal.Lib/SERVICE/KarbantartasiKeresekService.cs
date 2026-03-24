@@ -39,5 +39,13 @@ namespace KoliPortal.Lib.SERVICE
             var response = await _httpClient.PutAsJsonAsync($"api/KarbantartasiKeresek", adat);
             response.EnsureSuccessStatusCode();
         }
+
+        public async Task CreateKarbantartasiKeresek(KarbantartasiKeresek adat, string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.PostAsJsonAsync("api/KarbantartasiKeresek", adat);
+            response.EnsureSuccessStatusCode();
+        }
     }
 } 

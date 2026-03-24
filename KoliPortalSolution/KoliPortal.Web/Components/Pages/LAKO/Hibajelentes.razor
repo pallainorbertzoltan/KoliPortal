@@ -1,39 +1,186 @@
 ﻿@page "/hibajelentes"
 @using KoliPortal.Lib.MODEL
 @using KoliPortal.Lib.SERVICE
+@using System.Security.Claims
+@using System.IdentityModel.Tokens.Jwt
 @layout LakoLayout
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
-@inject SzobakService Szobak
 @inject KarbantartasiKeresekService KarbantartasiKeresek
-@inject SzobaBeosztasokService SzobaBeosztasok
-@inject FelhasznalokService FelhasznalokService
 @inject IJSRuntime JS
 @inject NavigationManager Nav
-
 
 <div id="view-maintenance" class="view-section">
     <div class="section-header">
         <h2>Hibabejelentés</h2>
         <p>Műszaki probléma jelzése a karbantartóknak.</p>
     </div>
-    <div class="content-panel" style="max-width: 600px;">
-        <form action="#"
-              onsubmit="document.querySelector('#view-dashboard form').dispatchEvent(new Event('submit')); return false;">
-            <div class="input-group">
-                <label>Típus</label>
-                <select class="input-field">
-                    <option>Válassz...</option>
-                    <option>Vízszerelés</option>
-                    <option>Villanyszerelés</option>
-                    <option>Egyéb</option>
-                </select>
+
+    @if (betoltesAlatt)
+    {
+        <div class="text-center mt-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Betöltés...</span>
             </div>
-            <div class="input-group">
-                <label>Leírás</label>
-                <textarea class="input-field" rows="5"
-                          placeholder="Részletezd a problémát..."></textarea>
-            </div>
-            <button class="btn btn-primary">Jelentés küldése</button>
-        </form>
-    </div>
+            <p class="mt-2 text-muted">Azonosítás folyamatban...</p>
+        </div>
+    }
+    else
+    {
+        <div class="content-panel" style="max-width: 600px;">
+
+            @if (sikeresKudles)
+            {
+                <div class="alert alert-success mb-4">
+                    <i class="bi bi-check-circle-fill"></i> <strong>Siker:</strong> @sikerUzenet
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(hibaUzenet))
+            {
+                <div class="alert alert-danger mb-4">
+                    <i class="bi bi-exclamation-triangle-fill"></i> @hibaUzenet
+                </div>
+            }
+
+            <form @onsubmit="HibajelentesKuldese" @onsubmit:preventDefault="true">
+                <div class="input-group">
+                    <label>Típus</label>
+                    <select class="input-field" @bind="valasztottTipus">
+                        <option value="" disabled selected>Válassz...</option>
+                        <option value="Vízszerelés">Vízszerelés</option>
+                        <option value="Villanyszerelés">Villanyszerelés</option>
+                        <option value="Asztalos munka">Asztalos munka / Bútor</option>
+                        <option value="Egyéb">Egyéb</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Leírás</label>
+                    <textarea class="input-field" rows="5" @bind="leiras"
+                              placeholder="Részletezd a problémát pontosan (pl. 204-es szoba, csöpög a csap a fürdőben)..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mt-3">Jelentés küldése</button>
+            </form>
+        </div>
+    }
 </div>
+
+@code {
+    private string token = "";
+    private bool betoltesAlatt = true;
+    private int sajatId = 0;
+
+    // Üzenetek
+    private string hibaUzenet = "";
+    private string sikerUzenet = "";
+    private bool sikeresKudles = false;
+
+    // Űrlap mezők
+    private string valasztottTipus = "";
+    private string leiras = "";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                // 1. Token ellenőrzése
+                token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    Nav.NavigateTo("/", forceLoad: true);
+                    return;
+                }
+
+                // 2. JWT dekódolása, szerepkör és ID kinyerése
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+
+                var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+
+                // Csak Lakó (2) küldhet be hibát erről a felületről
+                if (szerepkor != "2" && szerepkor?.ToLower() != "lako")
+                {
+                    Nav.NavigateTo("/", forceLoad: true);
+                    return;
+                }
+
+                var idClaim = jwtToken.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimTypes.NameIdentifier ||
+                    x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+
+                if (idClaim != null && int.TryParse(idClaim.Value, out int parsedId))
+                {
+                    sajatId = parsedId;
+                }
+                else
+                {
+                    hibaUzenet = "Nem sikerült azonosítani a felhasználót a tokenből.";
+                }
+            }
+            catch (Exception ex)
+            {
+                hibaUzenet = $"Rendszerhiba: {ex.Message}";
+            }
+            finally
+            {
+                betoltesAlatt = false;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private async Task HibajelentesKuldese()
+    {
+        hibaUzenet = "";
+        sikeresKudles = false;
+
+        // --- VALIDÁCIÓ ---
+        if (string.IsNullOrWhiteSpace(valasztottTipus))
+        {
+            hibaUzenet = "Kérlek, válassz egy hiba típust a listából!";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(leiras) || leiras.Length < 10)
+        {
+            hibaUzenet = "Kérlek, részletezd a problémát! (Legalább 10 karakter)";
+            return;
+        }
+
+        try
+        {
+            // Összefűzzük a típust és a leírást, hogy egyben mehessen be az adatbázis 'Leiras' oszlopába
+            string veglegesLeiras = $"[{valasztottTipus}] {leiras}";
+
+            var ujHiba = new KarbantartasiKeresek
+            {
+                BejelentoID = sajatId,
+                StatuszID = 1, // 1 = Új / Bejelentett státusz (Állítsd be az adatbázisod logikája szerint!)
+                Leiras = veglegesLeiras,
+                LetrehozasDatum = DateTime.Now
+            };
+
+            await KarbantartasiKeresek.CreateKarbantartasiKeresek(ujHiba, token);
+
+            // Ha sikeres, űrlap ürítése és üzenet megjelenítése
+            valasztottTipus = "";
+            leiras = "";
+            sikerUzenet = "Hibajelentésedet sikeresen rögzítettük! A karbantartók hamarosan intézkednek.";
+            sikeresKudles = true;
+
+            // Zöld üzenet eltüntetése 5 másodperc után
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(5000);
+                sikeresKudles = false;
+                await InvokeAsync(StateHasChanged);
+            });
+        }
+        catch (Exception ex)
+        {
+            hibaUzenet = $"Hiba történt a küldés során: {ex.Message}";
+        }
+    }
+}

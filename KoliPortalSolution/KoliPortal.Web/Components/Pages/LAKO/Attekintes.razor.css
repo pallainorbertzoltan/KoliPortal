@@ -1,123 +1,150 @@
-﻿/* --- STATISZTIKAI KÁRTYÁK RÁCS --- */
+﻿/* --- ALAP SZEKCIÓK --- */
+.page-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+    .page-header h1 {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- STATISZTIKA KÁRTYÁK (Grid elrendezés) --- */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 24px;
-    margin-top: 32px;
+    max-width: 1200px;
+    margin: 0 auto 2rem auto;
 }
 
 .stat-card {
-    background: #ffffff;
-    border-radius: 12px;
+    background-color: #ffffff;
+    border-radius: 16px;
     padding: 24px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+/* --- IKONOK ÉS SZÍNEK --- */
 .stat-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 12px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .icon-large {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
 }
 
+/* Lila (Szoba) */
 .stat-icon.purple {
     background-color: #f3e8ff;
     color: #9333ea;
 }
 
+/* Kék (Lakbér) */
 .stat-icon.blue {
     background-color: #e0f2fe;
     color: #0284c7;
 }
 
+/* Narancs (Hibák) */
 .stat-icon.orange {
     background-color: #ffedd5;
     color: #ea580c;
 }
 
-.stat-icon.green {
-    background-color: #dcfce7;
-    color: #16a34a;
-}
-
+/* --- KÁRTYA SZÖVEGEK --- */
 .stat-details h3 {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 700;
     color: #0f172a;
 }
 
 .stat-details p {
     margin: 4px 0 0 0;
+    font-size: 0.95rem;
     color: #64748b;
-    font-size: 0.9rem;
+    font-weight: 500;
 }
 
-/* --- TARTALOM RÁCS (Dashboard specifikus) --- */
-.content-grid {
-    display: flex;
-    flex-wrap: wrap; /* Ez teszi lehetővé az egymás alá ugrást */
-    gap: 20px; /* Távolság a kártyák között */
-    margin-top: 32px;
-}
-
+/* --- TÁBLÁZAT DOBOZ --- */
 .recent-residents-card {
-    flex: 2; /* Nagyobb helyet foglal (pl. a szélesség 2/3-át) */
-    min-width: 300px; /* Ha ennél szűkebb lenne, leugrik a következő sorba */
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
 }
 
-.capacity-card {
-    flex: 1; /* Kevesebb helyet foglal (pl. a szélesség 1/3-át) */
-    min-width: 250px; /* Minimum szélesség */
+.card-header h2 {
+    color: #0f172a;
+    margin: 0;
+    padding-left: 20px;
 }
+
+/* --- TÁBLÁZAT --- */
+.table-scroll-container {
+    overflow-x: auto;
+}
+
+.data-table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+}
+
+    .data-table th {
+        background-color: #f8fafc;
+        color: #475569;
+        font-weight: 600;
+        padding: 16px 20px;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .data-table td {
+        padding: 16px 20px;
+        border-bottom: 1px solid #e2e8f0;
+        vertical-align: middle;
+        color: #1e293b;
+    }
+
+    .data-table tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    .data-table tbody tr:last-child td {
+        border-bottom: none;
+    }
 
 /* --- STÁTUSZ JELVÉNYEK --- */
 .status-badge {
-    padding: 6px 12px;
-    border-radius: 999px;
-    font-size: 0.8rem;
-    font-weight: 700;
-}
-
-    .status-badge.aktív {
-        background-color: #dcfce7;
-        color: #16a34a;
-    }
-
-/* --- KAPACITÁS LISTA --- */
-.capacity-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.capacity-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.floor-name {
-    font-weight: 500;
-    color: #0f172a;
-}
-
-.floor-capacity {
-    color: #64748b;
-    font-size: 0.9rem;
-}
-
-/* --- TÁBLÁZAT EXTRÁK --- */
-.table-scroll-container {
-    overflow-x: auto;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
 }

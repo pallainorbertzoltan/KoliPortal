@@ -1,111 +1,109 @@
-﻿/* Teljes nézet és háttér */
+﻿/* --- ALAP SZEKCIÓ --- */
 .view-section {
-    background-color: #f8f9fa; /* Világos háttér a kártya mögött */
-    padding: 3rem 1rem;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
+    max-width: 800px; /* Kicsit szélesebb hagyhatjuk, hogy a szövegdoboz kényelmes legyen */
+    margin: 40px auto;
+    padding: 0 20px;
 }
 
-/* Fejléc középre igazítása */
 .section-header {
-    text-align: center;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 10px;
 }
 
     .section-header h2 {
-        color: #101828; /* Sötétkék/fekete */
-        font-size: 2rem;
+        margin: 0;
+        font-size: 1.6rem;
         font-weight: 700;
-        margin-bottom: 0.75rem;
-        margin-top: 0;
+        color: #0f172a;
     }
 
     .section-header p {
-        color: #475467; /* Szürke alcím */
-        font-size: 1rem;
-        margin: 0;
+        margin: 6px 0 0 0;
+        font-size: 0.95rem;
+        color: #64748b;
     }
 
-/* Ha a korábbi kártya stílust nem a .content-panel-re tetted, 
-   akkor itt beállítjuk a fehér hátteret és a lekerekítést az űrlaphoz */
+/* --- TARTALOM KÁRTYA (Űrlap doboza) --- */
 .content-panel {
     background-color: #ffffff;
     border-radius: 12px;
-    border: 1px solid #eaecf0;
-    padding: 2rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    margin: 0 auto; /* Középre igazítás */
-    width: 100%;
-    /* A HTML-ben van egy beágyazott style="max-width: 600px;", 
-       ezért azt itt opcionálisan kihagyhatod, de jó, ha CSS-ből van vezérelve */
+    padding: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+    margin: 0 auto; /* Középre igazítja a max-width miatt */
 }
 
-/* Űrlap elemek csoportosítása (térközök) */
+/* --- BEVITELI MEZŐK ÉS CÍMKÉK --- */
 .input-group {
     margin-bottom: 1.5rem;
 }
 
-    /* Címkék (Labels) */
     .input-group label {
         display: block;
-        font-size: 0.875rem;
         font-weight: 600;
-        color: #344054; /* Sötétszürke */
-        margin-bottom: 0.5rem;
+        margin-bottom: 8px;
+        color: #475569;
+        font-size: 0.95rem;
     }
 
-/* Beviteli mezők (Select és Textarea) */
 .input-field {
     width: 100%;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    color: #101828;
-    background-color: #ffffff;
-    border: 1px solid #d0d5dd;
+    padding: 12px 16px;
     border-radius: 8px;
-    box-sizing: border-box; /* Ne lógjon ki a padding miatt a konténerből */
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    font-family: inherit;
+    border: 1px solid #cbd5e1;
+    font-size: 1rem;
+    color: #1e293b;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit; /* Hogy a textarea is felvegye az alap betűtípust */
 }
 
-    /* Kijelölés (Focus) effekt a mezőkre */
+    /* Fókusz állapot (amikor belekattint a diák) */
     .input-field:focus {
         outline: none;
-        border-color: #10947e; /* A gomb színéhez igazított keret */
-        box-shadow: 0 0 0 4px rgba(16, 148, 126, 0.1); /* Halvány teal ragyogás */
+        border-color: #0ea5e9;
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15); /* Finom kék ragyogás */
     }
 
-/* Kifejezetten a leírás szövegdobozához (ahogy a képen is látszik) */
+/* Kifejezetten a legördülő menü (Select) extra stílusa */
+select.input-field {
+    cursor: pointer;
+    appearance: none; /* Eltünteti a csúnya alapértelmezett nyilat */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    padding-right: 2.5rem; /* Hely a nyílnak */
+}
+
+/* Kifejezetten a többsoros szövegdoboz (Textarea) extra stílusa */
 textarea.input-field {
     resize: vertical; /* Csak függőlegesen lehessen átméretezni */
-    font-family: 'Courier New', Courier, monospace; /* Írógépes betűtípus a kódhoz/leíráshoz */
-    min-height: 120px;
+    min-height: 100px;
+    line-height: 1.5;
 }
 
-/* Gomb alapstílus */
-.btn {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 500;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    font-family: inherit;
-}
-
-/* Elsődleges (Zöld/Teal) gomb stílus */
+/* --- KÜLDÉS GOMB --- */
 .btn-primary {
-    background-color: #10947e; /* A képen látható kékes-zöld (teal) szín */
-    color: #ffffff;
+    background-color: #0ea5e9;
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0 2px 4px rgba(14, 165, 233, 0.2);
 }
 
     .btn-primary:hover {
-        background-color: #0d7a68; /* Sötétebb árnyalat ha fölé viszed az egeret */
+        background-color: #0284c7;
+        box-shadow: 0 4px 6px rgba(14, 165, 233, 0.3);
+    }
+
+    .btn-primary:active {
+        transform: scale(0.98);
     }

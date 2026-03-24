@@ -3,19 +3,180 @@
 @using KoliPortal.Lib.SERVICE
 @layout KarbantartoLayout
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
+
 @inject SzobakService Szobak
 @inject KarbantartasiKeresekService KarbantartasiKeresek
+@inject KarbantartasStatuszokService KarbantartasStatuszok
 @inject SzobaBeosztasokService SzobaBeosztasok
 @inject FelhasznalokService FelhasznalokService
 @inject IJSRuntime JS
 @inject NavigationManager Nav
 
-<div id="view-history" class="view-section">
-    <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
-        <h2>Előzmények</h2>
-        <p>Lezárt feladatok listája.</p>
-    </div>
-    <div class="content-panel">
-        <p>Nincs megjeleníthető előzmény.</p>
-    </div>
-</div>
+@if (betoltesAlatt)
+{
+	<div class="text-center mt-5">
+		<div class="spinner-border text-primary" role="status">
+			<span class="visually-hidden">Betöltés...</span>
+		</div>
+		<p class="mt-2 text-muted">Előzmények letöltése...</p>
+	</div>
+}
+else
+{
+	<div id="view-history" class="view-section">
+		<div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+			<h2>Előzmények</h2>
+			<p>Lezárt feladatok listája.</p>
+		</div>
+
+		<div class="content-panel">
+			@if (lezartHibak != null && lezartHibak.Any())
+			{
+				<div class="table-scroll-container">
+					<table class="data-table" style="width: 100%;">
+						<thead>
+							<tr>
+								<th>Azonosító</th>
+								<th>Bejelentő / Helyszín</th>
+								<th>Leírás</th>
+								<th class="text-center">Állapot</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var hiba in lezartHibak)
+							{
+								<tr class="text-muted">
+									<td>#@hiba.ID</td>
+									<td>
+										<strong>@GetBejelentoNeve(hiba.BejelentoID)</strong><br />
+										<small class="text-muted">@GetHelyszin(hiba.BejelentoID)</small>
+									</td>
+									<td>
+										<div class="task-desc">
+											<span class="desc-text">@hiba.Leiras</span>
+											<span class="desc-date">@hiba.LetrehozasDatum.ToShortDateString()</span>
+										</div>
+									</td>
+									<td class="text-center">
+										<span class="priority-badge p-done">@GetStatuszNev(hiba.StatuszID)</span>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			}
+			else
+			{
+				<div class="empty-state-card">
+					Nincs megjeleníthető előzmény.
+				</div>
+			}
+		</div>
+	</div>
+}
+
+@code {
+	private string token = "";
+	private bool betoltesAlatt = true;
+
+	// Lista, amiben csak a lezárt hibákat tároljuk
+	private List<KarbantartasiKeresek> lezartHibak = new();
+
+	// Segédlisták a nevek és szobák kiderítéséhez
+	private List<KarbantartasStatuszok> statuszok = new();
+	private List<KoliPortal.Lib.MODEL.Felhasznalok> felhasznalok = new();
+	private List<SzobaBeosztasok> beosztasok = new();
+	private List<KoliPortal.Lib.MODEL.Szobak> szobak = new();
+
+	// A Lezárt státusz ID-je az adatbázisban
+	private readonly int LEZART_STATUSZ_ID = 3;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			try
+			{
+				// Karszalag ellenőrzése
+				token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+
+				if (string.IsNullOrEmpty(token))
+				{
+					Nav.NavigateTo("/");
+					return;
+				}
+
+				// SZIGORÚ SZEREPKÖR ELLENŐRZÉS (Karbantartó jöhet be)
+				var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+				var jwtToken = handler.ReadJwtToken(token);
+				var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+
+				if (szerepkor != "3" && szerepkor?.ToLower() != "karbantarto")
+				{
+					Nav.NavigateTo("/");
+					return;
+				}
+
+				await AdatokBetoltese();
+			}
+			catch (Exception ex)
+			{
+				Console.Error.WriteLine($"Hiba az ellenőrzéskor: {ex.Message}");
+			}
+			finally
+			{
+				betoltesAlatt = false;
+				StateHasChanged(); // Szólunk a képernyőnek, hogy rajzolja újra magát
+			}
+		}
+	}
+
+	private async Task AdatokBetoltese()
+	{
+		try
+		{
+			// Párhuzamosan letöltjük az összes szükséges táblát
+			var osszesHiba = await KarbantartasiKeresek.GetKarbantartasiKeresek(token) ?? new();
+			statuszok = await KarbantartasStatuszok.GetKarbantartasiStatuszok(token) ?? new();
+			felhasznalok = await FelhasznalokService.GetFelhasznalok(token) ?? new();
+			beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new();
+			szobak = await Szobak.GetSzobak(token) ?? new();
+
+			// Kiszűrjük CSAK a lezártakat, és a legújabbat tesszük legfelülre
+			lezartHibak = osszesHiba
+		.Where(x => x.StatuszID == LEZART_STATUSZ_ID)
+		.OrderByDescending(x => x.LetrehozasDatum)
+		.ToList();
+		}
+		catch (Exception ex)
+		{
+			Console.Error.WriteLine($"Hiba az adatok letöltésekor: {ex.Message}");
+		}
+	}
+
+	// --- SEGÉDMETÓDUSOK A MEGJELENÍTÉSHEZ ---
+
+	private string GetBejelentoNeve(int userId)
+	{
+		var user = felhasznalok.FirstOrDefault(x => x.ID == userId);
+		return user != null ? user.Nev : "Ismeretlen felhasználó";
+	}
+
+	private string GetHelyszin(int userId)
+	{
+		var aktivBeosztas = beosztasok.FirstOrDefault(x => x.UserID == userId && x.TenylegesKikoltozes == null);
+		if (aktivBeosztas != null)
+		{
+			var szoba = szobak.FirstOrDefault(x => x.ID == aktivBeosztas.RoomID);
+			return szoba != null ? $"{szoba.Szobaszam} szoba" : "Ismeretlen szoba";
+		}
+		return "Egyéb";
+	}
+
+	private string GetStatuszNev(int statuszId)
+	{
+		var statusz = statuszok.FirstOrDefault(x => x.ID == statuszId);
+		return statusz != null ? statusz.Nev : "Lezárt";
+	}
+}

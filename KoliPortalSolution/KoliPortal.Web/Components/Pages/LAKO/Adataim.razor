@@ -1,34 +1,144 @@
 ﻿@page "/adataim"
 @using KoliPortal.Lib.MODEL
 @using KoliPortal.Lib.SERVICE
+@using System.Security.Claims
+@using System.IdentityModel.Tokens.Jwt
 @layout LakoLayout
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @inject SzobakService Szobak
-@inject KarbantartasiKeresekService KarbantartasiKeresek
 @inject SzobaBeosztasokService SzobaBeosztasok
 @inject FelhasznalokService FelhasznalokService
 @inject IJSRuntime JS
 @inject NavigationManager Nav
 
+@if (betoltesAlatt)
+{
+    <div class="text-center mt-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Betöltés...</span>
+        </div>
+        <p class="mt-2 text-muted">Adataid betöltése...</p>
+    </div>
+}
+else if (!string.IsNullOrEmpty(hibaUzenet))
+{
+    <div class="alert alert-danger mx-auto mt-4" style="max-width: 600px;">
+        <i class="bi bi-exclamation-triangle-fill"></i> @hibaUzenet
+    </div>
+}
+else if (sajatUser != null)
+{
+    <div id="view-profile" class="view-section">
+        <div class="section-header">
+            <h2>Saját Adataim</h2>
+            <p>Személyes információk és szoba beosztás.</p>
+        </div>
+        <div class="content-panel">
+            <div class="input-group">
+                <label>Teljes Név</label>
+                <input type="text" class="input-field" value="@sajatUser.Nev" readonly>
+            </div>
 
-<div id="view-profile" class="view-section">
-    <div class="section-header">
-        <h2>Saját Adataim</h2>
-        <p>Személyes információk és szoba beosztás.</p>
+            <div class="input-group">
+                <label>E-mail cím</label>
+                <input type="text" class="input-field" value="@sajatUser.Email" readonly>
+            </div>
+
+            <div class="input-group">
+                <label>Szoba száma</label>
+                <input type="text" class="input-field font-monospace fw-bold text-primary" value="@sajatSzobaSzam" readonly>
+            </div>
+
+            <button class="btn-primary mt-3" @onclick="JelszoModositasKattintas">Jelszó módosítása</button>
+        </div>
     </div>
-    <div class="content-panel">
-        <div class="input-group">
-            <label>Teljes Név</label>
-            <input type="text" class="input-field" value="Kovács Norbert" readonly>
-        </div>
-        <div class="input-group">
-            <label>E-mail cím</label>
-            <input type="text" class="input-field" value="diak@koliportal.hu" readonly>
-        </div>
-        <div class="input-group">
-            <label>Szoba száma</label>
-            <input type="text" class="input-field" value="204" readonly>
-        </div>
-        <button class="btn btn-primary">Jelszó módosítása</button>
-    </div>
-</div>
+}
+
+@code {
+    private string token = "";
+    private bool betoltesAlatt = true;
+    private string hibaUzenet = "";
+    private int sajatId = 0;
+
+    // Az API-ból érkező saját adatok
+    private KoliPortal.Lib.MODEL.Felhasznalok sajatUser;
+    private string sajatSzobaSzam = "Nincs szobába beosztva";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                // 1. Token ellenőrzése
+                token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    Nav.NavigateTo("/", forceLoad: true);
+                    return;
+                }
+
+                // 2. JWT dekódolása és a Diák ID kinyerése
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+
+                var idClaim = jwtToken.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimTypes.NameIdentifier ||
+                    x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+
+                if (idClaim != null && int.TryParse(idClaim.Value, out int parsedId))
+                {
+                    sajatId = parsedId;
+                }
+                else
+                {
+                    hibaUzenet = "Nem sikerült azonosítani a felhasználót a tokenből.";
+                    betoltesAlatt = false;
+                    StateHasChanged();
+                    return;
+                }
+
+                // 3. Felhasználói adatok lekérése a szerverről
+                var osszesUser = await FelhasznalokService.GetFelhasznalok(token) ?? new();
+                sajatUser = osszesUser.FirstOrDefault(u => u.ID == sajatId);
+
+                if (sajatUser == null)
+                {
+                    hibaUzenet = "A felhasználói fiókod nem található az adatbázisban.";
+                    return;
+                }
+
+                // 4. Szoba lekérése (Megkeressük az aktív beosztást)
+                var osszesBeosztas = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new();
+                var aktivBeosztas = osszesBeosztas.FirstOrDefault(b => b.UserID == sajatId && b.TenylegesKikoltozes == null);
+
+                if (aktivBeosztas != null)
+                {
+                    var osszesSzoba = await Szobak.GetSzobak(token) ?? new();
+                    var szoba = osszesSzoba.FirstOrDefault(sz => sz.ID == aktivBeosztas.RoomID);
+                    if (szoba != null)
+                    {
+                        sajatSzobaSzam = $"{szoba.Szobaszam} (Férőhely: {szoba.FerohelyMax})";
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                hibaUzenet = $"Hiba az adatok betöltésekor: {ex.Message}";
+            }
+            finally
+            {
+                betoltesAlatt = false;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void JelszoModositasKattintas()
+    {
+        // Később ide lehet kötni egy felugró ablakot a jelszócseréhez!
+        Console.WriteLine("Jelszó módosítás gomb megnyomva.");
+    }
+}
