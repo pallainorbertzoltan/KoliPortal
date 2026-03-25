@@ -9,175 +9,225 @@
 @inject KarbantartasiKeresekService KarbantartasiKeresek
 @inject SzobaBeosztasokService SzobaBeosztasok
 @inject PenzugyekService Penzugyek
-@inject FelhasznalokService FelhasznalokService
+@inject FizetesTipusokService FizetesTipusok
 @inject IJSRuntime JS
 @inject NavigationManager Nav
 
 <header class="page-header text-center">
-    <h1 class="mb-2">Üdvözlünk a KoliPortál oldalán!</h1>
-    <p class="text-muted">Itt áttekintheted a kollégiumi státuszodat.</p>
+    <h1 class="mb-2">Üdvözlünk a KoliPortál oldalán!</h1>
+    <p class="text-muted">Itt áttekintheted a kollégiumi státuszodat.</p>
 </header>
 
 @if (betoltesAlatt)
 {
-    <div class="text-center mt-5">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Betöltés...</span>
-        </div>
-        <p class="mt-2 text-muted">Adataid letöltése...</p>
-    </div>
+    <div class="text-center mt-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Betöltés...</span>
+        </div>
+        <p class="mt-2 text-muted">Adataid letöltése...</p>
+    </div>
 }
 else if (!string.IsNullOrEmpty(hibaUzenet))
 {
-    <div class="alert alert-danger mx-auto mt-4" style="max-width: 600px;">
-        <i class="bi bi-exclamation-triangle-fill"></i> @hibaUzenet
-    </div>
+    <div class="alert alert-danger mx-auto mt-4" style="max-width: 600px;">
+        <i class="bi bi-exclamation-triangle-fill"></i> @hibaUzenet
+    </div>
 }
 else
 {
-    <div class="stats-grid">
-        @* --- Jelenlegi szoba kártya --- *@
-        <div class="stat-card">
-            <div class="stat-icon purple">
-                <i class="bi bi-door-open-fill icon-large"></i>
-            </div>
-            <div class="stat-details">
-                <h3>@jelenlegiSzobaszam</h3>
-                <p>Jelenlegi szobád</p>
-            </div>
-        </div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon purple">
+                <i class="bi bi-door-open-fill icon-large"></i>
+            </div>
+            <div class="stat-details">
+                <h3>@jelenlegiSzobaszam</h3>
+                <p>Jelenlegi szobád</p>
+            </div>
+        </div>
 
-        @* --- Következő lakbér kártya --- *@
-        <div class="stat-card">
-            <div class="stat-icon blue">
-                <i class="bi bi-cash-stack icon-large"></i>
-            </div>
-            <div class="stat-details">
-                <h3>Folyamatban</h3>
-                <p>Következő lakbér</p>
-            </div>
-        </div>
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <i class="bi bi-cash-stack icon-large"></i>
+            </div>
+            <div class="stat-details">
+                <h3>@(fizetendoOsszeg > 0 ? fizetendoOsszeg.ToString("N0") + " Ft" : "Nincs tartozás")</h3>
+                <p>Fizetendő összeg</p>
+            </div>
+        </div>
 
-        @* --- Saját nyitott hibajelentéseid --- *@
-        <div class="stat-card">
-            <div class="stat-icon orange">
-                <i class="bi bi-tools icon-large"></i>
-            </div>
-            <div class="stat-details">
-                <h3>@sajatNyitottHibakSzama db</h3>
-                <p>Folyamatban lévő hibajelentéseid</p>
-            </div>
-        </div>
-    </div>
+        <div class="stat-card">
+            <div class="stat-icon orange">
+                <i class="bi bi-tools icon-large"></i>
+            </div>
+            <div class="stat-details">
+                <h3>@sajatNyitottHibakSzama db</h3>
+                <p>Folyamatban lévő hibajelentéseid</p>
+            </div>
+        </div>
+    </div>
 
-    <div class="content-wrapper mt-5">
-        <div class="card recent-residents-card shadow-sm border-0">
-            <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
-                <h2 class="fs-4 fw-bold">Legutóbbi Befizetéseid</h2>
-            </div>
-            <div class="card-body p-0">
-                <div class="table-scroll-container">
-                    <table class="data-table">
-                        <thead class="bg-light">
-                            <tr>
-                                <th>Dátum</th>
-                                <th>Jogcím</th>
-                                <th>Összeg</th>
-                                <th class="text-center">Státusz</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <h1>Folyamatban...</h1>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="content-wrapper mt-5">
+        <div class="card recent-residents-card shadow-sm border-0">
+            <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+                <h2 class="fs-4 fw-bold">Legutóbbi Befizetéseid</h2>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-scroll-container">
+                    <table class="data-table">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Befizetés dátuma</th>
+                                <th>Jogcím</th>
+                                <th>Összeg</th>
+                                <th class="text-center">Státusz</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (sajatBefizetesek != null && sajatBefizetesek.Any())
+                            {
+                                @foreach (var tetel in sajatBefizetesek)
+                                {
+                                    <tr>
+                                        <td>
+                                            <strong>@(tetel.BefizetesDatum?.ToShortDateString() ?? tetel.Esedekesseg.ToShortDateString())</strong>
+                                        </td>
+                                        <td style="font-weight: 500;">@GetTipusNev(tetel.TipusID)</td>
+                                        <td style="font-weight: 700;">@tetel.Osszeg.ToString("N0") Ft</td>
+                                        <td class="text-center">
+                                            <span class="badge badge-success">Fizetve</span>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted p-5">Még nincsenek rögzített befizetéseid.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 @code {
-    private bool betoltesAlatt = true;
-    private string token = "";
-    private string hibaUzenet = "";
-    private int sajatId = 0;
+    private bool betoltesAlatt = true;
+    private string token = "";
+    private string hibaUzenet = "";
+    private int sajatId = 0;
 
-    // Statisztika változók
-    private string jelenlegiSzobaszam = "Nincs";
-    private int sajatNyitottHibakSzama = 0;
+    // Statisztika változók
+    private string jelenlegiSzobaszam = "Nincs";
+    private int sajatNyitottHibakSzama = 0;
+    private decimal fizetendoOsszeg = 0;
 
-    // Saját befizetések listája
-    private List<Penzugyek> sajatBefizetesek = new();
+    // Listák az API-ból
+    private List<Penzugyek> sajatBefizetesek = new();
+    
+	// Objektum listája a típusokhoz
+    private List<FizetesTipusok> fizetesTipusokLista = new();
 
-    protected override async Task OnAfterRenderAsync(bool elsoBetoltes)
-    {
-        if (elsoBetoltes)
-        {
-            try
-            {
-                // Kérjük el a tokent a böngészőtől
-                token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+    protected override async Task OnAfterRenderAsync(bool elsoBetoltes)
+    {
+        if (elsoBetoltes)
+        {
+            try
+            {
+                // Kérjük el a tokent a böngészőtől
+                token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
 
-                if (string.IsNullOrEmpty(token))
-                {
-                    Nav.NavigateTo("/", forceLoad: true);
-                    return;
-                }
+                if (string.IsNullOrEmpty(token))
+                {
+                    Nav.NavigateTo("/");
+                    return;
+                }
 
-                // SZIGORÚ SZEREPKÖR ELLENŐRZÉS ÉS ID KINYERÉS!
-                var handler = new JwtSecurityTokenHandler();
-                var jwtToken = handler.ReadJwtToken(token);
-                var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+                var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
 
-                // Ha a szerepkör NEM Lakó (2), repül a loginra
-                if (szerepkor != "2" && szerepkor?.ToLower() != "lako")
-                {
-                    Nav.NavigateTo("/", forceLoad: true);
-                    return;
-                }
+                // Ha a szerepkör nem Lako (2), repül a loginra
+                if (szerepkor != "2" && szerepkor?.ToLower() != "lako")
+                {
+                    Nav.NavigateTo("/");
+                    return;
+                }
 
-                // Kinyerjük a saját azonosítónkat!
-                var idClaim = jwtToken.Claims.FirstOrDefault(x =>
-                    x.Type == ClaimTypes.NameIdentifier ||
-                    x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+                // Kinyerjük a saját azonosítónkat
+                var idClaim = jwtToken.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimTypes.NameIdentifier ||
+                    x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
 
-                if (idClaim != null && int.TryParse(idClaim.Value, out int parsedId))
-                {
-                    sajatId = parsedId;
-                }
+                if (idClaim != null && int.TryParse(idClaim.Value, out int parsedId))
+                {
+                    sajatId = parsedId;
+                }
 
-                // --- ADATOK LEKÉRÉSE A SAJÁT ID ALAPJÁN ---
+				// Adataok lekérése az API-ból id alapján
 
-                // 1. Saját szoba megkeresése
-                var beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new();
-                var aktivBeosztasom = beosztasok.FirstOrDefault(b => b.UserID == sajatId && b.TenylegesKikoltozes == null);
+                // Saját szoba megkeresése
+                var beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new();
+                var aktivBeosztasom = beosztasok.FirstOrDefault(b => b.UserID == sajatId && b.TenylegesKikoltozes == null);
 
-                if (aktivBeosztasom != null)
-                {
-                    var osszesSzoba = await Szobak.GetSzobak(token) ?? new();
-                    var szobam = osszesSzoba.FirstOrDefault(s => s.ID == aktivBeosztasom.RoomID);
-                    if (szobam != null)
-                    {
-                        jelenlegiSzobaszam = szobam.Szobaszam;
-                    }
-                }
+                if (aktivBeosztasom != null)
+                {
+                    var osszesSzoba = await Szobak.GetSzobak(token) ?? new();
+                    var szobam = osszesSzoba.FirstOrDefault(s => s.ID == aktivBeosztasom.RoomID);
+                    if (szobam != null)
+                    {
+                        jelenlegiSzobaszam = szobam.Szobaszam;
+                    }
+                }
 
-                // 2. Saját nyitott hibáim (ahol én vagyok a bejelentő, és a státusz NEM lezárt)
-                var hibak = await KarbantartasiKeresek.GetKarbantartasiKeresek(token) ?? new();
-                sajatNyitottHibakSzama = hibak.Count(h => h.BejelentoID == sajatId && h.StatuszID != 3);
+                // Saját nyitott hibáim ahol én vagyok a bejelentő, és a státusz nem lezárt
+                var hibak = await KarbantartasiKeresek.GetKarbantartasiKeresek(token) ?? new();
+                sajatNyitottHibakSzama = hibak.Count(h => h.BejelentoID == sajatId && h.StatuszID != 3);
 
-                // 3. Saját pénzügyeim (Legújabb 5 db)
+                // Saját pénzügyeim lekérése
+                var osszesPenzugy = await Penzugyek.GetPenzugyek(token) ?? new();
 
-            }
-            catch (Exception ex)
-            {
-                hibaUzenet = $"Hiba az adatok lekérésekor: {ex.Message}";
-            }
-            finally
-            {
-                betoltesAlatt = false;
-                StateHasChanged();
-            }
-        }
-    }
+                // Összes tartozás kiszámítása a fenti kártyához ami még nincs fizetve
+                fizetendoOsszeg = osszesPenzugy
+                    .Where(p => p.UserID == sajatId && !p.BefizetesDatum.HasValue && p.Statusz?.ToLower() != "fizetve")
+                    .Sum(p => p.Osszeg);
+
+				// Legújabb 5 tétel a táblázatba csak ami be van fizetve vagy van befizetés dátuma, rendezve a dátum szerint csökkenő sorrendben
+                sajatBefizetesek = osszesPenzugy
+                    .Where(p => p.UserID == sajatId && (p.BefizetesDatum.HasValue || p.Statusz?.ToLower() == "fizetve"))
+                    .OrderByDescending(p => p.BefizetesDatum ?? p.Esedekesseg)
+                    .Take(5)
+                    .ToList();
+                    
+                // Típusok lekérése az API-ból
+                fizetesTipusokLista = await FizetesTipusok.GetFizetesTipusok(token) ?? new();
+
+            }
+            catch (Exception ex)
+            {
+                hibaUzenet = $"Hiba az adatok lekérésekor: {ex.Message}";
+            }
+            finally
+            {
+                betoltesAlatt = false;
+                StateHasChanged();
+            }
+        }
+    }
+
+	// Objektum lista alapján visszaadja a megnevezést egy adott IDnek
+    private string GetTipusNev(int tipusId)
+    {
+        var tipus = fizetesTipusokLista.FirstOrDefault(t => t.ID == tipusId);
+        
+        if (tipus != null && !string.IsNullOrEmpty(tipus.Megnevezes))
+        {
+            return tipus.Megnevezes;
+        }
+
+        return $"Egyéb ({tipusId})";
+    }
 }

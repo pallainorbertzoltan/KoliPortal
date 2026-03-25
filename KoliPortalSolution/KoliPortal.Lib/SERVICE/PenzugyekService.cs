@@ -31,5 +31,21 @@ namespace KoliPortal.Lib.SERVICE
             var response = await _httpClient.DeleteAsync($"api/Penzugyek/{id}");
             response.EnsureSuccessStatusCode();
         }
+
+        public async Task CreatePenzugyek(Penzugyek penzugyek, string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.PostAsJsonAsync("api/Penzugyek", penzugyek);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task UpdatePenzugyek(Penzugyek penzugyek, string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.PutAsJsonAsync($"api/Penzugyek", penzugyek);
+            response.EnsureSuccessStatusCode();
+        }
     }
 }

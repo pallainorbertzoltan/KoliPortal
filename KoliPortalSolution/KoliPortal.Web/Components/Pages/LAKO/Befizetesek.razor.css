@@ -83,10 +83,15 @@ tbody tr:last-child td {
     padding: 0.25rem 0.75rem;
     font-size: 0.75rem;
     font-weight: 600;
-    border-radius: 9999px; /* Teljesen kerekített (pill form) */
+    border-radius: 9999px; /* Teljesen kerekített */
 }
 
 .badge-success {
     background-color: #ecfdf3; /* Világoszöld háttér */
     color: #027a48; /* Sötétzöld szöveg */
+}
+
+.badge-danger {
+    background-color: #fee4e2; /* Világospiros háttér */
+    color: #b42318; /* Sötétpiros szöveg */
 }

@@ -148,3 +148,8 @@
     letter-spacing: 0.3px;
     text-transform: uppercase;
 }
+
+.badge-success[b-wl12oum73k] {
+    background-color: #ecfdf3; /* Világoszöld háttér */
+    color: #027a48; /* Sötétzöld szöveg */
+}

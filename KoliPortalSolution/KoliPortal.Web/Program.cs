@@ -23,6 +23,7 @@ namespace KoliPortal.Web
             builder.Services.AddScoped<KarbantartasStatuszokService>();
             builder.Services.AddScoped<PenzugyekService>();
             builder.Services.AddScoped<AuthControllerService>();
+            builder.Services.AddScoped<FizetesTipusokService>();
 
             var app = builder.Build();
 

@@ -387,7 +387,7 @@ else
                 sikerUzenet = "Felhasználó és adatai véglegesen törölve!";
                 sikeresMentes = true;
 
-				// 3másodpercig ott marad az üzenet, majd eltűnik
+				// 3 mpig ott marad az üzenet, majd eltűnik
                 _ = Task.Run(async () =>
                 {
                     await Task.Delay(3000);
@@ -406,7 +406,7 @@ else
     {
         try
         {
-            // MENTÉSEK TOKENNEL
+            // Alapadatok frissítése (Név, Email, Szerepkör)
             var eredetiUser = felhasznalokLista.FirstOrDefault(x => x.ID == editModel.UserID);
             if (eredetiUser != null)
             {
@@ -416,7 +416,26 @@ else
                 await Felhasznalo.UpdateFelhasznalok(eredetiUser, token);
             }
 
-            if (Diak(editModel.SzerepkorID))
+            // Ha Lakobol admin / karbantarto lesz
+            if (!Diak(editModel.SzerepkorID))
+            {
+
+                // Diák extra adatok törlése (Lakcím, Évfolyam)
+                var voltDiakAdat = diakAdatokLista.FirstOrDefault(x => x.UserID == editModel.UserID);
+                if (voltDiakAdat != null)
+                {
+                    await DiakAdatok.DeleteDiakAdatok(editModel.UserID, token);
+                }
+
+                // Szoba beosztások végleges törlése
+                var voltBeosztasok = beosztasokLista.Where(x => x.UserID == editModel.UserID).ToList();
+                foreach (var beosztas in voltBeosztasok)
+                {
+                    await SzobaBeosztasok.DeleteSzobaBeosztasok(beosztas.ID, token);
+                }
+            }
+            // Ha Diák, csak frissítjük az adatait
+            else
             {
                 var eredetiDiakAdat = diakAdatokLista.FirstOrDefault(x => x.UserID == editModel.UserID);
                 if (eredetiDiakAdat != null)
@@ -431,6 +450,7 @@ else
                     await DiakAdatok.CreateDiakAdatok(ujDiakAdat, token);
                 }
 
+                // Szoba kezelés
                 var aktivBeosztas = beosztasokLista.FirstOrDefault(x => x.UserID == editModel.UserID && x.TenylegesKikoltozes == null);
 
                 if (editModel.RoomID == -1 && aktivBeosztas != null)
@@ -446,20 +466,15 @@ else
                         await SzobaBeosztasok.UpdateSzobaBeosztasok(aktivBeosztas, token);
 
                         int varhatoKikoltozes = 1;
-
                         switch (editModel.Evfolyam)
                         {
-                            case "1. évf.":
-                                varhatoKikoltozes = 3;
+                            case "1. évf.": varhatoKikoltozes = 3; 
                                 break;
-                            case "2. évf.":
-                                varhatoKikoltozes = 2;
+                            case "2. évf.": varhatoKikoltozes = 2; 
                                 break;
-                            case "3. évf.":
-                                varhatoKikoltozes = 1;
+                            case "3. évf.": varhatoKikoltozes = 1; 
                                 break;
-                            default:
-                                varhatoKikoltozes = 1;
+                            default: varhatoKikoltozes = 1; 
                                 break;
                         }
 
@@ -471,25 +486,20 @@ else
                             VarhatoKikoltozes = DateTime.Now.AddYears(varhatoKikoltozes)
                         };
                         await SzobaBeosztasok.CreateSzobaBeosztasok(ujBeosztas, token);
-
                     }
                     else if (aktivBeosztas == null)
                     {
+                        // Új beosztás készítése, ha eddig nem volt neki
                         int varhatoKikoltozes = 1;
-
                         switch (editModel.Evfolyam)
                         {
-                            case "1. évf.":
-                                varhatoKikoltozes = 3;
+                            case "1. évf.": varhatoKikoltozes = 3; 
                                 break;
-                            case "2. évf.":
-                                varhatoKikoltozes = 2;
+                            case "2. évf.": varhatoKikoltozes = 2; 
                                 break;
-                            case "3. évf.":
-                                varhatoKikoltozes = 1;
+                            case "3. évf.": varhatoKikoltozes = 1; 
                                 break;
-                            default:
-                                varhatoKikoltozes = 1;
+                            default: varhatoKikoltozes = 1; 
                                 break;
                         }
 
@@ -508,7 +518,7 @@ else
             isModalOpen = false;
             await AdatokBetoltese();
 
-            sikerUzenet = "Sikeres mentés!";
+            sikerUzenet = "Sikeres mentés és adatok frissítése!";
             sikeresMentes = true;
 
             _ = Task.Run(async () =>

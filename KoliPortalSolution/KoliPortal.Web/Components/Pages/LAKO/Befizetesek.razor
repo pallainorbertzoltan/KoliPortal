@@ -1,52 +1,243 @@
-﻿@page "/befizetesek"
+﻿@page "/befizetesekLako"
 @using KoliPortal.Lib.MODEL
 @using KoliPortal.Lib.SERVICE
+@using System.Security.Claims
+@using System.IdentityModel.Tokens.Jwt
 @layout LakoLayout
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
-@inject SzobakService Szobak
-@inject KarbantartasiKeresekService KarbantartasiKeresek
-@inject SzobaBeosztasokService SzobaBeosztasok
-@inject FelhasznalokService FelhasznalokService
+@inject PenzugyekService Penzugyek
+@inject FizetesTipusokService FizetesTipusok
 @inject IJSRuntime JS
 @inject NavigationManager Nav
 
-<div id="view-payments" class="view-section">
+<div id="view-payments" class="view-section active">
     <div class="section-header">
-        <h2>Befizetések</h2>
-        <p>Korábbi tranzakciók és számlák.</p>
+        <h2>Saját Befizetések</h2>
+        <p>Kollégiumi díjak és egyéb tranzakciók áttekintése, rendezése.</p>
     </div>
-    <div class="content-panel">
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Dátum</th>
-                        <th>Jogcím</th>
-                        <th>Összeg</th>
-                        <th>Státusz</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2026.01.10.</td>
-                        <td>Lakbér - Január</td>
-                        <td>25 000 Ft</td>
-                        <td><span class="badge badge-success">Fizetve</span></td>
-                    </tr>
-                    <tr>
-                        <td>2025.12.12.</td>
-                        <td>Lakbér - December</td>
-                        <td>25 000 Ft</td>
-                        <td><span class="badge badge-success">Fizetve</span></td>
-                    </tr>
-                    <tr>
-                        <td>2025.11.15.</td>
-                        <td>Mosási keret</td>
-                        <td>2 000 Ft</td>
-                        <td><span class="badge badge-success">Fizetve</span></td>
-                    </tr>
-                </tbody>
-            </table>
+
+    @if (betoltesAlatt)
+    {
+        <div class="text-center mt-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Betöltés...</span>
+            </div>
+            <p class="mt-2 text-muted">Adataid letöltése...</p>
         </div>
-    </div>
+    }
+    else if (!string.IsNullOrEmpty(hibaUzenet))
+    {
+        <div class="alert alert-danger mb-4 w-100" style="max-width: 800px;">
+            <i class="bi bi-exclamation-triangle-fill"></i> @hibaUzenet
+        </div>
+    }
+    else
+    {
+        @if (sikeresFizetes)
+        {
+            <div class="alert alert-success mb-4 w-100" style="max-width: 800px;">
+                <i class="bi bi-check-circle-fill"></i> <strong>Sikeres tranzakció:</strong> A tétel befizetésre került!
+            </div>
+        }
+
+        <div class="content-panel" style="max-width: 800px;">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Határidő / Fizetve</th>
+                            <th>Jogcím</th>
+                            <th>Összeg</th>
+                            <th class="text-center">Státusz</th>
+                            <th class="text-center">Művelet</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (sajatPenzugyek != null && sajatPenzugyek.Any())
+                        {
+                            @foreach (var tetel in sajatPenzugyek)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (tetel.BefizetesDatum.HasValue)
+                                        {
+                                            <span class="text-muted small d-block">Fizetve:</span>
+                                            <strong>@tetel.BefizetesDatum.Value.ToShortDateString()</strong>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small d-block">Határidő:</span>
+                                            <strong class="@(tetel.Esedekesseg < DateTime.Now ? "text-danger" : "")">
+                                                @tetel.Esedekesseg.ToShortDateString()
+                                            </strong>
+                                        }
+                                    </td>
+                                    <td style="font-weight: 500;">@GetTipusNev(tetel.TipusID)</td>
+
+                                    <td style="font-weight: 700;">@tetel.Osszeg.ToString("N0") Ft</td>
+                                    <td class="text-center">
+                                        @if (tetel.BefizetesDatum.HasValue)
+                                        {
+                                            <span class="badge badge-success">Fizetve</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-danger">Tartozás</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        @if (!tetel.BefizetesDatum.HasValue)
+                                        {
+                                            <button class="btn btn-sm btn-primary fw-bold px-3 py-1" style="border-radius: 6px;" @onclick="() => TetelBefizetese(tetel)">
+                                                <i class="bi bi-credit-card"></i> Fizetés
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-check2-all text-success fs-4"></i>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center text-muted p-5">Jelenleg nincsenek számláid.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
 </div>
+
+@code {
+    private bool betoltesAlatt = true;
+    private string token = "";
+    private int sajatId = 0;
+
+    private string hibaUzenet = "";
+    private bool sikeresFizetes = false;
+
+    // Listák az API-ból
+    private List<Penzugyek> sajatPenzugyek = new();
+
+    // Objektumok listája
+    private List<FizetesTipusok> fizetesTipusokLista = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    Nav.NavigateTo("/");
+                    return;
+                }
+
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+                var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+
+                if (szerepkor != "2" && szerepkor?.ToLower() != "lako")
+                {
+                    Nav.NavigateTo("/");
+                    return;
+                }
+
+                var idClaim = jwtToken.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimTypes.NameIdentifier ||
+                    x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+
+                if (idClaim != null && int.TryParse(idClaim.Value, out int parsedId))
+                {
+                    sajatId = parsedId;
+                    await AdatokBetoltese();
+                }
+                else
+                {
+                    hibaUzenet = "Nem sikerült azonosítani a felhasználót.";
+                }
+            }
+            catch (Exception ex)
+            {
+                hibaUzenet = $"Rendszerhiba: {ex.Message}";
+            }
+            finally
+            {
+                betoltesAlatt = false;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private async Task AdatokBetoltese()
+    {
+        try
+        {
+            // Pénzügyek lekérése
+            var osszesPenzugy = await Penzugyek.GetPenzugyek(token) ?? new();
+
+            sajatPenzugyek = osszesPenzugy
+                .Where(p => p.UserID == sajatId)
+                .OrderBy(p => p.BefizetesDatum.HasValue ? 1 : 0)
+                .ThenByDescending(p => p.Esedekesseg)
+                .ToList();
+
+            // Fizetési típusok lekérése
+            fizetesTipusokLista = await FizetesTipusok.GetFizetesTipusok(token) ?? new();
+        }
+        catch (Exception ex)
+        {
+            hibaUzenet = $"Hiba az adatok letöltésekor: {ex.Message}";
+        }
+    }
+
+    private async Task TetelBefizetese(Penzugyek kifizetendoTetel)
+    {
+        hibaUzenet = "";
+        sikeresFizetes = false;
+
+        try
+        {
+            kifizetendoTetel.BefizetesDatum = DateTime.Now;
+            kifizetendoTetel.Statusz = "Fizetve";
+
+            await Penzugyek.UpdatePenzugyek(kifizetendoTetel, token);
+            await AdatokBetoltese();
+
+            sikeresFizetes = true;
+
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(4000);
+                sikeresFizetes = false;
+                await InvokeAsync(StateHasChanged);
+            });
+        }
+        catch (Exception ex)
+        {
+            hibaUzenet = $"Hiba a fizetés során: {ex.Message}";
+        }
+    }
+
+    // A TipusID alapján kikeressük az objektumot a listából
+    private string GetTipusNev(int tipusId)
+    {
+        // Megkeressük az első olyan elemet, aminek az ID-jwe egyezik
+        var tipus = fizetesTipusokLista.FirstOrDefault(t => t.ID == tipusId);
+
+        if (tipus != null && !string.IsNullOrEmpty(tipus.Megnevezes))
+        {
+            return tipus.Megnevezes;
+        }
+
+        return $"Egyéb ({tipusId})";
+    }
+}

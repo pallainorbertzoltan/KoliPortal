@@ -27,7 +27,7 @@
             <NavLink class="nav-item" href="/adataim">
                 <i class="bi bi-people icon"></i> Adataim
             </NavLink>
-            <NavLink class="nav-item" href="/befizetesek">
+            <NavLink class="nav-item" href="/befizetesekLako">
                 <i class="bi bi-person-plus icon"></i> Befizetések
             </NavLink>
             <NavLink class="nav-item" href="/hibajelentes">
@@ -70,7 +70,7 @@
                 // Kinyerjük a szerepkört
                 string szerepkor = SzerepkorKinyerese(token);
 
-                // Ha a szerepkör NEM Admin (nem 1-es az ID-ja), akkor is repül!
+                // Ha a szerepkör NEM Lako (nem 2-es az ID-je), akkor is repül!
                 if (szerepkor != "2" && szerepkor.ToLower() != "lako")
                 {
                     Nav.NavigateTo("/");

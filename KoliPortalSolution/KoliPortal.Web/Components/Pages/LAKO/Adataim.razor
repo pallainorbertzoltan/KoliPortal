@@ -8,6 +8,7 @@
 @inject SzobakService Szobak
 @inject SzobaBeosztasokService SzobaBeosztasok
 @inject FelhasznalokService FelhasznalokService
+@inject DiakAdatokService DiakAdatok
 @inject IJSRuntime JS
 @inject NavigationManager Nav
 
@@ -22,34 +23,62 @@
 }
 else if (!string.IsNullOrEmpty(hibaUzenet))
 {
-    <div class="alert alert-danger mx-auto mt-4" style="max-width: 600px;">
+    <div class="alert alert-danger mx-auto mt-4" style="max-width: 500px;">
         <i class="bi bi-exclamation-triangle-fill"></i> @hibaUzenet
     </div>
 }
-else if (sajatUser != null)
+
+@if (sajatUser != null)
 {
     <div id="view-profile" class="view-section">
-        <div class="section-header">
+        <div class="section-header text-center mb-4">
             <h2>Saját Adataim</h2>
-            <p>Személyes információk és szoba beosztás.</p>
+            <p class="text-muted">Személyes információk és szoba beosztás.</p>
         </div>
-        <div class="content-panel">
-            <div class="input-group">
-                <label>Teljes Név</label>
-                <input type="text" class="input-field" value="@sajatUser.Nev" readonly>
+
+        <div class="content-panel mx-auto" style="max-width: 500px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+
+            @if (sikeresMentes)
+            {
+                <div class="alert alert-success mb-3">
+                    <i class="bi bi-check-circle-fill"></i> Sikeresen elmentve!
+                </div>
+            }
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Teljes Név</label>
+                <input type="text" class="form-control" value="@sajatUser.Nev" readonly style="background-color: #f8f9fa;">
             </div>
 
-            <div class="input-group">
-                <label>E-mail cím</label>
-                <input type="text" class="input-field" value="@sajatUser.Email" readonly>
+            <div class="mb-3">
+                <label class="form-label fw-bold">E-mail cím</label>
+                <input type="text" class="form-control" value="@sajatUser.Email" readonly style="background-color: #f8f9fa;">
             </div>
 
-            <div class="input-group">
-                <label>Szoba száma</label>
-                <input type="text" class="input-field font-monospace fw-bold text-primary" value="@sajatSzobaSzam" readonly>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Szoba száma</label>
+                <input type="text" class="form-control" value="@sajatSzobaSzam" readonly style="background-color: #f8f9fa;">
             </div>
 
-            <button class="btn-primary mt-3" @onclick="JelszoModositasKattintas">Jelszó módosítása</button>
+            <div class="mb-4">
+                <label class="form-label fw-bold">Telefonszám</label>
+                <input type="text" class="form-control" @bind="sajatUser.Telefonszam" placeholder="Pl: +36301234567" maxlength="12">
+                <div class="form-text">Formátum: + és max. 11 számjegy (pl. +36301234567).</div>
+            </div>
+
+            <div class="d-grid">
+                <button class="btn btn-primary py-2 fw-bold" @onclick="Mentes" disabled="@mentesFolyamatban">
+                    @if (mentesFolyamatban)
+                    {
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        <span>Mentés...</span>
+                    }
+                    else
+                    {
+                        <span><i class="bi bi-save me-2"></i>Adatok mentése</span>
+                    }
+                </button>
+            </div>
         </div>
     </div>
 }
@@ -57,10 +86,11 @@ else if (sajatUser != null)
 @code {
     private string token = "";
     private bool betoltesAlatt = true;
+    private bool mentesFolyamatban = false;
+    private bool sikeresMentes = false;
     private string hibaUzenet = "";
     private int sajatId = 0;
 
-    // Az API-ból érkező saját adatok
     private KoliPortal.Lib.MODEL.Felhasznalok sajatUser;
     private string sajatSzobaSzam = "Nincs szobába beosztva";
 
@@ -70,16 +100,14 @@ else if (sajatUser != null)
         {
             try
             {
-                // 1. Token ellenőrzése
                 token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
 
                 if (string.IsNullOrEmpty(token))
                 {
-                    Nav.NavigateTo("/", forceLoad: true);
+                    Nav.NavigateTo("/");
                     return;
                 }
 
-                // 2. JWT dekódolása és a Diák ID kinyerése
                 var handler = new JwtSecurityTokenHandler();
                 var jwtToken = handler.ReadJwtToken(token);
 
@@ -99,7 +127,6 @@ else if (sajatUser != null)
                     return;
                 }
 
-                // 3. Felhasználói adatok lekérése a szerverről
                 var osszesUser = await FelhasznalokService.GetFelhasznalok(token) ?? new();
                 sajatUser = osszesUser.FirstOrDefault(u => u.ID == sajatId);
 
@@ -109,7 +136,6 @@ else if (sajatUser != null)
                     return;
                 }
 
-                // 4. Szoba lekérése (Megkeressük az aktív beosztást)
                 var osszesBeosztas = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new();
                 var aktivBeosztas = osszesBeosztas.FirstOrDefault(b => b.UserID == sajatId && b.TenylegesKikoltozes == null);
 
@@ -119,10 +145,9 @@ else if (sajatUser != null)
                     var szoba = osszesSzoba.FirstOrDefault(sz => sz.ID == aktivBeosztas.RoomID);
                     if (szoba != null)
                     {
-                        sajatSzobaSzam = $"{szoba.Szobaszam} (Férőhely: {szoba.FerohelyMax})";
+                        sajatSzobaSzam = $"{szoba.Szobaszam}";
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -136,9 +161,73 @@ else if (sajatUser != null)
         }
     }
 
-    private void JelszoModositasKattintas()
+    private async Task Mentes()
     {
-        // Később ide lehet kötni egy felugró ablakot a jelszócseréhez!
-        Console.WriteLine("Jelszó módosítás gomb megnyomva.");
+        try
+        {
+            mentesFolyamatban = true;
+            sikeresMentes = false;
+            hibaUzenet = "";
+
+            string tel = sajatUser.Telefonszam?.Trim() ?? "";
+
+            if (string.IsNullOrEmpty(tel))
+            {
+                hibaUzenet = "A telefonszám nem lehet üres!";
+                mentesFolyamatban = false;
+                return;
+            }
+
+            if (!tel.StartsWith("+"))
+            {
+                hibaUzenet = "A telefonszámnak '+' jellel kell kezdődnie!";
+                mentesFolyamatban = false;
+                return;
+            }
+
+            if (tel.Length > 12)
+            {
+                hibaUzenet = "A telefonszám maximum 11 számjegyet tartalmazhat a '+' jel után!";
+                mentesFolyamatban = false;
+                return;
+            }
+
+            if (tel.Length < 2)
+            {
+                hibaUzenet = "A '+' jel után legalább egy számjegyet meg kell adni!";
+                mentesFolyamatban = false;
+                return;
+            }
+
+            for (int i = 1; i < tel.Length; i++)
+            {
+                if (!char.IsDigit(tel[i]))
+                {
+                    hibaUzenet = "Érvénytelen formátum! A '+' után csak számokat írhatsz be.";
+                    mentesFolyamatban = false;
+                    return;
+                }
+            }
+
+            await FelhasznalokService.UpdateFelhasznalok(sajatUser, token);
+
+            sikeresMentes = true;
+
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(3000);
+                sikeresMentes = false;
+                await InvokeAsync(StateHasChanged);
+            });
+        }
+        catch (Exception ex)
+        {
+            hibaUzenet = "Nem sikerült menteni a változtatásokat: " + ex.Message;
+        }
+        finally
+        {
+            mentesFolyamatban = false;
+            StateHasChanged();
+        }
     }
 }

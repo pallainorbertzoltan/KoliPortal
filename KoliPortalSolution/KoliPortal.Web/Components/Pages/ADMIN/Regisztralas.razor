@@ -30,7 +30,9 @@ else
         <div class="card form-card shadow-sm p-4" style="max-width: 600px; margin: 0 auto;">
             @if (!string.IsNullOrEmpty(hibaUzenet))
             {
-                <div class="alert alert-danger">@hibaUzenet</div>
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>@hibaUzenet
+                </div>
             }
 
             <form @onsubmit="FelhasznaloLeltrehozasa">
@@ -72,7 +74,6 @@ else
                     </select>
                 </div>
 
-                @* Csak akkor jelenik meg, ha a Lakó szerepkört választja *@
                 @if (IsLako(valasztottSzerepkorId))
                 {
                     <hr class="my-4" />
@@ -102,10 +103,15 @@ else
                         </div>
                     </div>
 
-                    @* Lakcím *@
                     <div class="form-group mb-3">
                         <label>Lakcím</label>
                         <input type="text" class="form-control" @bind="valasztottLakcim" placeholder="Pl. 1051 Budapest, Fő utca 1." />
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label>Telefonszám</label>
+                        <input type="tel" class="form-control" @bind="valasztottTelefonszam" placeholder="Pl. +36203988762" maxlength="12">
+                        <div class="form-text">Formátum: + és max. 11 számjegy (szóköz nélkül).</div>
                     </div>
                 }
 
@@ -123,20 +129,18 @@ else
     private bool betoltesAlatt = true;
     private string hibaUzenet = "";
 
-    // Form mezők
     private string vezetekNev = "";
     private string keresztNev = "";
     private string email = "";
     private string jelszo = "";
     private string jelszoUjra = "";
+    private string valasztottTelefonszam = "";
     private int valasztottSzerepkorId = 0;
 
-    // Új Diák mezők
     private string valasztottEvfolyam = "";
     private string valasztottLakcim = "";
     private int valasztottSzobaId = 0;
 
-    // Adatok az API-ból
     private List<Szerepkorok> szerepkorokLista = new();
     private List<KoliPortal.Lib.MODEL.Szobak> szobakLista = new();
     private List<SzobaBeosztasok> beosztasokLista = new();
@@ -155,7 +159,6 @@ else
                     return;
                 }
 
-                // SZIGORÚ SZEREPKÖR ELLENŐRZÉS CSAK ADMIN!
                 var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
                 var jwtToken = handler.ReadJwtToken(token);
                 var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
@@ -166,7 +169,6 @@ else
                     return;
                 }
 
-                // Adatok lekérése a tokennel
                 szerepkorokLista = await Szerepkorok.GetSzerepkorok(token) ?? new();
                 szobakLista = await Szobak.GetSzobak(token) ?? new();
                 beosztasokLista = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new();
@@ -193,7 +195,39 @@ else
             return;
         }
 
-        // Évfolyam kötelező ellenőrzése, ha Lakó a szerepkör
+        // Telefonszám ellenőrzése (ha Lakó és van telefonszám)
+        if (IsLako(valasztottSzerepkorId) && !string.IsNullOrWhiteSpace(valasztottTelefonszam))
+        {
+            string tel = valasztottTelefonszam.Trim();
+
+            if (!tel.StartsWith("+"))
+            {
+                hibaUzenet = "A telefonszámnak '+' jellel kell kezdődnie!";
+                return;
+            }
+
+            if (tel.Length < 2)
+            {
+                hibaUzenet = "A '+' jel után számokat is meg kell adni!";
+                return;
+            }
+
+            if (tel.Length > 12)
+            {
+                hibaUzenet = "A telefonszám maximum 11 számjegyet tartalmazhat a '+' jel után!";
+                return;
+            }
+
+            for (int i = 1; i < tel.Length; i++)
+            {
+                if (!char.IsDigit(tel[i]))
+                {
+                    hibaUzenet = "Érvénytelen telefonszám! A '+' jel után csak számok állhatnak.";
+                    return;
+                }
+            }
+        }
+
         if (IsLako(valasztottSzerepkorId) && string.IsNullOrEmpty(valasztottEvfolyam))
         {
             hibaUzenet = "Diák regisztrálásakor kötelező megadni az évfolyamot!";
@@ -219,19 +253,16 @@ else
                 Nev = $"{vezetekNev} {keresztNev}",
                 Email = email,
                 Jelszo = jelszo,
-                SzerepkorID = valasztottSzerepkorId
+                SzerepkorID = valasztottSzerepkorId,
+                Telefonszam = valasztottTelefonszam
             };
 
-            // Regisztráció hívása
             bool sikeres = await AuthController.RegisterAsync(ujUser, token);
 
             if (sikeres)
             {
-                // Ha a felhasználó Lakó
                 if (IsLako(valasztottSzerepkorId))
                 {
-
-                    // Lekérjük az új felhasználó adatait email alapján
                     var osszesUser = await Felhasznalok.GetFelhasznalok(token) ?? new();
                     var frissUser = osszesUser.FirstOrDefault(u => u.Email == email);
 
@@ -239,8 +270,6 @@ else
                     {
                         try
                         {
-                            // Évfolyam és Lakcím mentése
-                            // Ha üresen hagyták a lakcímet, "Nincs megadva" kerül be
                             string veglegesLakcim = string.IsNullOrWhiteSpace(valasztottLakcim) ? "Nincs megadva" : valasztottLakcim;
 
                             var ujDiakAdat = new DiakAdatok
@@ -251,26 +280,15 @@ else
                             };
                             await DiakAdatok.CreateDiakAdatok(ujDiakAdat, token);
 
-                            // Szoba beosztás mentése
                             if (valasztottSzobaId > 0)
                             {
                                 int varhatoKikoltozes = 1;
-
                                 switch (valasztottEvfolyam)
                                 {
-                                    case "1. évf.":
-                                        varhatoKikoltozes = 3;
-                                        break;
-                                    case "2. évf.":
-                                        varhatoKikoltozes = 2;
-                                        break;
-                                    case "3. évf.":
-                                        varhatoKikoltozes = 1;
-                                        break;
-                                    default:
-                                        // Ha 4. évf.
-                                        varhatoKikoltozes = 1;
-                                        break;
+                                    case "1. évf.": varhatoKikoltozes = 3; break;
+                                    case "2. évf.": varhatoKikoltozes = 2; break;
+                                    case "3. évf.": varhatoKikoltozes = 1; break;
+                                    default: varhatoKikoltozes = 1; break;
                                 }
 
                                 var ujBeosztas = new SzobaBeosztasok
@@ -286,12 +304,10 @@ else
                         catch (Exception Hiba)
                         {
                             hibaUzenet = $"A fiók létrejött, de a plusz adatokat nem sikerült menteni! ({Hiba.Message})";
-                            return; // Kilépünk, hogy az admin lássa a hibaüzenetet
+                            return;
                         }
                     }
                 }
-
-                // Visszadobjuk az Áttekintés oldalra
                 Nav.NavigateTo("/adminAttekintes");
             }
             else
@@ -305,14 +321,12 @@ else
         }
     }
 
-    // Eldönti, hogy a kiválasztott szerepkör Lakó típusú-e
     private bool IsLako(int roleId)
     {
         var role = szerepkorokLista.FirstOrDefault(x => x.ID == roleId);
         return role != null && !role.Nev.ToLower().Contains("admin") && !role.Nev.ToLower().Contains("karbantarto");
     }
 
-    // Visszaadja azokat a szobákat, ahol van még szabad ágy
     private List<KoliPortal.Lib.MODEL.Szobak> GetSzabadSzobak()
     {
         var szabadok = new List<KoliPortal.Lib.MODEL.Szobak>();
@@ -326,7 +340,6 @@ else
         return szabadok.OrderBy(s => s.Szobaszam).ToList();
     }
 
-    // Kiszámolja a lakókat egy szobában
     private int GetAktivLakokSzam(int roomId)
     {
         return beosztasokLista.Count(x => x.RoomID == roomId && x.TenylegesKikoltozes == null);
