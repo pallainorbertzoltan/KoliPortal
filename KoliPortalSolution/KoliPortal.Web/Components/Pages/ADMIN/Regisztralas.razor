@@ -94,7 +94,7 @@ else
                         <div class="form-group flex-fill">
                             <label>Szoba beosztás</label>
                             <select class="form-select" @bind="valasztottSzobaId">
-                                <option value="0" selected>Később osztom be</option>
+                                <option value="0" selected>Szoba beosztása</option>
                                 @foreach (var szoba in GetSzabadSzobak())
                                 {
                                     <option value="@szoba.ID">@szoba.Szobaszam (Szabad hely: @(szoba.FerohelyMax - GetAktivLakokSzam(szoba.ID)))</option>
