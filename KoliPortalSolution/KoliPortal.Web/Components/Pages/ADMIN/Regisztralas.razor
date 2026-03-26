@@ -254,7 +254,8 @@ else
                 Email = email,
                 Jelszo = jelszo,
                 SzerepkorID = valasztottSzerepkorId,
-                Telefonszam = valasztottTelefonszam
+                Telefonszam = valasztottTelefonszam,
+				KollegiumID = 1 // Jelenleg fix érték, később ha tovább lesz fejlesztve akkor lehet majd választani kollégiumot regisztrációkor, addig ez van
             };
 
             bool sikeres = await AuthController.RegisterAsync(ujUser, token);

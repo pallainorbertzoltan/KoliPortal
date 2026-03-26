@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #e6f3ef; /* Ezt írd át, ha az app.css-ből akarod örökölni a hátteret */
+    background-color: #e6f3ef;
 }
 
 /* Maga a fehér doboz */
@@ -120,3 +120,24 @@
         opacity: 0.7;
         cursor: not-allowed;
     }
+
+/* Adatvédelmi lábléc */
+.privacy-footer[b-90b39c88gh] {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e9ec;
+    font-size: 0.75rem;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.privacy-link[b-90b39c88gh] {
+    color: #000000;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.privacy-link:hover[b-90b39c88gh] {
+    color: #0d8368;
+}

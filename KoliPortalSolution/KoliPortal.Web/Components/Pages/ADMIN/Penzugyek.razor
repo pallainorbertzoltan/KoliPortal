@@ -40,7 +40,7 @@ else
             </div>
         }
 
-        @* --- STATISZTIKA KÁRTYA --- *@
+        @* STATISZTIKA KÁRTYA *@
         <div class="card shadow-sm stat-card">
             <div>
                 <h6 class="stat-label">Összes Kintlévőség (Tartozás)</h6>
@@ -70,14 +70,12 @@ else
                     <select class="form-select form-select-sm" style="width: 80px; border-radius: 8px;" value="@elemekOldalankent" @onchange="OldalMeretValtozas">
                         <option value="5">5</option>
                         <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
                     </select>
                 </div>
             </div>
         </div>
 
-        @* --- TÁBLÁZAT --- *@
+        @* TÁBLÁZAT *@
         <div class="card shadow-sm mb-3">
             <div class="table-scroll-container">
                 <table class="data-table">
@@ -137,7 +135,7 @@ else
             </div>
         </div>
 
-        @* --- LAPOZÓ SÁV --- *@
+        @* LAPOZÓ SÁV *@
         @if (osszesOldal > 1)
         {
             <div class="pagination-bar">
@@ -155,7 +153,7 @@ else
     </div>
 }
 
-@* --- FELUGRÓ ABLAK (MODAL) --- *@
+@* FELUGRÓ ABLAK (MODAL) *@
 @if (isKiirasModalOpen)
 {
     <div class="custom-modal-backdrop">

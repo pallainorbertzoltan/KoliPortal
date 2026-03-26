@@ -24,6 +24,7 @@ namespace KoliPortal.Web
             builder.Services.AddScoped<PenzugyekService>();
             builder.Services.AddScoped<AuthControllerService>();
             builder.Services.AddScoped<FizetesTipusokService>();
+            builder.Services.AddScoped<KollegiumService>();
 
             var app = builder.Build();
 

@@ -27,23 +27,35 @@
         }
 
         <div class="form-container">
+
+            <div class="form-group">
+                <label for="kollegium">Kollégium</label>
+                <div class="input-wrapper" style="position: relative;">
+                    <i class="bi bi-buildings input-icon" style="font-size: 1.2rem; color: #94a3b8; position: absolute; left: 14px; top: 50%; transform: translateY(-50%);"></i>
+                    @* Disabled, mert egyelőre csak 1 kollégium van fejlesztési lehetőségként majd több lehet *@
+                    <select id="kollegium" disabled style="width: 100%; height: 46px; padding: 10px 14px 10px 42px; border: 1px solid #e5e9ec; border-radius: 8px; font-size: 0.95rem; color: #64748b; background-color: #f8fafc; font-family: inherit; cursor: not-allowed; -webkit-appearance: none; -moz-appearance: none; appearance: none;">
+                        <option value="1" selected>Teszt Elek Kollégium</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label for="email">Email cím</label>
-                <div class="input-wrapper">
-                    <i class="bi bi-envelope input-icon" style="font-size: 1.2rem;"></i>
-                    <input type="email" id="email" placeholder="diak@koliportal.hu" @bind="beviteliAdatok.Email" />
+                <div class="input-wrapper" style="position: relative;">
+                    <i class="bi bi-envelope input-icon" style="font-size: 1.2rem; position: absolute; left: 14px; top: 50%; transform: translateY(-50%);"></i>
+                    <input type="email" id="email" placeholder="diak@koliportal.hu" @bind="beviteliAdatok.Email" style="width: 100%; height: 46px; padding: 10px 14px 10px 42px; border: 1px solid #e5e9ec; border-radius: 8px; font-size: 0.95rem; color: #1a233a; background-color: #ffffff; font-family: inherit; box-sizing: border-box;" />
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="password">Jelszó</label>
-                <div class="input-wrapper">
-                    <i class="bi bi-lock input-icon" style="font-size: 1.2rem;"></i>
-                    <input type="password" id="password" placeholder="••••••••••••" @bind="beviteliAdatok.Jelszo" />
+                <div class="input-wrapper" style="position: relative;">
+                    <i class="bi bi-lock input-icon" style="font-size: 1.2rem; position: absolute; left: 14px; top: 50%; transform: translateY(-50%);"></i>
+                    <input type="password" id="password" placeholder="••••••••••••" @bind="beviteliAdatok.Jelszo" style="width: 100%; height: 46px; padding: 10px 14px 10px 42px; border: 1px solid #e5e9ec; border-radius: 8px; font-size: 0.95rem; color: #1a233a; background-color: #ffffff; font-family: inherit; box-sizing: border-box;" />
                 </div>
             </div>
 
-            <button type="button" class="btn-submit" disabled="@toltesAlatt" @onclick="HandleLogin">
+            <button type="button" class="btn-submit" disabled="@toltesAlatt" @onclick="HandleLogin" style="width: 100%; height: 46px; margin-top: 10px; background: #0d8368; color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer;">
                 @if (toltesAlatt)
                 {
                     <span class="spinner-border spinner-border-sm me-2"></span>
@@ -55,6 +67,9 @@
                     <span>Bejelentkezés</span>
                 }
             </button>
+            <div class="privacy-footer">
+                <a href="/adatvedelem" class="privacy-link">Adatkezelési tájékoztató</a>
+            </div>
         </div>
     </div>
 </div>

@@ -10,6 +10,7 @@
 @inject DiakAdatokService DiakAdatok
 @inject KarbantartasiKeresekService KarbantartasiKeresek
 @inject PenzugyekService Penzugyek
+@inject KollegiumService Kollegiumok
 @inject IJSRuntime JS
 @inject NavigationManager Nav
 
@@ -35,18 +36,32 @@
 else
 {
     <div class="content-wrapper">
-        <div class="filter-controls mb-3">
-            <button class="filter-btn @(szurtMod == 0 ? "active" : "")" @onclick="() => Szures(0)">Összes</button>
-            <button class="filter-btn @(szurtMod == 1 ? "active" : "")" @onclick="() => Szures(1)">Bent lakók</button>
-            <button class="filter-btn @(szurtMod == 2 ? "active" : "")" @onclick="() => Szures(2)">Kiköltözöttek</button>
+
+        @* --- SZŰRŐK ÉS OLDALMÉRET VÁLASZTÓ --- *@
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
+            <div class="filter-controls m-0">
+                <button class="filter-btn @(szurtMod == 0 ? "active" : "")" @onclick="() => Szures(0)">Összes</button>
+                <button class="filter-btn @(szurtMod == 1 ? "active" : "")" @onclick="() => Szures(1)">Bent lakók</button>
+                <button class="filter-btn @(szurtMod == 2 ? "active" : "")" @onclick="() => Szures(2)">Kiköltözöttek</button>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-muted small fw-bold text-uppercase">Sor/oldal:</span>
+                <select class="form-select form-select-sm shadow-sm page-size-select" value="@elemekOldalankent" @onchange="OldalMeretValtozas">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
         </div>
 
-        <div class="card shadow-sm">
+        @* TÁBLÁZAT *@
+        <div class="card shadow-sm mb-3">
             <div class="table-scroll-container">
                 <table class="data-table">
                     <thead>
                         <tr>
                             <th>Név</th>
+                            <th>Kollégium</th>
                             <th>Szoba</th>
                             <th>Email</th>
                             <th>Szerepkör</th>
@@ -54,12 +69,13 @@ else
                         </tr>
                     </thead>
                     <tbody>
-                        @if (szurtFelhasznalok != null && szurtFelhasznalok.Any())
+                        @if (megjelenitettFelhasznalok != null && megjelenitettFelhasznalok.Any())
                         {
-                            @foreach (var user in szurtFelhasznalok)
+                            @foreach (var user in megjelenitettFelhasznalok)
                             {
                                 <tr>
-                                    <td>@user.Nev</td>
+                                    <td class="fw-bold">@user.Nev</td>
+                                    <td>@GetKollegiumNev(user.KollegiumID)</td>
                                     <td>
                                         @{
                                             var szobaStatusz = GetAktualisSzoba(user.ID);
@@ -94,14 +110,30 @@ else
                         else
                         {
                             <tr>
-                                <td colspan="5" class="text-center text-muted">Nincsenek a szűrésnek megfelelő felhasználók.</td>
+                                <td colspan="6" class="text-center text-muted p-5">Nincsenek a szűrésnek megfelelő felhasználók.</td>
                             </tr>
                         }
                     </tbody>
                 </table>
             </div>
-            
         </div>
+
+        @* LAPOZÓ SÁV *@
+        @if (osszesOldal > 1)
+        {
+            <div class="d-flex justify-content-center align-items-center gap-3 mt-4 mb-5">
+                <button class="btn btn-outline-secondary rounded-pill px-4 fw-bold shadow-sm" @onclick="ElozoOldal" disabled="@(jelenlegiOldal == 1)">
+                    <i class="bi bi-chevron-left me-1"></i> Előző
+                </button>
+
+                <span class="text-muted fw-bolder bg-white border px-4 py-2 rounded-pill shadow-sm">@jelenlegiOldal / @osszesOldal</span>
+
+                <button class="btn btn-outline-secondary rounded-pill px-4 fw-bold shadow-sm" @onclick="KovetkezoOldal" disabled="@(jelenlegiOldal == osszesOldal)">
+                    Következő <i class="bi bi-chevron-right ms-1"></i>
+                </button>
+            </div>
+        }
+
     </div>
 }
 
@@ -119,6 +151,17 @@ else
                     <div class="form-group mb-3">
                         <label>Név</label>
                         <input type="text" class="form-control" @bind="editModel.Nev" />
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label>Kollégium</label>
+                        <select class="form-select" @bind="editModel.KollegiumID">
+                            <option value="0" disabled>Válassz kollégiumot...</option>
+                            @foreach (var koli in kollegiumLista)
+                            {
+                                <option value="@koli.ID">@koli.KollegiumNev</option>
+                            }
+                        </select>
                     </div>
 
                     <div class="form-group mb-3">
@@ -188,7 +231,7 @@ else
             <div class="modal-footer">
                 @if (GetSzerepkorNev(editModel.SzerepkorID).ToLower().Contains("admin"))
                 {
-                    <span class="text-danger me-auto" style="font-size: 0.9rem; font-weight: bold;">
+                    <span class="text-danger me-auto admin-warning-text">
                         <i class="bi bi-shield-lock"></i> Admin nem törölhető!
                     </span>
                 }
@@ -213,6 +256,13 @@ else
 
     private int szurtMod = 0;
     private List<KoliPortal.Lib.MODEL.Felhasznalok> szurtFelhasznalok = new();
+    private List<KoliPortal.Lib.MODEL.Felhasznalok> megjelenitettFelhasznalok = new();
+
+    // LAPOZÁS VÁLTOZÓI
+    private int jelenlegiOldal = 1;
+    private int elemekOldalankent = 10;
+    private int osszesOldal = 1;
+
     private bool isModalOpen = false;
     private EditViewModel editModel = new();
 
@@ -223,35 +273,32 @@ else
     private List<DiakAdatok> diakAdatokLista = new();
     private List<KarbantartasiKeresek> karbantartasiKeresekLista = new();
     private List<KoliPortal.Lib.MODEL.Penzugyek> penzugyekLista = new();
+    private List<Kollegium> kollegiumLista = new();
 
     protected override async Task OnAfterRenderAsync(bool elsoBetoltes)
     {
         if (elsoBetoltes)
         {
-            // Kérjük el a tokent a böngészőtől
             token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
 
             if (string.IsNullOrEmpty(token))
             {
                 Nav.NavigateTo("/");
-                return; // Ha nincs token, visszadob a bejelentkező oldalra
+                return;
             }
 
-            // SZIGORÚ SZEREPKÖR ELLENŐRZÉS CSAK ADMIN!
             var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
             var jwtToken = handler.ReadJwtToken(token);
             var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
 
-            // Ha a szerepkör NEM 1-es és NEM admin, akkor login oldal!
             if (szerepkor != "1" && szerepkor?.ToLower() != "admin")
             {
-                // Mindenki más repül a kezdőlapra
                 Nav.NavigateTo("/");
                 return;
             }
 
             await AdatokBetoltese();
-            StateHasChanged(); // Frissítjük az oldalt, ha betöltött
+            StateHasChanged();
         }
     }
 
@@ -267,6 +314,7 @@ else
             diakAdatokLista = await DiakAdatok.GetDiakAdatok(token) ?? new();
             karbantartasiKeresekLista = await KarbantartasiKeresek.GetKarbantartasiKeresek(token) ?? new();
             penzugyekLista = await Penzugyek.GetPenzugyek(token) ?? new();
+            kollegiumLista = await Kollegiumok.GetKollegium(token) ?? new();
 
             FrissitSzurot();
         }
@@ -283,6 +331,7 @@ else
     private void Szures(int mode)
     {
         szurtMod = mode;
+        jelenlegiOldal = 1;
         FrissitSzurot();
     }
 
@@ -304,6 +353,51 @@ else
         {
             szurtFelhasznalok = felhasznalokLista.ToList();
         }
+
+        LapozasFrissitese();
+    }
+
+    // LAPOZÁS LOGIKÁJA
+    private void LapozasFrissitese()
+    {
+        osszesOldal = (int)Math.Ceiling((double)szurtFelhasznalok.Count / elemekOldalankent);
+        if (osszesOldal == 0) osszesOldal = 1;
+
+        if (jelenlegiOldal > osszesOldal) jelenlegiOldal = osszesOldal;
+
+        megjelenitettFelhasznalok = szurtFelhasznalok
+            .OrderBy(u => u.Nev)
+            .Skip((jelenlegiOldal - 1) * elemekOldalankent)
+            .Take(elemekOldalankent)
+            .ToList();
+    }
+
+    private void ElozoOldal()
+    {
+        if (jelenlegiOldal > 1)
+        {
+            jelenlegiOldal--;
+            LapozasFrissitese();
+        }
+    }
+
+    private void KovetkezoOldal()
+    {
+        if (jelenlegiOldal < osszesOldal)
+        {
+            jelenlegiOldal++;
+            LapozasFrissitese();
+        }
+    }
+
+    private void OldalMeretValtozas(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int ujMeret))
+        {
+            elemekOldalankent = ujMeret;
+            jelenlegiOldal = 1;
+            LapozasFrissitese();
+        }
     }
 
     private void MegnyitSzerkesztes(int userId)
@@ -321,6 +415,7 @@ else
             UserID = user.ID,
             Nev = user.Nev,
             Email = user.Email,
+            KollegiumID = user.KollegiumID,
             SzerepkorID = user.SzerepkorID,
             Evfolyam = diakAdat?.Evfolyam ?? "",
             Lakcim = diakAdat?.Lakcim ?? "",
@@ -351,7 +446,6 @@ else
         {
             try
             {
-                // TÖRLÉSEK TOKENNEL
                 var penzugyL = penzugyekLista.Where(x => x.UserID == editModel.UserID).ToList();
                 foreach (var item in penzugyL)
                 {
@@ -387,7 +481,6 @@ else
                 sikerUzenet = "Felhasználó és adatai véglegesen törölve!";
                 sikeresMentes = true;
 
-				// 3 mpig ott marad az üzenet, majd eltűnik
                 _ = Task.Run(async () =>
                 {
                     await Task.Delay(3000);
@@ -406,35 +499,30 @@ else
     {
         try
         {
-            // Alapadatok frissítése (Név, Email, Szerepkör)
             var eredetiUser = felhasznalokLista.FirstOrDefault(x => x.ID == editModel.UserID);
             if (eredetiUser != null)
             {
                 eredetiUser.Nev = editModel.Nev;
                 eredetiUser.Email = editModel.Email;
                 eredetiUser.SzerepkorID = editModel.SzerepkorID;
+                eredetiUser.KollegiumID = editModel.KollegiumID;
                 await Felhasznalo.UpdateFelhasznalok(eredetiUser, token);
             }
 
-            // Ha Lakobol admin / karbantarto lesz
             if (!Diak(editModel.SzerepkorID))
             {
-
-                // Diák extra adatok törlése (Lakcím, Évfolyam)
                 var voltDiakAdat = diakAdatokLista.FirstOrDefault(x => x.UserID == editModel.UserID);
                 if (voltDiakAdat != null)
                 {
                     await DiakAdatok.DeleteDiakAdatok(editModel.UserID, token);
                 }
 
-                // Szoba beosztások végleges törlése
                 var voltBeosztasok = beosztasokLista.Where(x => x.UserID == editModel.UserID).ToList();
                 foreach (var beosztas in voltBeosztasok)
                 {
                     await SzobaBeosztasok.DeleteSzobaBeosztasok(beosztas.ID, token);
                 }
             }
-            // Ha Diák, csak frissítjük az adatait
             else
             {
                 var eredetiDiakAdat = diakAdatokLista.FirstOrDefault(x => x.UserID == editModel.UserID);
@@ -450,7 +538,6 @@ else
                     await DiakAdatok.CreateDiakAdatok(ujDiakAdat, token);
                 }
 
-                // Szoba kezelés
                 var aktivBeosztas = beosztasokLista.FirstOrDefault(x => x.UserID == editModel.UserID && x.TenylegesKikoltozes == null);
 
                 if (editModel.RoomID == -1 && aktivBeosztas != null)
@@ -468,14 +555,9 @@ else
                         int varhatoKikoltozes = 1;
                         switch (editModel.Evfolyam)
                         {
-                            case "1. évf.": varhatoKikoltozes = 3; 
-                                break;
-                            case "2. évf.": varhatoKikoltozes = 2; 
-                                break;
-                            case "3. évf.": varhatoKikoltozes = 1; 
-                                break;
-                            default: varhatoKikoltozes = 1; 
-                                break;
+                            case "1. évf.": varhatoKikoltozes = 3; break;
+                            case "2. évf.": varhatoKikoltozes = 2; break;
+                            case "3. évf.": varhatoKikoltozes = 1; break;
                         }
 
                         var ujBeosztas = new SzobaBeosztasok
@@ -489,18 +571,12 @@ else
                     }
                     else if (aktivBeosztas == null)
                     {
-                        // Új beosztás készítése, ha eddig nem volt neki
                         int varhatoKikoltozes = 1;
                         switch (editModel.Evfolyam)
                         {
-                            case "1. évf.": varhatoKikoltozes = 3; 
-                                break;
-                            case "2. évf.": varhatoKikoltozes = 2; 
-                                break;
-                            case "3. évf.": varhatoKikoltozes = 1; 
-                                break;
-                            default: varhatoKikoltozes = 1; 
-                                break;
+                            case "1. évf.": varhatoKikoltozes = 3; break;
+                            case "2. évf.": varhatoKikoltozes = 2; break;
+                            case "3. évf.": varhatoKikoltozes = 1; break;
                         }
 
                         var ujBeosztas = new SzobaBeosztasok
@@ -532,6 +608,12 @@ else
         {
             hibaUzenet = $"Hiba a mentés során: {ex.Message}";
         }
+    }
+
+    private string GetKollegiumNev(int koliId)
+    {
+        var koli = kollegiumLista.FirstOrDefault(x => x.ID == koliId);
+        return koli != null ? koli.KollegiumNev : "Nincs megadva";
     }
 
     private bool Diak(int szerepkorId)
@@ -599,19 +681,9 @@ else
     private string GetSzerepkorCss(int szerepkorId)
     {
         var nev = GetSzerepkorNev(szerepkorId).ToLower();
-        if (nev.Contains("admin"))
-        {
-            return "role-admin";
-
-        }
-        else if (nev.Contains("karbantarto"))
-        {
-            return "role-maintenance";
-        }
-        else
-        {
-            return "role-student";
-        }
+        if (nev.Contains("admin")) return "role-admin";
+        else if (nev.Contains("karbantarto")) return "role-maintenance";
+        else return "role-student";
     }
 
     public class EditViewModel
@@ -619,6 +691,7 @@ else
         public int UserID { get; set; }
         public string Nev { get; set; } = "";
         public string Email { get; set; } = "";
+        public int KollegiumID { get; set; }
         public int SzerepkorID { get; set; }
         public string Evfolyam { get; set; } = "";
         public string Lakcim { get; set; } = "";

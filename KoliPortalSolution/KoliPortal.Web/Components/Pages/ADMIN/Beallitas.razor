@@ -4,15 +4,12 @@
 @using System.IdentityModel.Tokens.Jwt
 @layout AdminLayout
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
-@inject PenzugyekService Penzugyek
-@inject SzobaBeosztasokService SzobaBeosztasok
-@inject FizetesTipusokService FizetesTipusok
 @inject IJSRuntime JS
 @inject NavigationManager Nav
 
 <header class="page-header text-center">
-    <h1>Rendszerbeállítások és Pénzügyek</h1>
-    <p>A kollégiumi díjak tömeges kiírása és globális beállítások.</p>
+    <h1>Rendszerbeállítások</h1>
+    <p>Globális rendszerbeállítások és értesítések kezelése.</p>
 </header>
 
 @if (betoltesAlatt)
@@ -28,12 +25,6 @@ else
 {
     <div class="content-wrapper" style="max-width: 600px; margin: 0 auto;">
 
-        @if (sikeresMentes)
-        {
-            <div class="alert alert-success mb-4">
-                <i class="bi bi-check-circle-fill"></i> <strong>Siker:</strong> @sikerUzenet
-            </div>
-        }
         @if (!string.IsNullOrEmpty(hibaUzenet))
         {
             <div class="alert alert-danger mb-4">
@@ -42,53 +33,6 @@ else
         }
 
         <div class="settings-grid">
-
-            <div class="card settings-card">
-                <div class="card-header">
-                    <h2><i class="bi bi-building"></i> Díjak és Terhelések</h2>
-                </div>
-                <div class="settings-form">
-                    
-                    @* TÍPUS KIVÁLASZTÁSA - Alapértelmezett kivalasztottTipusId = 1 *@
-                    <div class="form-group">
-                        <label>Jogcím (Fizetés típusa)</label>
-                        <select @bind="kivalasztottTipusId" style="padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; width: 100%;">
-                            @if (fizetesTipusokLista != null && fizetesTipusokLista.Any())
-                            {
-                                @foreach (var tipus in fizetesTipusokLista)
-                                {
-                                    <option value="@tipus.ID">@tipus.Megnevezes</option>
-                                }
-                            }
-                            else
-                            {
-                                <option value="1">Kollégiumi díj (Alapértelmezett)</option>
-                            }
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Fizetendő Összeg (Ft)</label>
-                        <input type="number" @bind="haviDij" style="padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; width: 100%; box-sizing: border-box;" />
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group half-width">
-                            <label>Befizetési határidő vége</label>
-                            <input type="date" @bind="befizetesiHatarido" @bind:format="yyyy-MM-dd" style="padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; width: 100%; box-sizing: border-box;" />
-                        </div>
-                    </div>
-
-                    @if (mentesFolyamatban)
-                    {
-                        <button class="btn-submit" disabled>Generálás...</button>
-                    }
-                    else
-                    {
-                        <button class="btn-submit" @onclick="DijakKiirasaMindenkinek">Díjak generálása minden lakónak</button>
-                    }
-                </div>
-            </div>
 
             <div class="card settings-card full-width">
                 <div class="card-header">
@@ -138,22 +82,8 @@ else
 
 @code {
     private bool betoltesAlatt = true;
-    private bool mentesFolyamatban = false;
     private string token = "";
-
-    // Üzenetek
-    private bool sikeresMentes = false;
-    private string sikerUzenet = "";
     private string hibaUzenet = "";
-
-    // Űrlap változók a Pénzügyekhez
-    private List<FizetesTipusok> fizetesTipusokLista = new();
-    
-    // 1-ES ID van beállítva alapértelmezettnek!
-    private int kivalasztottTipusId = 1; 
-    
-    private decimal haviDij = 15000;
-	private DateTime befizetesiHatarido = DateTime.Now.AddDays(10); // Alapértelmezett befizetési határidő vége 10 nap múlva
 
     // Lokális UI változók a kapcsolókhoz -> Fejlesztési lehetőségeknél van
     private bool ui_HibaErtesites = true;
@@ -174,7 +104,7 @@ else
                     return;
                 }
 
-				// Szerepkör ellenőrzése csak adminoknak szabad hozzáférniük ehhez az oldalhoz
+                // Szerepkör ellenőrzése csak adminoknak szabad hozzáférniük ehhez az oldalhoz
                 var handler = new JwtSecurityTokenHandler();
                 var jwtToken = handler.ReadJwtToken(token);
                 var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
@@ -184,9 +114,6 @@ else
                     Nav.NavigateTo("/", forceLoad: true);
                     return;
                 }
-
-				// Létező fizetési típusok lekérése, hogy a legördülő menüben megjelenjenek
-                fizetesTipusokLista = await FizetesTipusok.GetFizetesTipusok(token) ?? new();
             }
             catch (Exception ex)
             {
@@ -197,74 +124,6 @@ else
                 betoltesAlatt = false;
                 StateHasChanged();
             }
-        }
-    }
-
-    private async Task DijakKiirasaMindenkinek()
-    {
-        hibaUzenet = "";
-        sikeresMentes = false;
-        mentesFolyamatban = true;
-
-        try
-        {
-            // Lekérjük a szobabeosztásokat, hogy megtudjuk, kik az aktív lakók
-            var beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new();
-
-            // Kiválogatjuk az egyedi aktív UserID-kat
-            var aktivLakoIdk = beosztasok
-                .Where(b => b.TenylegesKikoltozes == null)
-                .Select(b => b.UserID)
-                .Distinct()
-                .ToList();
-
-            if (!aktivLakoIdk.Any())
-            {
-                hibaUzenet = "Nincsenek aktív lakók a rendszerben, nincs kinek kiírni a díjat!";
-                mentesFolyamatban = false;
-                return;
-            }
-
-            int sikeresenLetrehozva = 0;
-
-            // Végigmegyünk az aktív lakókon, és mindegyiknek létrehozunk egy Pénzügyek rekordot
-            foreach (var userId in aktivLakoIdk)
-            {
-                var ujPenzugy = new KoliPortal.Lib.MODEL.Penzugyek
-                {
-                    UserID = userId,
-                    TipusID = kivalasztottTipusId,
-                    Osszeg = haviDij,
-                    Esedekesseg = befizetesiHatarido,
-                    BefizetesDatum = null,
-                    Statusz = "ESEDEKES"
-                };
-
-                await Penzugyek.CreatePenzugyek(ujPenzugy, token);
-                sikeresenLetrehozva++;
-            }
-
-            // Kiderítjük a kiválasztott típus nevét
-            string tipusNev = fizetesTipusokLista?.FirstOrDefault(t => t.ID == kivalasztottTipusId)?.Megnevezes ?? "Egyéb díj";
-
-            sikerUzenet = $"A {tipusNev} {haviDij} Ft sikeresen kiírásra került {sikeresenLetrehozva} lakó számára!";
-            sikeresMentes = true;
-
-            // 3 mp múlva eltüntetjük a zöld üzenetet
-            _ = Task.Run(async () =>
-            {
-                await Task.Delay(3000);
-                sikeresMentes = false;
-                await InvokeAsync(StateHasChanged);
-            });
-        }
-        catch (Exception ex)
-        {
-            hibaUzenet = $"Hiba a díjak generálásakor: {ex.Message}";
-        }
-        finally
-        {
-            mentesFolyamatban = false;
         }
     }
 }

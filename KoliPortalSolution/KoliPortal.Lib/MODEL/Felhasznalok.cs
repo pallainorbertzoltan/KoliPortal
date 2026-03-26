@@ -17,5 +17,6 @@ namespace KoliPortal.Lib.MODEL
         public string? Jelszo { get; set; }
         public string? Telefonszam { get; set; }
         public int SzerepkorID { get; set; }
+        public int KollegiumID { get; set; }
     }
 }

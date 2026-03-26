@@ -19,6 +19,7 @@ namespace KoliPortal.Lib.DATA
         public DbSet<Szerepkorok> Szerepkorok { get; set; }
         public DbSet<SzobaBeosztasok> SzobaBeosztasok { get; set; }
         public DbSet<Szobak> Szobak { get; set; }
+        public DbSet<Kollegium> Kollegium { get; set; }
 
         public KoliportalDBContext()
         {

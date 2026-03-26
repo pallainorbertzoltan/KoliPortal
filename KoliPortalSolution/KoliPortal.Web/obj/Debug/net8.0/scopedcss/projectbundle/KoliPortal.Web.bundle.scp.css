@@ -956,6 +956,18 @@ input:checked + .slider[b-vu13h7k8x3] {
 .table-scroll-container[b-47y4jzkb10] {
     overflow-x: auto;
 }
+
+/* --- OLDALAK --- */
+.page-size-select[b-47y4jzkb10] {
+    width: 80px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.admin-warning-text[b-47y4jzkb10] {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
 /* _content/KoliPortal.Web/Components/Pages/ADMIN/Karbantartas.razor.rz.scp.css */
 /* --- SZEKCIÓK --- */
 .maintenance-section[b-ppfzthiqgg] {
@@ -1086,7 +1098,7 @@ input:checked + .slider[b-vu13h7k8x3] {
     gap: 0.5rem;
 }
 /* _content/KoliPortal.Web/Components/Pages/ADMIN/Penzugyek.razor.rz.scp.css */
-/* --- SEGÉDOSZTÁLYOK --- */
+/* SEGÉDOSZTÁLYOK */
 .content-wrapper[b-9i26pdr5v9] {
     max-width: 1200px;
     margin: 0 auto;
@@ -1100,7 +1112,7 @@ input:checked + .slider[b-vu13h7k8x3] {
     text-align: center;
 }
 
-/* --- STATISZTIKA KÁRTYA --- */
+/* STATISZTIKA KÁRTYA */
 .stat-card[b-9i26pdr5v9] {
     display: flex;
     flex-direction: row;
@@ -1130,7 +1142,7 @@ input:checked + .slider[b-vu13h7k8x3] {
     color: #16a34a;
 }
 
-/* --- SZŰRŐ GOMBOK ÉS ELRENDEZÉS --- */
+/* SZŰRŐ GOMBOK ÉS ELRENDEZÉS */
 .filter-controls[b-9i26pdr5v9] {
     display: flex;
     align-items: center;
@@ -1191,7 +1203,7 @@ input:checked + .slider[b-vu13h7k8x3] {
         border-color: #0d8368;
     }
 
-/* --- ÁLLAPOT JELVÉNYEK --- */
+/* ÁLLAPOT JELVÉNYEK */
 .status-badge[b-9i26pdr5v9] {
     padding: 6px 12px;
     border-radius: 999px;
@@ -1221,12 +1233,12 @@ input:checked + .slider[b-vu13h7k8x3] {
     margin-bottom: 2px;
 }
 
-/* --- TÁBLÁZAT EXTRÁK --- */
+/* TÁBLÁZAT EXTRÁK */
 .table-scroll-container[b-9i26pdr5v9] {
     overflow-x: auto;
 }
 
-/* --- LAPOZÓ SÁV --- */
+/* LAPOZÓ SÁV */
 .pagination-bar[b-9i26pdr5v9] {
     display: flex;
     justify-content: center;
@@ -1235,7 +1247,7 @@ input:checked + .slider[b-vu13h7k8x3] {
     margin: 24px 0;
 }
 
-/* --- MODAL (X GOMB, HÁTTÉR) --- */
+/* MODAL (X GOMB, HÁTTÉR) */
 .action-btn[b-9i26pdr5v9] {
     background: transparent;
     border: none;
@@ -2242,7 +2254,7 @@ textarea.input-field[b-dn83gzbzt3] {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #e6f3ef; /* Ezt írd át, ha az app.css-ből akarod örökölni a hátteret */
+    background-color: #e6f3ef;
 }
 
 /* Maga a fehér doboz */
@@ -2358,3 +2370,24 @@ textarea.input-field[b-dn83gzbzt3] {
         opacity: 0.7;
         cursor: not-allowed;
     }
+
+/* Adatvédelmi lábléc */
+.privacy-footer[b-90b39c88gh] {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e9ec;
+    font-size: 0.75rem;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.privacy-link[b-90b39c88gh] {
+    color: #000000;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.privacy-link:hover[b-90b39c88gh] {
+    color: #0d8368;
+}

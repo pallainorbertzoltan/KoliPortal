@@ -1,4 +1,4 @@
-﻿/* --- SEGÉDOSZTÁLYOK --- */
+﻿/* SEGÉDOSZTÁLYOK */
 .content-wrapper {
     max-width: 1200px;
     margin: 0 auto;
@@ -12,7 +12,7 @@
     text-align: center;
 }
 
-/* --- STATISZTIKA KÁRTYA --- */
+/* STATISZTIKA KÁRTYA */
 .stat-card {
     display: flex;
     flex-direction: row;
@@ -42,7 +42,7 @@
     color: #16a34a;
 }
 
-/* --- SZŰRŐ GOMBOK ÉS ELRENDEZÉS --- */
+/* SZŰRŐ GOMBOK ÉS ELRENDEZÉS */
 .filter-controls {
     display: flex;
     align-items: center;
@@ -103,7 +103,7 @@
         border-color: #0d8368;
     }
 
-/* --- ÁLLAPOT JELVÉNYEK --- */
+/* ÁLLAPOT JELVÉNYEK */
 .status-badge {
     padding: 6px 12px;
     border-radius: 999px;
@@ -133,12 +133,12 @@
     margin-bottom: 2px;
 }
 
-/* --- TÁBLÁZAT EXTRÁK --- */
+/* TÁBLÁZAT EXTRÁK */
 .table-scroll-container {
     overflow-x: auto;
 }
 
-/* --- LAPOZÓ SÁV --- */
+/* LAPOZÓ SÁV */
 .pagination-bar {
     display: flex;
     justify-content: center;
@@ -147,7 +147,7 @@
     margin: 24px 0;
 }
 
-/* --- MODAL (X GOMB, HÁTTÉR) --- */
+/* MODAL (X GOMB, HÁTTÉR) */
 .action-btn {
     background: transparent;
     border: none;

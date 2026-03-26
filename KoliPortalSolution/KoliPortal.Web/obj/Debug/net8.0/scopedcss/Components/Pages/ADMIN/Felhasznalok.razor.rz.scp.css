@@ -160,3 +160,15 @@
 .table-scroll-container[b-47y4jzkb10] {
     overflow-x: auto;
 }
+
+/* --- OLDALAK --- */
+.page-size-select[b-47y4jzkb10] {
+    width: 80px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.admin-warning-text[b-47y4jzkb10] {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
