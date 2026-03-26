@@ -49,7 +49,7 @@ else
                 </div>
                 <div class="settings-form">
                     
-                    @* TÍPUS KIVÁLASZTÁSA - Az opciók objektumból jönnek, alapértelmezett kivalasztottTipusId = 1 *@
+                    @* TÍPUS KIVÁLASZTÁSA - Alapértelmezett kivalasztottTipusId = 1 *@
                     <div class="form-group">
                         <label>Jogcím (Fizetés típusa)</label>
                         <select @bind="kivalasztottTipusId" style="padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; width: 100%;">
@@ -230,7 +230,7 @@ else
             // Végigmegyünk az aktív lakókon, és mindegyiknek létrehozunk egy Pénzügyek rekordot
             foreach (var userId in aktivLakoIdk)
             {
-                var ujPenzugy = new Penzugyek
+                var ujPenzugy = new KoliPortal.Lib.MODEL.Penzugyek
                 {
                     UserID = userId,
                     TipusID = kivalasztottTipusId,

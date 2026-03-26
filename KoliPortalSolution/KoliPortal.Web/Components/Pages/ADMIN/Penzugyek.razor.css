@@ -1,0 +1,212 @@
+﻿/* --- SEGÉDOSZTÁLYOK --- */
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.fw-bold {
+    font-weight: 700;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* --- STATISZTIKA KÁRTYA --- */
+.stat-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: #6b7785;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.danger-text {
+    color: #dc2626;
+}
+
+.success-text {
+    color: #16a34a;
+}
+
+/* --- SZŰRŐ GOMBOK ÉS ELRENDEZÉS --- */
+.filter-controls {
+    display: flex;
+    align-items: center;
+    margin: 10px 0px 10px 0px;
+}
+
+.justify-between {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.filter-group {
+    display: flex;
+    gap: 12px;
+}
+
+.action-group {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.page-select-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-left: 1px solid #e5e9ec;
+    padding-left: 16px;
+}
+
+.page-label {
+    font-size: 0.85rem;
+    color: #6b7785;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.filter-btn {
+    background-color: white;
+    border: 1px solid #e5e9ec;
+    color: #6b7785;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+    .filter-btn:hover {
+        background-color: #f4f6f9;
+    }
+
+    .filter-btn.active {
+        background-color: #0d8368;
+        color: white;
+        border-color: #0d8368;
+    }
+
+/* --- ÁLLAPOT JELVÉNYEK --- */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: inline-block;
+}
+
+    .status-badge.fizetve {
+        background-color: #dcfce7;
+        color: #16a34a;
+        border: 1px solid #c7ffdb;
+    }
+
+    .status-badge.tartozas {
+        background-color: #fef2f2;
+        color: #ef4444;
+        border: 1px solid #fecaca;
+    }
+
+.date-sublabel {
+    font-size: 0.75rem;
+    color: #6b7785;
+    display: block;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+/* --- TÁBLÁZAT EXTRÁK --- */
+.table-scroll-container {
+    overflow-x: auto;
+}
+
+/* --- LAPOZÓ SÁV --- */
+.pagination-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin: 24px 0;
+}
+
+/* --- MODAL (X GOMB, HÁTTÉR) --- */
+.action-btn {
+    background: transparent;
+    border: none;
+    color: #6b7785;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.custom-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.custom-modal {
+    background-color: white;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}
+
+.modal-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid #e5e9ec;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .modal-header h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        color: #1d252f;
+        font-weight: 700;
+    }
+
+.modal-body {
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #e5e9ec;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}

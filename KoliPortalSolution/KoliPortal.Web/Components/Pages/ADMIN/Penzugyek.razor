@@ -1,0 +1,474 @@
+﻿@page "/penzugyek"
+@using KoliPortal.Lib.MODEL
+@using KoliPortal.Lib.SERVICE
+@using System.IdentityModel.Tokens.Jwt
+@layout AdminLayout
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+@inject PenzugyekService Penzugy
+@inject FelhasznalokService Felhasznalo
+@inject FizetesTipusokService FizetesTipusok
+@inject SzobaBeosztasokService SzobaBeosztasok
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+<header class="page-header text-center">
+    <h1>Pénzügyek Áttekintése</h1>
+    <p>Kövesd nyomon a lakók befizetéseit és tartozásait.</p>
+</header>
+
+@if (betoltesAlatt)
+{
+    <div class="text-center mt-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2 text-muted">Adatok letöltése...</p>
+    </div>
+}
+else
+{
+    <div class="content-wrapper">
+
+        @if (!string.IsNullOrEmpty(hibaUzenet))
+        {
+            <div class="alert alert-danger mb-4">
+                <i class="bi bi-exclamation-triangle-fill"></i> @hibaUzenet
+            </div>
+        }
+        @if (sikeresMentes)
+        {
+            <div class="alert alert-success mb-4">
+                <i class="bi bi-check-circle-fill"></i> <strong>Siker:</strong> @sikerUzenet
+            </div>
+        }
+
+        @* --- STATISZTIKA KÁRTYA --- *@
+        <div class="card shadow-sm stat-card">
+            <div>
+                <h6 class="stat-label">Összes Kintlévőség (Tartozás)</h6>
+                <h3 class="stat-value danger-text">@osszesTartozas.ToString("N0") Ft</h3>
+            </div>
+            <div class="text-end">
+                <h6 class="stat-label">Befizetett tételek</h6>
+                <h3 class="stat-value success-text">@osszesBefizetett.ToString("N0") Ft</h3>
+            </div>
+        </div>
+
+        @* SZŰRŐ GOMBOK ÉS ÚJ DÍJ GOMB *@
+        <div class="filter-controls justify-between">
+            <div class="filter-group">
+                <button class="filter-btn @(szuresiMod == 0 ? "active" : "")" @onclick="() => Szures(0)">Összes</button>
+                <button class="filter-btn @(szuresiMod == 2 ? "active" : "")" @onclick="() => Szures(2)">Tartozások</button>
+                <button class="filter-btn @(szuresiMod == 1 ? "active" : "")" @onclick="() => Szures(1)">Befizetve</button>
+            </div>
+
+            <div class="action-group">
+                <button class="filter-btn active" @onclick="MegnyitKiirasModal">
+                    <i class="bi bi-plus-circle me-1"></i> Új díj kiírása
+                </button>
+
+                <div class="page-select-wrapper">
+                    <span class="page-label">Sor/oldal:</span>
+                    <select class="form-select form-select-sm" style="width: 80px; border-radius: 8px;" value="@elemekOldalankent" @onchange="OldalMeretValtozas">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        @* --- TÁBLÁZAT --- *@
+        <div class="card shadow-sm mb-3">
+            <div class="table-scroll-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Diák neve</th>
+                            <th>Jogcím</th>
+                            <th>Összeg</th>
+                            <th>Dátum</th>
+                            <th class="text-center">Státusz</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (megjelenitettPenzugyek != null && megjelenitettPenzugyek.Any())
+                        {
+                            @foreach (var tetel in megjelenitettPenzugyek)
+                            {
+                                <tr>
+                                    <td class="fw-bold text-dark">@GetFelhasznaloNev(tetel.UserID)</td>
+                                    <td>@GetTipusNev(tetel.TipusID)</td>
+                                    <td class="fw-bold">@tetel.Osszeg.ToString("N0") Ft</td>
+                                    <td>
+                                        @if (tetel.BefizetesDatum.HasValue)
+                                        {
+                                            <span class="date-sublabel">Fizetve:</span>
+                                            <strong>@tetel.BefizetesDatum.Value.ToShortDateString()</strong>
+                                        }
+                                        else
+                                        {
+                                            <span class="date-sublabel">Határidő:</span>
+                                            <strong class="@(tetel.Esedekesseg < DateTime.Now ? "text-danger" : "")">
+                                                @tetel.Esedekesseg.ToShortDateString()
+                                            </strong>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        @if (tetel.BefizetesDatum.HasValue || (tetel.Statusz ?? "").ToLower() == "fizetve")
+                                        {
+                                            <span class="status-badge fizetve">Fizetve</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="status-badge tartozas">Tartozás</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center text-muted p-5">Nincs a szűrésnek megfelelő adat.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @* --- LAPOZÓ SÁV --- *@
+        @if (osszesOldal > 1)
+        {
+            <div class="pagination-bar">
+                <button class="filter-btn" @onclick="ElozoOldal" disabled="@(jelenlegiOldal == 1)">
+                    <i class="bi bi-chevron-left me-1"></i> Előző
+                </button>
+
+                <span class="text-muted fw-bold">@jelenlegiOldal / @osszesOldal</span>
+
+                <button class="filter-btn" @onclick="KovetkezoOldal" disabled="@(jelenlegiOldal == osszesOldal)">
+                    Következő <i class="bi bi-chevron-right ms-1"></i>
+                </button>
+            </div>
+        }
+    </div>
+}
+
+@* --- FELUGRÓ ABLAK (MODAL) --- *@
+@if (isKiirasModalOpen)
+{
+    <div class="custom-modal-backdrop">
+        <div class="custom-modal">
+
+            <div class="modal-header">
+                <h3>Tömeges díj kiírása</h3>
+                <button type="button" class="action-btn" @onclick="BezarKiirasModal"><i class="bi bi-x-lg"></i></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group mb-3">
+                    <label class="fw-bold mb-1">Jogcím (Fizetés típusa)</label>
+                    <select class="form-select" @bind="kivalasztottTipusId">
+                        @if (fizetesTipusokLista != null && fizetesTipusokLista.Any())
+                        {
+                            @foreach (var tipus in fizetesTipusokLista)
+                            {
+                                <option value="@tipus.ID">@tipus.Megnevezes</option>
+                            }
+                        }
+                        else
+                        {
+                            <option value="1">Kollégiumi díj</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="fw-bold mb-1">Fizetendő Összeg (Ft)</label>
+                    <input type="number" class="form-control" @bind="haviDij" min="1000" />
+                </div>
+
+                <div class="form-group mb-4">
+                    <label class="fw-bold mb-1">Befizetési határidő vége</label>
+                    <input type="date" class="form-control" @bind="befizetesiHatarido" @bind:format="yyyy-MM-dd" />
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="filter-btn" @onclick="BezarKiirasModal" disabled="@mentesFolyamatban">Mégse</button>
+                <button class="filter-btn active" @onclick="DijakKiirasaMindenkinek" disabled="@mentesFolyamatban">
+                    @if (mentesFolyamatban)
+                    {
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        <span>Generálás...</span>
+                    }
+                    else
+                    {
+                        <span>Díjak kiírása aktív lakóknak</span>
+                    }
+                </button>
+            </div>
+
+        </div>
+    </div>
+}
+
+@code {
+    private bool betoltesAlatt = true;
+    private string token = "";
+    private string hibaUzenet = "";
+    private string sikerUzenet = "";
+    private bool sikeresMentes = false;
+
+    private List<KoliPortal.Lib.MODEL.Penzugyek> osszesPenzugy = new();
+    private List<KoliPortal.Lib.MODEL.Penzugyek> szurtPenzugyek = new();
+    private List<KoliPortal.Lib.MODEL.Penzugyek> megjelenitettPenzugyek = new();
+
+    private List<KoliPortal.Lib.MODEL.Felhasznalok> felhasznalokLista = new();
+    private List<FizetesTipusok> fizetesTipusokLista = new();
+
+    private decimal osszesTartozas = 0;
+    private decimal osszesBefizetett = 0;
+    private int szuresiMod = 0;
+
+    private int jelenlegiOldal = 1;
+    private int elemekOldalankent = 10;
+    private int osszesOldal = 1;
+
+    private bool isKiirasModalOpen = false;
+    private bool mentesFolyamatban = false;
+    private int kivalasztottTipusId = 1;
+    private decimal haviDij = 15000;
+    private DateTime befizetesiHatarido = DateTime.Now.AddDays(10);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    Nav.NavigateTo("/");
+                    return;
+                }
+
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+                var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+
+                if (szerepkor != "1" && szerepkor?.ToLower() != "admin")
+                {
+                    Nav.NavigateTo("/");
+                    return;
+                }
+
+                await AdatokBetoltese();
+            }
+            catch (Exception ex)
+            {
+                hibaUzenet = $"Rendszerhiba: {ex.Message}";
+            }
+            finally
+            {
+                betoltesAlatt = false;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private async Task AdatokBetoltese()
+    {
+        try
+        {
+            osszesPenzugy = await Penzugy.GetPenzugyek(token) ?? new();
+            felhasznalokLista = await Felhasznalo.GetFelhasznalok(token) ?? new();
+            fizetesTipusokLista = await FizetesTipusok.GetFizetesTipusok(token) ?? new();
+
+            osszesTartozas = osszesPenzugy.Where(p => !p.BefizetesDatum.HasValue && (p.Statusz ?? "").ToLower() != "fizetve").Sum(p => p.Osszeg);
+            osszesBefizetett = osszesPenzugy.Where(p => p.BefizetesDatum.HasValue || (p.Statusz ?? "").ToLower() == "fizetve").Sum(p => p.Osszeg);
+
+            Szures(szuresiMod);
+        }
+        catch (Exception ex)
+        {
+            hibaUzenet = $"Hiba az adatok letöltésekor: {ex.Message}";
+        }
+    }
+
+    private void MegnyitKiirasModal()
+    {
+        isKiirasModalOpen = true;
+        hibaUzenet = "";
+        haviDij = 15000;
+        befizetesiHatarido = DateTime.Now.AddDays(10);
+    }
+
+    private void BezarKiirasModal()
+    {
+        isKiirasModalOpen = false;
+    }
+
+    private async Task DijakKiirasaMindenkinek()
+    {
+        hibaUzenet = "";
+        sikeresMentes = false;
+
+        // 1000 nél ne lehessen kevesebbet megadni
+        if (haviDij < 1000)
+        {
+            hibaUzenet = "A fizetendő összeg nem kevesebb mint 1000 Ft!";
+            return; // Kilépünk a mentésből
+        }
+
+        mentesFolyamatban = true;
+
+        try
+        {
+            var beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new();
+
+            var aktivLakoIdk = beosztasok
+                .Where(b => b.TenylegesKikoltozes == null)
+                .Select(b => b.UserID)
+                .Distinct()
+                .ToList();
+
+            if (!aktivLakoIdk.Any())
+            {
+                hibaUzenet = "Nincsenek aktív lakók a rendszerben, nincs kinek kiírni a díjat!";
+                mentesFolyamatban = false;
+                BezarKiirasModal();
+                return;
+            }
+
+            int sikeresenLetrehozva = 0;
+
+            foreach (var userId in aktivLakoIdk)
+            {
+                var ujPenzugy = new KoliPortal.Lib.MODEL.Penzugyek
+                {
+                    UserID = userId,
+                    TipusID = kivalasztottTipusId,
+                    Osszeg = haviDij,
+                    Esedekesseg = befizetesiHatarido,
+                    BefizetesDatum = null,
+                    Statusz = "ESEDEKES"
+                };
+
+                await Penzugy.CreatePenzugyek(ujPenzugy, token);
+                sikeresenLetrehozva++;
+            }
+
+            string tipusNev = fizetesTipusokLista?.FirstOrDefault(t => t.ID == kivalasztottTipusId)?.Megnevezes ?? "Egyéb díj";
+
+            sikerUzenet = $"A {tipusNev} {haviDij.ToString("N0")} Ft sikeresen kiírásra került {sikeresenLetrehozva} lakó számára!";
+            sikeresMentes = true;
+
+            await AdatokBetoltese();
+            BezarKiirasModal();
+
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(3000);
+                sikeresMentes = false;
+                await InvokeAsync(StateHasChanged);
+            });
+        }
+        catch (Exception ex)
+        {
+            hibaUzenet = $"Hiba a díjak generálásakor: {ex.Message}";
+            BezarKiirasModal();
+        }
+        finally
+        {
+            mentesFolyamatban = false;
+            StateHasChanged();
+        }
+    }
+
+    private void Szures(int mod)
+    {
+        szuresiMod = mod;
+        jelenlegiOldal = 1;
+
+        if (mod == 1)
+        {
+            szurtPenzugyek = osszesPenzugy
+                .Where(p => p.BefizetesDatum.HasValue || (p.Statusz ?? "").ToLower() == "fizetve")
+                .OrderByDescending(p => p.BefizetesDatum)
+                .ToList();
+        }
+        else if (mod == 2)
+        {
+            szurtPenzugyek = osszesPenzugy
+                .Where(p => !p.BefizetesDatum.HasValue && (p.Statusz ?? "").ToLower() != "fizetve")
+                .OrderBy(p => p.Esedekesseg)
+                .ToList();
+        }
+        else
+        {
+            szurtPenzugyek = osszesPenzugy
+                .OrderBy(p => p.BefizetesDatum.HasValue ? 1 : 0)
+                .ThenByDescending(p => p.Esedekesseg)
+                .ToList();
+        }
+
+        LapozasFrissitese();
+    }
+
+    private void LapozasFrissitese()
+    {
+        osszesOldal = (int)Math.Ceiling((double)szurtPenzugyek.Count / elemekOldalankent);
+        if (osszesOldal == 0) osszesOldal = 1;
+
+        if (jelenlegiOldal > osszesOldal) jelenlegiOldal = osszesOldal;
+
+        megjelenitettPenzugyek = szurtPenzugyek
+            .Skip((jelenlegiOldal - 1) * elemekOldalankent)
+            .Take(elemekOldalankent)
+            .ToList();
+    }
+
+    private void ElozoOldal()
+    {
+        if (jelenlegiOldal > 1)
+        {
+            jelenlegiOldal--;
+            LapozasFrissitese();
+        }
+    }
+
+    private void KovetkezoOldal()
+    {
+        if (jelenlegiOldal < osszesOldal)
+        {
+            jelenlegiOldal++;
+            LapozasFrissitese();
+        }
+    }
+
+    private void OldalMeretValtozas(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int ujMeret))
+        {
+            elemekOldalankent = ujMeret;
+            jelenlegiOldal = 1;
+            LapozasFrissitese();
+        }
+    }
+
+    private string GetFelhasznaloNev(int userId)
+    {
+        var user = felhasznalokLista.FirstOrDefault(u => u.ID == userId);
+        return user != null ? user.Nev : $"Ismeretlen ({userId})";
+    }
+
+    private string GetTipusNev(int tipusId)
+    {
+        var tipus = fizetesTipusokLista.FirstOrDefault(t => t.ID == tipusId);
+        return tipus != null && !string.IsNullOrEmpty(tipus.Megnevezes) ? tipus.Megnevezes : $"Egyéb ({tipusId})";
+    }
+}
