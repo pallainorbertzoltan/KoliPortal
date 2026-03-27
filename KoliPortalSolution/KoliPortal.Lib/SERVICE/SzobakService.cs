@@ -23,12 +23,5 @@ namespace KoliPortal.Lib.SERVICE
 
             return await _httpClient.GetFromJsonAsync<List<Szobak>>("api/Szobak") ?? new List<Szobak>();
         }
-
-        public async Task<Szobak?> GetByIdAsync(int id, string token)
-        {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            return await _httpClient.GetFromJsonAsync<Szobak>($"api/Szobak/{id}");
-        }
     }
 }

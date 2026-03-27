@@ -49,6 +49,9 @@ namespace KoliPortal
             builder.Services.AddScoped<JWTTokenService>();
 
             builder.Services.AddScoped(typeof(IGenericKoliPortal<>), typeof(GenericKoliPortalService<>));
+            builder.Services.AddScoped<IDiakAdatok, DiakAdatokService>();
+            builder.Services.AddScoped<IFelhasznalok, FelhasznalokService>();
+            builder.Services.AddScoped<IFizetesTipusok, FizetesTipusokService>();
 
             var app = builder.Build();
 

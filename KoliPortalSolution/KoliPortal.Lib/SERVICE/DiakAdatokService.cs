@@ -24,13 +24,6 @@ namespace KoliPortal.Lib.SERVICE
             return await _httpClient.GetFromJsonAsync<List<DiakAdatok>>("api/DiakAdatok") ?? new List<DiakAdatok>();
         }
 
-        public async Task<DiakAdatok?> GetByIdAsync(int id, string token)
-        {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            return await _httpClient.GetFromJsonAsync<DiakAdatok>($"api/DiakAdatok/{id}");
-        }
-
         public async Task UpdateDiakAdatok(DiakAdatok adat, string token)
         {
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);

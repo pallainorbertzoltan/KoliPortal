@@ -32,7 +32,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.DiakAdatok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "ContainingType": "KoliPortal.API.Controllers.DiakAdatokController",
     "Method": "GetAll",
     "RelativePath": "api/DiakAdatok",
     "HttpMethod": "GET",
@@ -52,7 +52,7 @@
     ]
   },
   {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.DiakAdatok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "ContainingType": "KoliPortal.API.Controllers.DiakAdatokController",
     "Method": "Create",
     "RelativePath": "api/DiakAdatok",
     "HttpMethod": "POST",
@@ -60,7 +60,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "entity",
+        "Name": "diakAdatok",
         "Type": "KoliPortal.Lib.MODEL.DiakAdatok",
         "IsRequired": true
       }
@@ -78,15 +78,15 @@
     ]
   },
   {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.DiakAdatok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "Update",
+    "ContainingType": "KoliPortal.API.Controllers.DiakAdatokController",
+    "Method": "Updat",
     "RelativePath": "api/DiakAdatok",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "entity",
+        "Name": "diakAdatok",
         "Type": "KoliPortal.Lib.MODEL.DiakAdatok",
         "IsRequired": true
       }
@@ -94,33 +94,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.DiakAdatok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "GetById",
-    "RelativePath": "api/DiakAdatok/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "KoliPortal.Lib.MODEL.DiakAdatok",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.DiakAdatok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "ContainingType": "KoliPortal.API.Controllers.DiakAdatokController",
     "Method": "Delete",
     "RelativePath": "api/DiakAdatok/{id}",
     "HttpMethod": "DELETE",
@@ -136,7 +110,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Felhasznalok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "ContainingType": "KoliPortal.API.Controllers.FelhasznalokController",
     "Method": "GetAll",
     "RelativePath": "api/Felhasznalok",
     "HttpMethod": "GET",
@@ -156,7 +130,7 @@
     ]
   },
   {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Felhasznalok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "ContainingType": "KoliPortal.API.Controllers.FelhasznalokController",
     "Method": "Create",
     "RelativePath": "api/Felhasznalok",
     "HttpMethod": "POST",
@@ -164,7 +138,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "entity",
+        "Name": "felhasznalok",
         "Type": "KoliPortal.Lib.MODEL.Felhasznalok",
         "IsRequired": true
       }
@@ -182,7 +156,7 @@
     ]
   },
   {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Felhasznalok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "ContainingType": "KoliPortal.API.Controllers.FelhasznalokController",
     "Method": "Update",
     "RelativePath": "api/Felhasznalok",
     "HttpMethod": "PUT",
@@ -190,7 +164,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "entity",
+        "Name": "felhasznalok",
         "Type": "KoliPortal.Lib.MODEL.Felhasznalok",
         "IsRequired": true
       }
@@ -198,33 +172,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Felhasznalok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "GetById",
-    "RelativePath": "api/Felhasznalok/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "KoliPortal.Lib.MODEL.Felhasznalok",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.Felhasznalok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "ContainingType": "KoliPortal.API.Controllers.FelhasznalokController",
     "Method": "Delete",
     "RelativePath": "api/Felhasznalok/{id}",
     "HttpMethod": "DELETE",
@@ -240,7 +188,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.FizetesTipusok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+    "ContainingType": "KoliPortal.API.Controllers.FizetesTipusokController",
     "Method": "GetAll",
     "RelativePath": "api/FizetesTipusok",
     "HttpMethod": "GET",
@@ -258,90 +206,6 @@
         "StatusCode": 200
       }
     ]
-  },
-  {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.FizetesTipusok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "Create",
-    "RelativePath": "api/FizetesTipusok",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "entity",
-        "Type": "KoliPortal.Lib.MODEL.FizetesTipusok",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "KoliPortal.Lib.MODEL.FizetesTipusok",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.FizetesTipusok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "Update",
-    "RelativePath": "api/FizetesTipusok",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "entity",
-        "Type": "KoliPortal.Lib.MODEL.FizetesTipusok",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.FizetesTipusok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "GetById",
-    "RelativePath": "api/FizetesTipusok/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "KoliPortal.Lib.MODEL.FizetesTipusok",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.FizetesTipusok, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-    "Method": "Delete",
-    "RelativePath": "api/FizetesTipusok/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
   },
   {
     "ContainingType": "KoliPortal.API.Controllers.GenericController\u00601[[KoliPortal.Lib.MODEL.KarbantartasiKeresek, KoliPortal.Lib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",

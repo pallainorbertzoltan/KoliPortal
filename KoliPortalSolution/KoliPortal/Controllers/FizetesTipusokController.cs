@@ -7,11 +7,19 @@ namespace KoliPortal.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FizetesTipusokController : GenericController<FizetesTipusok>
+    public class FizetesTipusokController : ControllerBase
     {
-        public FizetesTipusokController(IGenericKoliPortal<FizetesTipusok> service) : base(service)
+        private readonly IFizetesTipusok _service;
+        public FizetesTipusokController(IFizetesTipusok service)
         {
-            
+            _service = service;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<FizetesTipusok>>> GetAll()
+        {
+            var lista = await _service.GetAll();
+            return Ok(lista);
         }
     }
 }
