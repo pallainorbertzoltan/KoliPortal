@@ -3,28 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\service\\karbantartasikeresekservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\service\\karbantartasikeresekservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\service\\fizetestipusokservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\service\\fizetestipusokservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\interface\\ifizetestipusok.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\interface\\ifizetestipusok.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\controllers\\fizetestipusokcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\controllers\\fizetestipusokcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\interface\\ifelhasznalok.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\interface\\ifelhasznalok.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\controllers\\felhasznalokcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\controllers\\felhasznalokcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\interface\\ikarbantartasikeresek.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\interface\\ikarbantartasikeresek.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,80 +30,27 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "IFelhasznalok.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\INTERFACE\\IFelhasznalok.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\INTERFACE\\IFelhasznalok.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\INTERFACE\\IFelhasznalok.cs",
-              "RelativeToolTip": "KoliPortal\\INTERFACE\\IFelhasznalok.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "IKarbantartasiKeresek.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\INTERFACE\\IKarbantartasiKeresek.cs",
+              "RelativeDocumentMoniker": "KoliPortal\\INTERFACE\\IKarbantartasiKeresek.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\INTERFACE\\IKarbantartasiKeresek.cs",
+              "RelativeToolTip": "KoliPortal\\INTERFACE\\IKarbantartasiKeresek.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-27T18:40:18.479Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-27T19:21:11.496Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Program.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\Program.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Program.cs",
-              "RelativeToolTip": "KoliPortal\\Program.cs",
-              "ViewState": "AgIAACAAAAAAAAAAAAAqwDYAAAAAAAAAAAAAAA==",
+              "Title": "KarbantartasiKeresekService.cs",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\SERVICE\\KarbantartasiKeresekService.cs",
+              "RelativeDocumentMoniker": "KoliPortal\\SERVICE\\KarbantartasiKeresekService.cs",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\SERVICE\\KarbantartasiKeresekService.cs",
+              "RelativeToolTip": "KoliPortal\\SERVICE\\KarbantartasiKeresekService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-27T18:39:35.826Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "FelhasznalokController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\FelhasznalokController.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\Controllers\\FelhasznalokController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\FelhasznalokController.cs",
-              "RelativeToolTip": "KoliPortal\\Controllers\\FelhasznalokController.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAQwBYAAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-27T18:39:14.225Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "FizetesTipusokController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\FizetesTipusokController.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\Controllers\\FizetesTipusokController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\FizetesTipusokController.cs",
-              "RelativeToolTip": "KoliPortal\\Controllers\\FizetesTipusokController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-27T18:37:47.608Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "FizetesTipusokService.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\SERVICE\\FizetesTipusokService.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\SERVICE\\FizetesTipusokService.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\SERVICE\\FizetesTipusokService.cs",
-              "RelativeToolTip": "KoliPortal\\SERVICE\\FizetesTipusokService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-27T18:36:12.195Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "IFizetesTipusok.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\INTERFACE\\IFizetesTipusok.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\INTERFACE\\IFizetesTipusok.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\INTERFACE\\IFizetesTipusok.cs",
-              "RelativeToolTip": "KoliPortal\\INTERFACE\\IFizetesTipusok.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAwAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-27T18:35:38.899Z",
+              "WhenOpened": "2026-03-27T19:19:59.361Z",
               "EditorCaption": ""
             }
           ]

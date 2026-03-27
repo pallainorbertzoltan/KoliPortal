@@ -52,6 +52,9 @@ namespace KoliPortal
             builder.Services.AddScoped<IDiakAdatok, DiakAdatokService>();
             builder.Services.AddScoped<IFelhasznalok, FelhasznalokService>();
             builder.Services.AddScoped<IFizetesTipusok, FizetesTipusokService>();
+            builder.Services.AddScoped<IKarbantartasiKeresek, KarbantartasiKeresekService>();
+            builder.Services.AddScoped<IKarbantartasStatuszok, KarbantartasStatuszokService>();
+            builder.Services.AddScoped<IKollegium, KollegiumService>();
 
             var app = builder.Build();
 

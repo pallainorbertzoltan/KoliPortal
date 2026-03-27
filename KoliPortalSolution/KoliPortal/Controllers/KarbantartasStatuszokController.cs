@@ -7,11 +7,18 @@ namespace KoliPortal.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class KarbantartasStatuszokController : GenericController<KarbantartasStatuszok>
+    public class KarbantartasStatuszokController : ControllerBase
     {
-        public KarbantartasStatuszokController(IGenericKoliPortal<KarbantartasStatuszok> service) : base(service)
+        private readonly IKarbantartasStatuszok _service;
+        public KarbantartasStatuszokController(IKarbantartasStatuszok service)
         {
-            
+            _service = service;
+        }
+        [HttpGet]
+        public async Task<ActionResult<List<KarbantartasStatuszok>>> GetAll()
+        {
+            var list = await _service.GetAll();
+            return Ok(list);
         }
     }
 }

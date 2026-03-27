@@ -7,11 +7,40 @@ namespace KoliPortal.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class KarbantartasiKeresekController : GenericController<KarbantartasiKeresek>
+    public class KarbantartasiKeresekController : ControllerBase
     {
-        public KarbantartasiKeresekController(IGenericKoliPortal<KarbantartasiKeresek> service) : base(service)
+        private readonly IKarbantartasiKeresek _service;
+        public KarbantartasiKeresekController(IKarbantartasiKeresek service)
         {
-            
+            _service = service;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<KarbantartasiKeresek>>> GetAll()
+        {
+            var list = await _service.GetAll();
+            return Ok(list);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<KarbantartasiKeresek>> Create([FromBody] KarbantartasiKeresek karbantartasiKeresek)
+        {
+            await _service.Add(karbantartasiKeresek);
+            return Ok(karbantartasiKeresek.ID);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Update([FromBody] KarbantartasiKeresek karbantartasiKeresek)
+        {
+            await _service.Update(karbantartasiKeresek);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            await _service.Delete(id);
+            return NoContent();
         }
     }
 }

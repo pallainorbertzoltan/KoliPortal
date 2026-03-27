@@ -14,14 +14,14 @@ namespace KoliPortal.API.SERVICE
         }
         public async Task<Felhasznalok> Add(Felhasznalok entity)
         {
-            _context.Felhasznalok.Add(entity);
+            _context.Felhasznalok.AddAsync(entity);
             await _context.SaveChangesAsync();
             return entity;
         }
 
         public async Task Delete(int id)
         {
-            var entity = _context.Felhasznalok.Find(id);
+            var entity = await _context.Felhasznalok.FindAsync(id);
             if (entity != null)
             {
                 _context.Felhasznalok.Remove(entity);
