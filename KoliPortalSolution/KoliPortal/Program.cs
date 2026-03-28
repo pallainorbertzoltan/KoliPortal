@@ -48,13 +48,16 @@ namespace KoliPortal
             // Egyeb szolgaltatasok regisztralasa, pl.: a JWTTokenService szolgaltatas hozzadadasa a fuggoseginjektorhoz, hogy az alkalmazas hasznalhato legyen a JWT tokenek letrehozasahoz es kezelesehez
             builder.Services.AddScoped<JWTTokenService>();
 
-            builder.Services.AddScoped(typeof(IGenericKoliPortal<>), typeof(GenericKoliPortalService<>));
             builder.Services.AddScoped<IDiakAdatok, DiakAdatokService>();
             builder.Services.AddScoped<IFelhasznalok, FelhasznalokService>();
             builder.Services.AddScoped<IFizetesTipusok, FizetesTipusokService>();
             builder.Services.AddScoped<IKarbantartasiKeresek, KarbantartasiKeresekService>();
             builder.Services.AddScoped<IKarbantartasStatuszok, KarbantartasStatuszokService>();
             builder.Services.AddScoped<IKollegium, KollegiumService>();
+            builder.Services.AddScoped<IPenzugyek, PenzugyekService>();
+            builder.Services.AddScoped<ISzerepkorok, SzerepkorokService>();
+            builder.Services.AddScoped<ISzobaBeosztasok, SzobaBeosztasokService>();
+            builder.Services.AddScoped<ISzobak, SzobakService>();
 
             var app = builder.Build();
 

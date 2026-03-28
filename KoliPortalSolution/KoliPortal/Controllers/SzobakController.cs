@@ -7,11 +7,18 @@ namespace KoliPortal.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SzobakController : GenericController<Szobak>
+    public class SzobakController : ControllerBase
     {
-        public SzobakController(IGenericKoliPortal<Szobak> service) : base(service)
+        private readonly ISzobak _service;
+        public SzobakController(ISzobak service)
         {
-            
+            _service = service;
+        }
+        [HttpGet]
+        public async Task<ActionResult<List<Szobak>>> GetAll()
+        {
+            var lista = await _service.GetAll();
+            return Ok(lista);
         }
     }
 }

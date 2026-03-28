@@ -30,7 +30,7 @@ namespace KoliPortal.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Updat([FromBody] DiakAdatok diakAdatok)
+        public async Task<ActionResult> Update([FromBody] DiakAdatok diakAdatok)
         {
             await _service.Update(diakAdatok);
             return NoContent();
