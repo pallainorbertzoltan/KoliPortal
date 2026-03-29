@@ -1,0 +1,61 @@
+﻿@page "/adatvedelem"
+@rendermode InteractiveServer
+@inject NavigationManager Nav
+
+<div class="privacy-container">
+    <div class="privacy-card">
+
+        <div class="card-header text-center">
+            <div class="logo-container mb-3">
+                <i class="bi bi-shield-check" style="font-size: 3rem; color: #0d8368;"></i>
+            </div>
+            <h1 class="welcome-text">Adatkezelési Tájékoztató</h1>
+            <p class="subtitle-text">Hatályos: 2026. március 26-tól</p>
+        </div>
+
+        <div class="card-body privacy-content">
+            <p>A <strong>KoliPortál</strong> (továbbiakban: Rendszer) üzemeltetője kiemelt figyelmet fordít a felhasználók (kollégisták, adminisztrátorok) személyes adatainak védelmére.</p>
+
+            <h4>1. Az Adatkezelő adatai</h4>
+            <ul>
+                <li><strong>Név:</strong> Teszt Elek Kollégium Intézményfenntartója</li>
+                <li><strong>Email:</strong> adatvedelem@koliportal.hu</li>
+                <li><strong>Rendszer:</strong> KoliPortál Kollégiumi Nyilvántartó Rendszer</li>
+            </ul>
+
+            <h4>2. A kezelt adatok köre</h4>
+            <p>A rendszer az alábbi személyes és adminisztratív adatokat kezeli a regisztráció és a használat során:</p>
+            <ul>
+                <li><strong>Azonosítási adatok:</strong> Név, Email cím, Titkosított jelszó.</li>
+                <li><strong>Kapcsolattartási adatok:</strong> Telefonszám, Lakcím.</li>
+                <li><strong>Tanulmányi adatok:</strong> Évfolyam.</li>
+                <li><strong>Kollégiumi adatok:</strong> Szobabeosztás (kollégium épülete, szobaszám), beköltözés és várható kiköltözés dátuma.</li>
+                <li><strong>Pénzügyi adatok:</strong> Kiírt kollégiumi díjak, tartozások, befizetések állapota.</li>
+                <li><strong>Karbantartási adatok:</strong> A lakó által leadott hibajegyek leírása és státusza.</li>
+            </ul>
+
+            <h4>3. Az adatkezelés célja és jogalapja</h4>
+            <p><strong>Cél:</strong> A kollégiumi adminisztráció, szobabeosztások nyomon követése, a lakók tájékoztatása, a kollégiumi díjak számlázása és a karbantartási folyamatok (hibajegyek) menedzselése.</p>
+
+            <h4>4. Adatbiztonság és adattárolás ideje</h4>
+            <p>A Rendszer a jelszavakat egyirányú, visszafejthetetlen titkosítással tárolja. A személyes adatokat harmadik fél részére marketing célból nem adjuk ki. Az adatokat a kollégiumi jogviszony fennállása alatt, illetve a jogviszony megszűnését követően a számviteli és adójogszabályokban meghatározott kötelező ideig (jellemzően 8 év) őrizzük meg a pénzügyi adatok esetében.</p>
+
+            <h4>5. Az érintettek jogai</h4>
+            <p>Ön jogosult kérelmezni az adatkezelőtől a rá vonatkozó személyes adatokhoz való hozzáférést, azok helyesbítését, törlését vagy kezelésének korlátozását. A felhasználó bizonyos adatait (pl. név, telefonszám, lakcím) kizárólag az intézmény adminisztrátorán keresztül módosíttathatja vagy töröltetheti a rendszerből.</p>
+        </div>
+
+        <div class="card-footer text-center mt-4">
+            <button class="btn btn-outline-secondary px-4 py-2 fw-bold" style="border-radius: 8px;" @onclick="VisszaABejelentkezeshez">
+                <i class="bi bi-arrow-left me-2"></i> Vissza a bejelentkezéshez
+            </button>
+        </div>
+
+    </div>
+</div>
+
+@code {
+    private void VisszaABejelentkezeshez()
+    {
+        Nav.NavigateTo("/");
+    }
+}

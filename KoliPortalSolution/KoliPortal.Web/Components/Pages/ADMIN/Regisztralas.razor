@@ -151,23 +151,23 @@ else
         {
             try
             {
-                token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+                // token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
 
-                if (string.IsNullOrEmpty(token))
-                {
-                    Nav.NavigateTo("/");
-                    return;
-                }
+                // if (string.IsNullOrEmpty(token))
+                // {
+                //     Nav.NavigateTo("/");
+                //     return;
+                // }
 
-                var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-                var jwtToken = handler.ReadJwtToken(token);
-                var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+                // var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                // var jwtToken = handler.ReadJwtToken(token);
+                // var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
 
-                if (szerepkor != "1" && szerepkor?.ToLower() != "admin")
-                {
-                    Nav.NavigateTo("/");
-                    return;
-                }
+                // if (szerepkor != "1" && szerepkor?.ToLower() != "admin")
+                // {
+                //     Nav.NavigateTo("/");
+                //     return;
+                // }
 
                 szerepkorokLista = await Szerepkorok.GetSzerepkorok(token) ?? new();
                 szobakLista = await Szobak.GetSzobak(token) ?? new();

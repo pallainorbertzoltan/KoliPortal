@@ -1,0 +1,74 @@
+﻿.privacy-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    background-color: #f8fafc;
+    padding: 3rem 1rem;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.privacy-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    max-width: 800px;
+    width: 100%;
+    padding: 3rem;
+    border: 1px solid #e2e8f0;
+}
+
+.privacy-content h4 {
+    color: #0d8368;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border-bottom: 2px solid #e6f3ef;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.privacy-content p, .privacy-content li {
+    color: #334155;
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+.privacy-content ul {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+}
+
+.card-header {
+    border-bottom: 1px solid #e5e9ec;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    background: transparent;
+}
+
+.card-footer {
+    border-top: 1px solid #e5e9ec;
+    padding-top: 2rem;
+    background: transparent;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+}
+
+.welcome-text {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 0.5rem 0;
+}
+
+.subtitle-text {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin: 0;
+    font-weight: 500;
+}

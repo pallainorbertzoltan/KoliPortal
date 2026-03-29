@@ -1,58 +1,10 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\",
+  "WorkspaceRootPath": "C:\\Users\\user\\OneDrive\\Desktop\\KoliPortal\\KoliPortalSolution\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\controllers\\szobakcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\controllers\\szobakcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\controllers\\szobabeosztasokcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\controllers\\szobabeosztasokcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\controllers\\szerepkorokcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\controllers\\szerepkorokcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\controllers\\penzugyekcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\controllers\\penzugyekcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\controllers\\kollegiumcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\controllers\\kollegiumcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\controllers\\karbantartasstatuszokcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\controllers\\karbantartasstatuszokcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\controllers\\karbantartasikeresekcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\controllers\\karbantartasikeresekcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\controllers\\genericcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\controllers\\genericcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\controllers\\fizetestipusokcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\controllers\\fizetestipusokcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\controllers\\felhasznalokcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\controllers\\felhasznalokcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\service\\szobakservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\service\\szobakservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|c:\\users\\user\\onedrive\\desktop\\api teszt\\koliportal\\koliportalsolution\\koliportal\\interface\\iszobak.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E828919E-FCB8-4143-9A23-549E214FBD92}|KoliPortal\\KoliPortal.API.csproj|solutionrelative:koliportal\\interface\\iszobak.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|c:\\users\\user\\onedrive\\desktop\\koliportal\\koliportalsolution\\koliportal.web\\components\\pages\\lako\\befizetesek.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7CC56C66-F01A-429D-AF78-AFBD988651E2}|KoliPortal.Web\\KoliPortal.Web.csproj|solutionrelative:koliportal.web\\components\\pages\\lako\\befizetesek.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -62,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -74,171 +26,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "SzerepkorokController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\SzerepkorokController.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\Controllers\\SzerepkorokController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\SzerepkorokController.cs",
-              "RelativeToolTip": "KoliPortal\\Controllers\\SzerepkorokController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T00:14:16.09Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "PenzugyekController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\PenzugyekController.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\Controllers\\PenzugyekController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\PenzugyekController.cs",
-              "RelativeToolTip": "KoliPortal\\Controllers\\PenzugyekController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T00:14:11.214Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "KollegiumController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\KollegiumController.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\Controllers\\KollegiumController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\KollegiumController.cs",
-              "RelativeToolTip": "KoliPortal\\Controllers\\KollegiumController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T00:14:10.202Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "KarbantartasStatuszokController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\KarbantartasStatuszokController.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\Controllers\\KarbantartasStatuszokController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\KarbantartasStatuszokController.cs",
-              "RelativeToolTip": "KoliPortal\\Controllers\\KarbantartasStatuszokController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T00:14:07.8Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "KarbantartasiKeresekController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\KarbantartasiKeresekController.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\Controllers\\KarbantartasiKeresekController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\KarbantartasiKeresekController.cs",
-              "RelativeToolTip": "KoliPortal\\Controllers\\KarbantartasiKeresekController.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T00:14:05.244Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SzobaBeosztasokController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\SzobaBeosztasokController.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\Controllers\\SzobaBeosztasokController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\SzobaBeosztasokController.cs",
-              "RelativeToolTip": "KoliPortal\\Controllers\\SzobaBeosztasokController.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAACsAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T00:11:06.783Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "SzobakController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\SzobakController.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\Controllers\\SzobakController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\SzobakController.cs",
-              "RelativeToolTip": "KoliPortal\\Controllers\\SzobakController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAwAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T00:10:51.47Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Program.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\Program.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Program.cs",
-              "RelativeToolTip": "KoliPortal\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T00:05:00.042Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "GenericController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\GenericController.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\Controllers\\GenericController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\GenericController.cs",
-              "RelativeToolTip": "KoliPortal\\Controllers\\GenericController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T00:14:04.561Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "FizetesTipusokController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\FizetesTipusokController.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\Controllers\\FizetesTipusokController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\FizetesTipusokController.cs",
-              "RelativeToolTip": "KoliPortal\\Controllers\\FizetesTipusokController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T00:14:02.762Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "FelhasznalokController.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\FelhasznalokController.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\Controllers\\FelhasznalokController.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\Controllers\\FelhasznalokController.cs",
-              "RelativeToolTip": "KoliPortal\\Controllers\\FelhasznalokController.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T00:14:00.017Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "SzobakService.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\SERVICE\\SzobakService.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\SERVICE\\SzobakService.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\SERVICE\\SzobakService.cs",
-              "RelativeToolTip": "KoliPortal\\SERVICE\\SzobakService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T00:09:59.611Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "ISzobak.cs",
-              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\INTERFACE\\ISzobak.cs",
-              "RelativeDocumentMoniker": "KoliPortal\\INTERFACE\\ISzobak.cs",
-              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\api teszt\\KoliPortal\\KoliPortalSolution\\KoliPortal\\INTERFACE\\ISzobak.cs",
-              "RelativeToolTip": "KoliPortal\\INTERFACE\\ISzobak.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-28T00:09:13.301Z",
+              "Title": "Befizetesek.razor",
+              "DocumentMoniker": "C:\\Users\\user\\OneDrive\\Desktop\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\LAKO\\Befizetesek.razor",
+              "RelativeDocumentMoniker": "KoliPortal.Web\\Components\\Pages\\LAKO\\Befizetesek.razor",
+              "ToolTip": "C:\\Users\\user\\OneDrive\\Desktop\\KoliPortal\\KoliPortalSolution\\KoliPortal.Web\\Components\\Pages\\LAKO\\Befizetesek.razor*",
+              "RelativeToolTip": "KoliPortal.Web\\Components\\Pages\\LAKO\\Befizetesek.razor*",
+              "ViewState": "AgIAAKYAAAAAAAAAAAAqwLcAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-29T17:29:27.249Z",
               "EditorCaption": ""
             }
           ]

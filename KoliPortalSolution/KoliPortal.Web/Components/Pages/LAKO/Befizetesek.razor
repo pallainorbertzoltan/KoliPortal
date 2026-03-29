@@ -41,6 +41,19 @@
         }
 
         <div class="content-panel" style="max-width: 800px;">
+
+            @* OLDALMÉRET VÁLASZTÓ *@
+            <div class="d-flex justify-content-end mb-3">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="text-muted small fw-bold text-uppercase">Sor/oldal:</span>
+                    <select class="form-select form-select-sm shadow-sm" style="width: 80px; border-radius: 8px; cursor: pointer;" value="@elemekOldalankent" @onchange="OldalMeretValtozas">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="table-container">
                 <table>
                     <thead>
@@ -53,9 +66,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (sajatPenzugyek != null && sajatPenzugyek.Any())
+                        @if (megjelenitettPenzugyek != null && megjelenitettPenzugyek.Any())
                         {
-                            @foreach (var tetel in sajatPenzugyek)
+                            @foreach (var tetel in megjelenitettPenzugyek)
                             {
                                 <tr>
                                     <td>
@@ -109,6 +122,23 @@
                     </tbody>
                 </table>
             </div>
+
+            @* LAPOZÓ GOMBOK *@
+            @if (osszesOldal > 1)
+            {
+                <div class="d-flex justify-content-center align-items-center gap-3 mt-4 mb-2">
+                    <button class="btn btn-outline-secondary rounded-pill px-4 fw-bold shadow-sm" @onclick="ElozoOldal" disabled="@(jelenlegiOldal == 1)">
+                        <i class="bi bi-chevron-left me-1"></i> Előző
+                    </button>
+
+                    <span class="text-muted fw-bolder bg-white border px-4 py-2 rounded-pill shadow-sm">@jelenlegiOldal / @osszesOldal</span>
+
+                    <button class="btn btn-outline-secondary rounded-pill px-4 fw-bold shadow-sm" @onclick="KovetkezoOldal" disabled="@(jelenlegiOldal == osszesOldal)">
+                        Következő <i class="bi bi-chevron-right ms-1"></i>
+                    </button>
+                </div>
+            }
+
         </div>
     }
 </div>
@@ -121,11 +151,15 @@
     private string hibaUzenet = "";
     private bool sikeresFizetes = false;
 
-    // Listák az API-ból
+    // Listák az API-ból és a lapozáshoz
     private List<Penzugyek> sajatPenzugyek = new();
-
-    // Objektumok listája
+    private List<Penzugyek> megjelenitettPenzugyek = new();
     private List<FizetesTipusok> fizetesTipusokLista = new();
+
+    // LAPOZÁS VÁLTOZÓI
+    private int jelenlegiOldal = 1;
+    private int elemekOldalankent = 5; // 5-ös alapbeállítás
+    private int osszesOldal = 1;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -133,37 +167,37 @@
         {
             try
             {
-                token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+                // token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
 
-                if (string.IsNullOrEmpty(token))
-                {
-                    Nav.NavigateTo("/");
-                    return;
-                }
+                // if (string.IsNullOrEmpty(token))
+                // {
+                //     Nav.NavigateTo("/");
+                //     return;
+                // }
 
-                var handler = new JwtSecurityTokenHandler();
-                var jwtToken = handler.ReadJwtToken(token);
-                var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+                // var handler = new JwtSecurityTokenHandler();
+                // var jwtToken = handler.ReadJwtToken(token);
+                // var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
 
-                if (szerepkor != "2" && szerepkor?.ToLower() != "lako")
-                {
-                    Nav.NavigateTo("/");
-                    return;
-                }
+                // if (szerepkor != "2" && szerepkor?.ToLower() != "lako")
+                // {
+                //     Nav.NavigateTo("/");
+                //     return;
+                // }
 
-                var idClaim = jwtToken.Claims.FirstOrDefault(x =>
-                    x.Type == ClaimTypes.NameIdentifier ||
-                    x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+                // var idClaim = jwtToken.Claims.FirstOrDefault(x =>
+                //     x.Type == ClaimTypes.NameIdentifier ||
+                //     x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
 
-                if (idClaim != null && int.TryParse(idClaim.Value, out int parsedId))
-                {
-                    sajatId = parsedId;
-                    await AdatokBetoltese();
-                }
-                else
-                {
-                    hibaUzenet = "Nem sikerült azonosítani a felhasználót.";
-                }
+                // if (idClaim != null && int.TryParse(idClaim.Value, out int parsedId))
+                // {
+                //     sajatId = parsedId;
+                //     await AdatokBetoltese();
+                // }
+                // else
+                // {
+                //     hibaUzenet = "Nem sikerült azonosítani a felhasználót.";
+                // }
             }
             catch (Exception ex)
             {
@@ -192,10 +226,56 @@
 
             // Fizetési típusok lekérése
             fizetesTipusokLista = await FizetesTipusok.GetFizetesTipusok(token) ?? new();
+
+            LapozasFrissitese();
         }
         catch (Exception ex)
         {
             hibaUzenet = $"Hiba az adatok letöltésekor: {ex.Message}";
+        }
+    }
+
+    // LAPOZÁS LOGIKÁJA
+    private void LapozasFrissitese()
+    {
+        if (sajatPenzugyek == null) return;
+
+        osszesOldal = (int)Math.Ceiling((double)sajatPenzugyek.Count / elemekOldalankent);
+        if (osszesOldal == 0) osszesOldal = 1;
+
+        if (jelenlegiOldal > osszesOldal) jelenlegiOldal = osszesOldal;
+
+        megjelenitettPenzugyek = sajatPenzugyek
+            .Skip((jelenlegiOldal - 1) * elemekOldalankent)
+            .Take(elemekOldalankent)
+            .ToList();
+    }
+
+    private void ElozoOldal()
+    {
+        if (jelenlegiOldal > 1)
+        {
+            jelenlegiOldal--;
+            LapozasFrissitese();
+        }
+    }
+
+    private void KovetkezoOldal()
+    {
+        if (jelenlegiOldal < osszesOldal)
+        {
+            jelenlegiOldal++;
+            LapozasFrissitese();
+        }
+    }
+
+    private void OldalMeretValtozas(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int ujMeret))
+        {
+            elemekOldalankent = ujMeret;
+            jelenlegiOldal = 1;
+            LapozasFrissitese();
         }
     }
 
@@ -230,14 +310,11 @@
     // A TipusID alapján kikeressük az objektumot a listából
     private string GetTipusNev(int tipusId)
     {
-        // Megkeressük az első olyan elemet, aminek az ID-jwe egyezik
         var tipus = fizetesTipusokLista.FirstOrDefault(t => t.ID == tipusId);
-
         if (tipus != null && !string.IsNullOrEmpty(tipus.Megnevezes))
         {
             return tipus.Megnevezes;
         }
-
         return $"Egyéb ({tipusId})";
     }
 }
