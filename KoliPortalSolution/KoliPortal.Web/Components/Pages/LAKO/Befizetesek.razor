@@ -167,37 +167,37 @@
         {
             try
             {
-                // token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
+                token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
 
-                // if (string.IsNullOrEmpty(token))
-                // {
-                //     Nav.NavigateTo("/");
-                //     return;
-                // }
+                if (string.IsNullOrEmpty(token))
+                {
+                    Nav.NavigateTo("/");
+                    return;
+                }
 
-                // var handler = new JwtSecurityTokenHandler();
-                // var jwtToken = handler.ReadJwtToken(token);
-                // var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+                var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
 
-                // if (szerepkor != "2" && szerepkor?.ToLower() != "lako")
-                // {
-                //     Nav.NavigateTo("/");
-                //     return;
-                // }
+                if (szerepkor != "2" && szerepkor?.ToLower() != "lako")
+                {
+                    Nav.NavigateTo("/");
+                    return;
+                }
 
-                // var idClaim = jwtToken.Claims.FirstOrDefault(x =>
-                //     x.Type == ClaimTypes.NameIdentifier ||
-                //     x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+                var idClaim = jwtToken.Claims.FirstOrDefault(x =>
+                    x.Type == ClaimTypes.NameIdentifier ||
+                    x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
 
-                // if (idClaim != null && int.TryParse(idClaim.Value, out int parsedId))
-                // {
-                //     sajatId = parsedId;
-                //     await AdatokBetoltese();
-                // }
-                // else
-                // {
-                //     hibaUzenet = "Nem sikerült azonosítani a felhasználót.";
-                // }
+                if (idClaim != null && int.TryParse(idClaim.Value, out int parsedId))
+                {
+                    sajatId = parsedId;
+                    await AdatokBetoltese();
+                }
+                else
+                {
+                    hibaUzenet = "Nem sikerült azonosítani a felhasználót.";
+                }
             }
             catch (Exception ex)
             {
