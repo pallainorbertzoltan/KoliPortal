@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\KoliPortal.API.props" />
-</Project>

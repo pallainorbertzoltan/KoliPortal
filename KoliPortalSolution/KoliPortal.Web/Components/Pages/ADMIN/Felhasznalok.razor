@@ -465,7 +465,7 @@ else
                 }
 
                 var erintettKeresek = karbantartasiKeresekLista
-                    .Where(x => x.BejelentoID == editModel.UserID || x.KarbantartoID == editModel.UserID)
+                    .Where(x => x.BejelentoID == editModel.UserID)
                     .ToList();
 
                 foreach (var keres in erintettKeresek)
