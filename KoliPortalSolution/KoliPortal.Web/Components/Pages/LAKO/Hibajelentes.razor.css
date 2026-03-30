@@ -1,6 +1,6 @@
-﻿/* --- ALAP SZEKCIÓ --- */
+﻿/* ALAP SZEKCIÓ */
 .view-section {
-    max-width: 800px; /* Kicsit szélesebb hagyhatjuk, hogy a szövegdoboz kényelmes legyen */
+    max-width: 800px;
     margin: 40px auto;
     padding: 0 20px;
 }
@@ -24,7 +24,7 @@
         color: #64748b;
     }
 
-/* --- TARTALOM KÁRTYA (Űrlap doboza) --- */
+/* TARTALOM KÁRTYA (Űrlap doboza) */
 .content-panel {
     background-color: #ffffff;
     border-radius: 12px;
@@ -34,7 +34,7 @@
     margin: 0 auto; /* Középre igazítja a max-width miatt */
 }
 
-/* --- BEVITELI MEZŐK ÉS CÍMKÉK --- */
+/* BEVITELI MEZŐK ÉS CÍMKÉK */
 .input-group {
     margin-bottom: 1.5rem;
 }
@@ -57,35 +57,24 @@
     background-color: #ffffff;
     box-sizing: border-box;
     transition: border-color 0.2s, box-shadow 0.2s;
-    font-family: inherit; /* Hogy a textarea is felvegye az alap betűtípust */
+    font-family: inherit;
 }
 
-    /* Fókusz állapot (amikor belekattint a diák) */
     .input-field:focus {
         outline: none;
         border-color: #0ea5e9;
-        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15); /* Finom kék ragyogás */
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
     }
-
-/* Kifejezetten a legördülő menü (Select) extra stílusa */
-select.input-field {
-    cursor: pointer;
-    appearance: none; /* Eltünteti a csúnya alapértelmezett nyilat */
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1em;
-    padding-right: 2.5rem; /* Hely a nyílnak */
-}
 
 /* Kifejezetten a többsoros szövegdoboz (Textarea) extra stílusa */
 textarea.input-field {
-    resize: vertical; /* Csak függőlegesen lehessen átméretezni */
+    resize: vertical;
     min-height: 100px;
     line-height: 1.5;
+    max-height: 300px;
 }
 
-/* --- KÜLDÉS GOMB --- */
+/* KÜLDÉS GOMB */
 .btn-primary {
     background-color: #0ea5e9;
     color: white;
@@ -107,3 +96,7 @@ textarea.input-field {
     .btn-primary:active {
         transform: scale(0.98);
     }
+
+.table-scroll-container {
+    overflow-x: auto;
+}

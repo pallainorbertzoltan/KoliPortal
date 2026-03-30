@@ -46,11 +46,11 @@ else
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>Azonosító</th>
-                                <th>Bejelentő / Helyszín</th>
-                                <th>Leírás</th>
-                                <th class="text-center">Állapot</th>
-                                <th class="text-center">Művelet</th>
+                                <th style="width: 80px; min-width: 80px;">Azonosító</th>
+                                <th style="min-width: 160px;">Bejelentő / Helyszín</th>
+                                <th style="min-width: 250px;">Leírás</th>
+                                <th class="text-center" style="width: 120px; min-width: 120px;">Állapot</th>
+                                <th class="text-center" style="width: 80px; min-width: 80px;">Művelet</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,10 +64,10 @@ else
                                             <strong>@GetBejelentoNeve(hiba.BejelentoID)</strong><br />
                                             <small class="text-muted">@GetHelyszin(hiba.BejelentoID)</small>
                                         </td>
-                                        <td>
+                                        <td style="min-width: 250px; max-width: 350px;">
                                             <div class="task-desc">
-                                                <span class="desc-text">@hiba.Leiras</span>
-                                                <span class="desc-date">@hiba.LetrehozasDatum.ToShortDateString()</span>
+                                                <span class="desc-text text-break d-block" style="white-space: normal; overflow-wrap: break-word;">@hiba.Leiras</span>
+                                                <span class="desc-date d-block text-muted mt-1">@hiba.LetrehozasDatum.ToShortDateString()</span>
                                             </div>
                                         </td>
                                         <td class="text-center">
@@ -109,11 +109,11 @@ else
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>Azonosító</th>
-                                    <th>Bejelentő</th>
-                                    <th>Leírás</th>
-                                    <th class="text-center">Állapot</th>
-                                    <th class="text-center">Művelet</th>
+                                    <th style="width: 80px; min-width: 80px;">Azonosító</th>
+                                    <th style="min-width: 160px;">Bejelentő</th>
+                                    <th style="min-width: 250px;">Leírás</th>
+                                    <th class="text-center" style="width: 120px; min-width: 120px;">Állapot</th>
+                                    <th class="text-center" style="width: 80px; min-width: 80px;">Művelet</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -125,10 +125,10 @@ else
                                             <strong>@GetBejelentoNeve(hiba.BejelentoID)</strong><br />
                                             <small class="text-muted">@GetHelyszin(hiba.BejelentoID)</small>
                                         </td>
-                                        <td>
+                                        <td style="min-width: 250px; max-width: 350px;">
                                             <div class="task-desc">
-                                                <span class="desc-text">@hiba.Leiras</span>
-                                                <span class="desc-date">@hiba.LetrehozasDatum.ToShortDateString()</span>
+                                                <span class="desc-text text-break d-block" style="white-space: normal; overflow-wrap: break-word;">@hiba.Leiras</span>
+                                                <span class="desc-date d-block text-muted mt-1">@hiba.LetrehozasDatum.ToShortDateString()</span>
                                             </div>
                                         </td>
                                         <td class="text-center">
@@ -179,7 +179,7 @@ else
 
                 <div class="form-group mb-3">
                     <label class="text-muted small">Hiba leírása</label>
-                    <div class="p-2 bg-light border rounded">@szerkesztettHiba.Leiras</div>
+                    <div class="p-2 bg-light border rounded text-break" style="overflow-wrap: break-word;">@szerkesztettHiba.Leiras</div>
                 </div>
 
                 <div class="form-group mb-3">
@@ -248,7 +248,7 @@ else
             var jwtToken = handler.ReadJwtToken(token);
             var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
 
-            // Ha NEM Admin (1) ÉS NEM Karbantartó (3), akkor kidobjuk!
+            // Ha NEM Admin, akkor kidobjuk!
             if (szerepkor != "1" && szerepkor?.ToLower() != "admin")
             {
                 Nav.NavigateTo("/");
@@ -266,7 +266,7 @@ else
         {
             betoltesAlatt = true;
             osszesHiba = await KarbantartasiKeresek.GetKarbantartasiKeresek(token) ?? new();
-            statuszok = await KarbantartasStatuszok.GetKarbantartasiStatuszok(token) ?? new();
+            statuszok = await KarbantartasStatuszok.GetKarbantartasStatuszok(token) ?? new();
             felhasznalok = await Felhasznalok.GetFelhasznalok(token) ?? new();
             beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new();
             szobak = await Szobak.GetSzobak(token) ?? new();

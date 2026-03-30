@@ -16,7 +16,7 @@ namespace KoliPortal.Lib.SERVICE
         {
             _httpClient = client;
         }
-        public async Task<List<KarbantartasStatuszok>> GetKarbantartasiStatuszok(string token)
+        public async Task<List<KarbantartasStatuszok>> GetKarbantartasStatuszok(string token)
         {
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 

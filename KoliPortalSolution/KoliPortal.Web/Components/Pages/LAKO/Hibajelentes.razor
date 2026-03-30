@@ -6,13 +6,14 @@
 @layout LakoLayout
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 @inject KarbantartasiKeresekService KarbantartasiKeresek
+@inject KarbantartasStatuszokService Statuszok
 @inject IJSRuntime JS
 @inject NavigationManager Nav
 
 <div id="view-maintenance" class="view-section">
     <div class="section-header">
         <h2>Hibabejelentés</h2>
-        <p>Műszaki probléma jelzése a karbantartóknak.</p>
+        <p>Műszaki probléma jelzése a karbantartóknak és a saját jegyeid követése.</p>
     </div>
 
     @if (betoltesAlatt)
@@ -21,52 +22,101 @@
             <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Betöltés...</span>
             </div>
-            <p class="mt-2 text-muted">Azonosítás folyamatban...</p>
+            <p class="mt-2 text-muted">Azonosítás és adatok betöltése...</p>
         </div>
     }
     else
     {
-        <div class="content-panel" style="max-width: 600px;">
+        <div class="d-flex flex-column gap-4" style="max-width: 800px; margin: 0 auto;">
 
-            @if (sikeresKudles)
-            {
-                <div class="alert alert-success mb-4">
-                    <i class="bi bi-check-circle-fill"></i> <strong>Siker:</strong> @sikerUzenet
-                </div>
-            }
+            @* ÚJ HIBA BEJELENTÉSE (ŰRLAP KÁRTYA) *@
+            <div class="content-panel w-100">
+                <h4 class="mb-3"><i class="bi bi-tools me-2"></i>Új hiba bejelentése</h4>
 
-            @if (!string.IsNullOrEmpty(hibaUzenet))
-            {
-                <div class="alert alert-danger mb-4">
-                    <i class="bi bi-exclamation-triangle-fill"></i> @hibaUzenet
-                </div>
-            }
+                @if (sikeresKudles)
+                {
+                    <div class="alert alert-success mb-4">
+                        <i class="bi bi-check-circle-fill"></i> <strong>Siker:</strong> @sikerUzenet
+                    </div>
+                }
 
-            <form @onsubmit="HibajelentesKuldese" @onsubmit:preventDefault="true">
-                <div class="input-group mb-3">
-                    <label class="form-label fw-bold">Típus</label>
-                    <select class="form-select input-field" @bind="valasztottTipus">
-                        <option value="" disabled selected>Válassz...</option>
-                        <option value="Vízvezeték és szaniter">Vízvezeték és szaniter</option>
-                        <option value="Elektromosság és világítás">Elektromosság és világítás</option>
-                        <option value="Fűtés">Fűtés</option>
-                        <option value="Nyílászárók és zárak">Nyílászárók és zárak</option>
-                        <option value="Bútorzat és asztalosmunka">Bútorzat és asztalosmunka</option>
-                        <option value="Közös helyiségek gépei">Közös helyiségek gépei</option>
-                        <option value="Internet és hálózat">Internet és hálózat</option>
-                        <option value="Kártevők és higiénia">Kártevők és higiénia</option>
-                        <option value="Egyéb műszaki hiba">Egyéb műszaki hiba</option>
-                    </select>
+                @if (!string.IsNullOrEmpty(hibaUzenet))
+                {
+                    <div class="alert alert-danger mb-4">
+                        <i class="bi bi-exclamation-triangle-fill"></i> @hibaUzenet
+                    </div>
+                }
+
+                <form @onsubmit="HibajelentesKuldese" @onsubmit:preventDefault="true">
+                    <div class="input-group mb-3">
+                        <label class="form-label fw-bold">Típus</label>
+                        <select class="form-select input-field" @bind="valasztottTipus">
+                            <option value="" disabled selected>Válassz...</option>
+                            <option value="Vízvezeték és szaniter">Vízvezeték és szaniter</option>
+                            <option value="Elektromosság és világítás">Elektromosság és világítás</option>
+                            <option value="Fűtés">Fűtés</option>
+                            <option value="Nyílászárók és zárak">Nyílászárók és zárak</option>
+                            <option value="Bútorzat és asztalosmunka">Bútorzat és asztalosmunka</option>
+                            <option value="Közös helyiségek gépei">Közös helyiségek gépei</option>
+                            <option value="Internet és hálózat">Internet és hálózat</option>
+                            <option value="Kártevők és higiénia">Kártevők és higiénia</option>
+                            <option value="Egyéb műszaki hiba">Egyéb műszaki hiba</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="form-label fw-bold">Leírás</label>
+                        <textarea class="form-control input-field" rows="4" @bind="leiras"
+                                  placeholder="Részletezd a problémát pontosan (pl. 204-es szoba, csöpög a csap a fürdőben)..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 mt-2 fw-bold py-2">
+                        <i class="bi bi-send me-2"></i> Jelentés küldése
+                    </button>
+                </form>
+            </div>
+
+            @* SAJÁT HIBAJEGYEK TÁBLÁZAT KÁRTYA *@
+            <div class="content-panel w-100">
+                <h4 class="mb-3"><i class="bi bi-card-checklist me-2"></i>Nyitott hibajegyeim</h4>
+
+                <div class="table-container">
+                    <div class="table-scroll-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 120px; min-width: 100px;">Dátum</th>
+                                    <th style="min-width: 250px;">Leírás</th>
+                                    <th class="text-center" style="width: 130px; min-width: 120px;">Státusz</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (nyitottHibajegyek.Any())
+                                {
+                                    @foreach (var hiba in nyitottHibajegyek)
+                                    {
+                                        <tr>
+                                            <td class="text-muted small">@hiba.LetrehozasDatum.ToString("yyyy. MM. dd.")</td>
+                                            <td class="text-break">@hiba.Leiras</td>
+
+                                            <td class="text-center">
+                                                <span class="badge @GetStatuszCssClass(hiba.StatuszID) rounded-pill px-3 py-2">
+                                                    @GetStatuszNev(hiba.StatuszID)
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted p-4">Nincsenek folyamatban lévő hibajegyeid.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="input-group mb-3">
-                    <label class="form-label fw-bold">Leírás</label>
-                    <textarea class="form-control input-field" rows="5" @bind="leiras"
-                              placeholder="Részletezd a problémát pontosan (pl. 204-es szoba, csöpög a csap a fürdőben)..."></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary w-100 mt-3 fw-bold py-2">
-                    <i class="bi bi-send me-2"></i> Jelentés küldése
-                </button>
-            </form>
+            </div>
+
         </div>
     }
 </div>
@@ -85,13 +135,16 @@
     private string valasztottTipus = "";
     private string leiras = "";
 
+    // Listák a táblázathoz
+    private List<KarbantartasiKeresek> nyitottHibajegyek = new();
+    private List<KarbantartasStatuszok> statuszokLista = new();
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             try
             {
-                // 1. Token ellenőrzése
                 token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
 
                 if (string.IsNullOrEmpty(token))
@@ -100,13 +153,11 @@
                     return;
                 }
 
-                // 2. JWT dekódolása, szerepkör és ID kinyerése
                 var handler = new JwtSecurityTokenHandler();
                 var jwtToken = handler.ReadJwtToken(token);
 
                 var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
 
-                // Csak Lakó (2) küldhet be hibát erről a felületről
                 if (szerepkor != "2" && szerepkor?.ToLower() != "lako")
                 {
                     Nav.NavigateTo("/", forceLoad: true);
@@ -120,6 +171,7 @@
                 if (idClaim != null && int.TryParse(idClaim.Value, out int parsedId))
                 {
                     sajatId = parsedId;
+                    await AdatokBetoltese();
                 }
                 else
                 {
@@ -138,12 +190,31 @@
         }
     }
 
+    private async Task AdatokBetoltese()
+    {
+        try
+        {
+            statuszokLista = await Statuszok.GetKarbantartasStatuszok(token) ?? new();
+
+            var osszesHiba = await KarbantartasiKeresek.GetKarbantartasiKeresek(token) ?? new();
+
+            // Itt szűrjük le egyből a nyitott (nem 3-as státuszú) hibákat
+            nyitottHibajegyek = osszesHiba
+                .Where(h => h.BejelentoID == sajatId && h.StatuszID != 3)
+                .OrderByDescending(h => h.LetrehozasDatum)
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            hibaUzenet = $"Hiba az adatok letöltésekor: {ex.Message}";
+        }
+    }
+
     private async Task HibajelentesKuldese()
     {
         hibaUzenet = "";
         sikeresKudles = false;
 
-        // --- VALIDÁCIÓ ---
         if (string.IsNullOrWhiteSpace(valasztottTipus))
         {
             hibaUzenet = "Kérlek, válassz egy hiba típust a listából!";
@@ -158,26 +229,25 @@
 
         try
         {
-            // Összefűzzük a típust és a leírást, hogy egyben mehessen be az adatbázis 'Leiras' oszlopába
             string veglegesLeiras = $"[{valasztottTipus}] {leiras}";
 
             var ujHiba = new KarbantartasiKeresek
-                {
-                    BejelentoID = sajatId,
-                    StatuszID = 1, // 1 = Új / Bejelentett státusz (Állítsd be az adatbázisod logikája szerint!)
-                    Leiras = veglegesLeiras,
-                    LetrehozasDatum = DateTime.Now
-                };
+            {
+                BejelentoID = sajatId,
+                StatuszID = 1,
+                Leiras = veglegesLeiras,
+                LetrehozasDatum = DateTime.Now
+            };
 
             await KarbantartasiKeresek.CreateKarbantartasiKeresek(ujHiba, token);
 
-            // Ha sikeres, űrlap ürítése és üzenet megjelenítése
             valasztottTipus = "";
             leiras = "";
+            await AdatokBetoltese();
+
             sikerUzenet = "Hibajelentésedet sikeresen rögzítettük! A karbantartók hamarosan intézkednek.";
             sikeresKudles = true;
 
-            // Zöld üzenet eltüntetése 5 másodperc után
             _ = Task.Run(async () =>
             {
                 await Task.Delay(5000);
@@ -188,6 +258,24 @@
         catch (Exception ex)
         {
             hibaUzenet = $"Hiba történt a küldés során: {ex.Message}";
+        }
+    }
+
+    private string GetStatuszNev(int statuszId)
+    {
+        var statusz = statuszokLista.FirstOrDefault(s => s.ID == statuszId);
+        return statusz != null ? statusz.Nev : $"Ismeretlen ({statuszId})";
+    }
+
+    private string GetStatuszCssClass(int statuszId)
+    {
+        if (statuszId == 1)
+        {
+            return "bg-danger";
+        }
+        else
+        {
+            return "bg-warning text-dark";
         }
     }
 }
