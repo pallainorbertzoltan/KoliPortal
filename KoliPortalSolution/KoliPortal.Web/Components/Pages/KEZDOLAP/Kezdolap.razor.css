@@ -1,0 +1,258 @@
+﻿/* --- ALAP BEÁLLÍTÁSOK --- */
+html {
+    scroll-behavior: smooth;
+}
+
+.landing-page {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    background-color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- NAVIGÁCIÓ --- */
+.landing-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-brand {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0d8368;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #64748b;
+    font-weight: 500;
+    margin: 0 1.5rem;
+    transition: color 0.3s;
+}
+
+    .nav-links a:hover {
+        color: #0d8368;
+    }
+
+.login-btn {
+    background-color: #0d8368;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    border-radius: 6px;
+}
+
+    .login-btn:hover {
+        background-color: #0a6953;
+    }
+
+/* --- HERO SZEKCIÓ --- */
+.hero-section {
+    padding: 6rem 1rem;
+    background-color: #f8fafc;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: #0f172a;
+}
+
+.text-highlight {
+    color: #0d8368;
+}
+
+.hero-subtitle {
+    font-size: 1.15rem;
+    color: #64748b;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    background-color: #0d8368;
+    border: none;
+    padding: 0.8rem 2rem;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+    .action-btn:hover {
+        background-color: #0a6953;
+    }
+
+.outline-btn {
+    color: #0d8368;
+    border: 1px solid #0d8368;
+    background: transparent;
+    padding: 0.8rem 2rem;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+    .outline-btn:hover {
+        background-color: #f0fdfa;
+        color: #0a6953;
+    }
+
+/* --- FUNKCIÓK SZEKCIÓ --- */
+.features-section {
+    padding: 5rem 0;
+    background-color: #ffffff;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+.feature-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 2.5rem 1.5rem;
+    height: 100%;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+.icon-wrapper {
+    width: 50px;
+    height: 50px;
+    background-color: #e6f3ef;
+    color: #0d8368;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.feature-card h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* --- LÁBLÉC --- */
+.landing-footer {
+    background-color: #0f172a; /* Nagyon sötét kék/fekete */
+    color: #ffffff;
+    padding: 4rem 0 3rem 0;
+    margin-top: auto;
+}
+
+.footer-brand {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0d8368; /* KoliPortál zöld */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.footer-desc {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.footer-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: #f8fafc;
+}
+
+.footer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .footer-list li {
+        color: #94a3b8;
+        margin-bottom: 0.8rem;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .footer-list a {
+        color: #94a3b8;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+        .footer-list a:hover {
+            color: #ffffff;
+        }
+
+    .footer-list i {
+        color: #0d8368;
+    }
+
+/* Mobil responzivitás kiegészítés */
+@@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .landing-navbar {
+        padding: 1rem;
+    }
+}
+
+font-size: 2.2rem;
+}
+
+.landing-navbar {
+    padding: 1rem;
+}
+}

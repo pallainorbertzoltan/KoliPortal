@@ -1,0 +1,114 @@
+﻿@page "/"
+@layout MainLayout
+@* Vagy a saját üres layoutod, ha van olyan, ami nem tartalmazza az oldalsó menüt *@
+
+<div class="landing-page">
+
+    <nav class="landing-navbar">
+        <div class="nav-brand">
+            <a href="#rolunk" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 0.5rem;" @onclick:preventDefault>
+                <i class="bi bi-building"></i> <span>KoliPortál</span>
+            </a>
+        </div>
+
+        <div class="d-flex align-items-center">
+            <div class="nav-links d-none d-md-flex me-2">
+                <a href="#rolunk" @onclick:preventDefault>Rólunk</a>
+                <a href="#funkciok" @onclick:preventDefault>Funkciók</a>
+                <a href="#kapcsolat" @onclick:preventDefault>Kapcsolat</a>
+            </div>
+            <div class="nav-actions">
+                <a href="/login" class="btn btn-primary login-btn" style="text-decoration: none;">Bejelentkezés</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-section" id="rolunk">
+        <div class="hero-content text-center">
+            <h1 class="hero-title">Üdvözlünk a <span class="text-highlight">KoliPortálon!</span></h1>
+            <p class="hero-subtitle">
+                Minden kollégiumi ügyintézés egy helyen. Egyszerű, gyors,<br class="d-none d-md-block" />
+                modern megoldás diákoknak és adminisztrátoroknak.
+            </p>
+            <div class="hero-buttons">
+                <a href="/login" class="btn btn-primary btn-lg action-btn" style="text-decoration: none;">
+                    Belépés a portálra <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+                <a href="#funkciok" class="btn btn-outline-secondary btn-lg outline-btn">
+                    Tudj meg többet
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="features-section" id="funkciok">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Miért a KoliPortál?</h2>
+                <p class="section-subtitle">Fedezd fel a rendszerünk nyújtotta előnyöket és kényelmi funkciókat.</p>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+
+                <div class="col-12 col-md-4">
+                    <div class="feature-card">
+                        <div class="icon-wrapper">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <h3>Szobabeosztás</h3>
+                        <p>Lásd át könnyedén a szobabeosztásokat, jelentkezz a szabad helyekre és találd meg a legjobb szobatársakat egyszerűen.</p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <div class="feature-card">
+                        <div class="icon-wrapper">
+                            <i class="bi bi-tools"></i>
+                        </div>
+                        <h3>Hibabejelentés</h3>
+                        <p>Valami elromlott? Jelezd pár kattintással az adminisztrátornak, és kövesd nyomon a javítás állapotát valós időben.</p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <div class="feature-card">
+                        <div class="icon-wrapper">
+                            <i class="bi bi-receipt"></i>
+                        </div>
+                        <h3>Befizetések</h3>
+                        <p>Fizesd be a kollégiumi díjakat online, gyorsan és biztonságosan. Tekintsd meg a korábbi tranzakcióidat bármikor.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="landing-footer" id="kapcsolat">
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-12 col-md-4 brand-col">
+                    <div class="footer-brand">
+                        <i class="bi bi-building"></i> KoliPortál
+                    </div>
+                    <p class="footer-desc">A modern kollégiumi élet digitális központja.</p>
+                </div>
+                <div class="col-12 col-md-4 links-col">
+                    <h4 class="footer-title">Gyorslinkek</h4>
+                    <ul class="footer-list">
+                        <li><a href="#rolunk">Kezdőlap</a></li>
+                        <li><a href="#rolunk">Rólunk</a></li>
+                    </ul>
+                </div>
+                <div class="col-12 col-md-4 contact-col">
+                    <h4 class="footer-title">Kapcsolat</h4>
+                    <ul class="footer-list">
+                        <li><i class="bi bi-geo-alt"></i> 1234 Budapest, Egyetem tér 1.</li>
+                        <li><i class="bi bi-envelope"></i> koliportal@gmail.com</li>
+                        <li><i class="bi bi-telephone"></i> +36 30 123 4567</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>

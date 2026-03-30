@@ -44,9 +44,9 @@
 
         <div class="sidebar-footer">
             @* Javascript, kijelentkezés nyomására kijelentkeztet *@
-            <button class="logout-btn" onclick="localStorage.removeItem('authToken'); window.location.replace('/');">
+            <button class="logout-btn" onclick="localStorage.removeItem('authToken'); window.location.href='/login';">
                 <i class="bi bi-box-arrow-right"></i>
-                <span class="logout-text">Kijelentkezés</span>
+                <span class="logout-text" aria-hidden="true"></span> Kijelentkezés
             </button>
         </div>
     </aside>
@@ -70,7 +70,7 @@
                 // Ha nincs token (nincs bejelentkezve), vissza a login oldalra
                 if (string.IsNullOrWhiteSpace(token))
                 {
-                    Nav.NavigateTo("/");
+                    Nav.NavigateTo("/login");
                     return;
                 }
 
@@ -80,14 +80,14 @@
                 // Ha a szerepkör NEM Admin (nem 1-es az ID-ja), akkor is repül!
                 if (szerepkor != "1" && szerepkor.ToLower() != "admin")
                 {
-                    Nav.NavigateTo("/");
+                    Nav.NavigateTo("/login");
                     return;
                 }
             }
             catch
             {
                 // Bármilyen hiba esetén biztonsági kidobás
-                Nav.NavigateTo("/");
+                Nav.NavigateTo("/login");
             }
         }
     }
