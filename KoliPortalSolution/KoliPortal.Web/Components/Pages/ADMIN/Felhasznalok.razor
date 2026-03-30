@@ -189,12 +189,18 @@ else
 
                         <div class="form-group mb-3">
                             <label>Évfolyam</label>
-                            <select class="form-select" @bind="editModel.Evfolyam">
-                                <option value="" disabled>Válassz évfolyamot...</option>
-                                <option value="1. évf.">1. évfolyam</option>
-                                <option value="2. évf.">2. évfolyam</option>
-                                <option value="3. évf.">3. évfolyam</option>
-                                <option value="4. évf.">4. évfolyam</option>
+                            <select class="form-select" @bind="editModel.Szemeszter">
+                                <option value="" disabled selected>Válassz szemesztert...</option>
+                                <option value="1 szemeszter">1 szemeszter</option>
+                                <option value="2 szemeszter">2 szemeszter</option>
+                                <option value="3 szemeszter">3 szemeszter</option>
+                                <option value="4 szemeszter">4 szemeszter</option>
+                                <option value="5 szemeszter">5 szemeszter</option>
+                                <option value="6 szemeszter">6 szemeszter</option>
+                                <option value="7 szemeszter">7 szemeszter</option>
+                                <option value="8 szemeszter">8 szemeszter</option>
+                                <option value="9 szemeszter">9 szemeszter</option>
+                                <option value="10 szemeszter">10 szemeszter</option>
                             </select>
                         </div>
 
@@ -417,7 +423,7 @@ else
             Email = user.Email,
             KollegiumID = user.KollegiumID,
             SzerepkorID = user.SzerepkorID,
-            Evfolyam = diakAdat?.Evfolyam ?? "",
+            Szemeszter = diakAdat?.Szemeszter ?? "",
             Lakcim = diakAdat?.Lakcim ?? "",
             EredetiRoomID = eredetiSzoba,
             RoomID = eredetiSzoba
@@ -528,13 +534,13 @@ else
                 var eredetiDiakAdat = diakAdatokLista.FirstOrDefault(x => x.UserID == editModel.UserID);
                 if (eredetiDiakAdat != null)
                 {
-                    eredetiDiakAdat.Evfolyam = editModel.Evfolyam;
+                    eredetiDiakAdat.Szemeszter = editModel.Szemeszter;
                     eredetiDiakAdat.Lakcim = editModel.Lakcim;
                     await DiakAdatok.UpdateDiakAdatok(eredetiDiakAdat, token);
                 }
-                else if (!string.IsNullOrEmpty(editModel.Evfolyam) || !string.IsNullOrEmpty(editModel.Lakcim))
+                else if (!string.IsNullOrEmpty(editModel.Szemeszter) || !string.IsNullOrEmpty(editModel.Lakcim))
                 {
-                    var ujDiakAdat = new DiakAdatok { UserID = editModel.UserID, Evfolyam = editModel.Evfolyam, Lakcim = editModel.Lakcim };
+                    var ujDiakAdat = new DiakAdatok { UserID = editModel.UserID, Szemeszter = editModel.Szemeszter, Lakcim = editModel.Lakcim };
                     await DiakAdatok.CreateDiakAdatok(ujDiakAdat, token);
                 }
 
@@ -552,12 +558,43 @@ else
                         aktivBeosztas.TenylegesKikoltozes = DateTime.Now;
                         await SzobaBeosztasok.UpdateSzobaBeosztasok(aktivBeosztas, token);
 
-                        int varhatoKikoltozes = 1;
-                        switch (editModel.Evfolyam)
+                        int varhatoKikoltozes = 6;
+
+                        switch (editModel.Szemeszter)
                         {
-                            case "1. évf.": varhatoKikoltozes = 3; break;
-                            case "2. évf.": varhatoKikoltozes = 2; break;
-                            case "3. évf.": varhatoKikoltozes = 1; break;
+                            case "1 szemeszter":
+                                varhatoKikoltozes = 6;
+                                break;
+                            case "2 szemeszter":
+                                varhatoKikoltozes = 12;
+                                break;
+                            case "3 szemeszter":
+                                varhatoKikoltozes = 18;
+                                break;
+                            case "4 szemeszter":
+                                varhatoKikoltozes = 24;
+                                break;
+                            case "5 szemeszter":
+                                varhatoKikoltozes = 30;
+                                break;
+                            case "6 szemeszter":
+                                varhatoKikoltozes = 36;
+                                break;
+                            case "7 szemeszter":
+                                varhatoKikoltozes = 42;
+                                break;
+                            case "8 szemeszter":
+                                varhatoKikoltozes = 48;
+                                break;
+                            case "9 szemeszter":
+                                varhatoKikoltozes = 54;
+                                break;
+                            case "10 szemeszter":
+                                varhatoKikoltozes = 60;
+                                break;
+                            default:
+                                varhatoKikoltozes = 6;
+                                break;
                         }
 
                         var ujBeosztas = new SzobaBeosztasok
@@ -565,18 +602,49 @@ else
                             UserID = editModel.UserID,
                             RoomID = editModel.RoomID,
                             BekoltozesDatum = DateTime.Now,
-                            VarhatoKikoltozes = DateTime.Now.AddYears(varhatoKikoltozes)
+                            VarhatoKikoltozes = DateTime.Now.AddMonths(varhatoKikoltozes)
                         };
                         await SzobaBeosztasok.CreateSzobaBeosztasok(ujBeosztas, token);
                     }
                     else if (aktivBeosztas == null)
                     {
-                        int varhatoKikoltozes = 1;
-                        switch (editModel.Evfolyam)
+                        int varhatoKikoltozes = 6;
+
+                        switch (editModel.Szemeszter)
                         {
-                            case "1. évf.": varhatoKikoltozes = 3; break;
-                            case "2. évf.": varhatoKikoltozes = 2; break;
-                            case "3. évf.": varhatoKikoltozes = 1; break;
+                            case "1 szemeszter":
+                                varhatoKikoltozes = 6;
+                                break;
+                            case "2 szemeszter":
+                                varhatoKikoltozes = 12;
+                                break;
+                            case "3 szemeszter":
+                                varhatoKikoltozes = 18;
+                                break;
+                            case "4 szemeszter":
+                                varhatoKikoltozes = 24;
+                                break;
+                            case "5 szemeszter":
+                                varhatoKikoltozes = 30;
+                                break;
+                            case "6 szemeszter":
+                                varhatoKikoltozes = 36;
+                                break;
+                            case "7 szemeszter":
+                                varhatoKikoltozes = 42;
+                                break;
+                            case "8 szemeszter":
+                                varhatoKikoltozes = 48;
+                                break;
+                            case "9 szemeszter":
+                                varhatoKikoltozes = 54;
+                                break;
+                            case "10 szemeszter":
+                                varhatoKikoltozes = 60;
+                                break;
+                            default:
+                                varhatoKikoltozes = 6;
+                                break;
                         }
 
                         var ujBeosztas = new SzobaBeosztasok
@@ -584,7 +652,7 @@ else
                             UserID = editModel.UserID,
                             RoomID = editModel.RoomID,
                             BekoltozesDatum = DateTime.Now,
-                            VarhatoKikoltozes = DateTime.Now.AddYears(varhatoKikoltozes)
+                            VarhatoKikoltozes = DateTime.Now.AddMonths(varhatoKikoltozes)
                         };
                         await SzobaBeosztasok.CreateSzobaBeosztasok(ujBeosztas, token);
                     }
@@ -693,7 +761,7 @@ else
         public string Email { get; set; } = "";
         public int KollegiumID { get; set; }
         public int SzerepkorID { get; set; }
-        public string Evfolyam { get; set; } = "";
+        public string Szemeszter { get; set; } = "";
         public string Lakcim { get; set; } = "";
         public int EredetiRoomID { get; set; }
         public int RoomID { get; set; }

@@ -7,6 +7,7 @@
 @inject KarbantartasiKeresekService KarbantartasiKeresek
 @inject SzobaBeosztasokService SzobaBeosztasok
 @inject FelhasznalokService FelhasznalokService
+@inject PenzugyekService Penzugyek
 @inject IJSRuntime JS
 @inject NavigationManager Nav
 
@@ -161,52 +162,64 @@ else
         {
             try
             {
-                // Kérjük el a tokent a böngészőtől
                 token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
 
                 if (string.IsNullOrEmpty(token))
                 {
                     Nav.NavigateTo("/");
-                    return; // Ha nincs token, visszadob a bejelentkező oldalra
+                    return; 
                 }
 
-                // SZIGORÚ SZEREPKÖR ELLENŐRZÉS CSAK ADMIN!
                 var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
                 var jwtToken = handler.ReadJwtToken(token);
                 var szerepkor = jwtToken.Claims.FirstOrDefault(x => x.Type == "role" || x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
 
-                // Ha a szerepkör NEM 1-es és NEM admin, akkor login oldal!
                 if (szerepkor != "1" && szerepkor?.ToLower() != "admin")
                 {
-                    // Mindenki más repül a kezdőlapra
                     Nav.NavigateTo("/");
                     return;
                 }
 
-                // Lekérjük az adatokat a API-ból A TOKENNEL EGYÜTT
+                // Lekérjük az adatokat a API-ból
                 osszesSzoba = await Szobak.GetSzobak(token) ?? new List<KoliPortal.Lib.MODEL.Szobak>();
                 var beosztasok = await SzobaBeosztasok.GetSzobaBeosztasok(token) ?? new List<SzobaBeosztasok>();
                 var hibak = await KarbantartasiKeresek.GetKarbantartasiKeresek(token) ?? new List<KarbantartasiKeresek>();
                 osszesFelhasznalo = await FelhasznalokService.GetFelhasznalok(token) ?? new List<KoliPortal.Lib.MODEL.Felhasznalok>();
+                var penzugyekLista = await Penzugyek.GetPenzugyek(token) ?? new List<KoliPortal.Lib.MODEL.Penzugyek>();
 
-                // Aktív lakók: Ahol a tényleges kiköltözés még nem történt meg
+                // Aktív lakók
                 var aktivBeosztasok = beosztasok.Where(b => b.TenylegesKikoltozes == null).ToList();
                 aktivLakokSzama = aktivBeosztasok.Count;
 
-                // Szabad ágyak: Szobak.FerohelyMax összege mínusz az aktív lakók
+                // Szabad ágyak
                 int osszesFerohely = osszesSzoba.Sum(s => s.FerohelyMax);
                 szabadAgyakSzama = osszesFerohely - aktivLakokSzama;
 
                 // Nyitott hibák
                 nyitottHibakSzama = hibak.Count(h => h.StatuszID != 3);
 
-                // Legújabb lakók a táblázatba: Rendezzük a BekoltozesDatum szerint, a legújabb 5 ember
+                // Befizetési arány számítása
+                if (penzugyekLista.Any())
+                {
+                    // Hány olyan tétel van, aminek van befizetési dátuma VAGY a státusza "fizetve"
+                    int befizetettTetelek = penzugyekLista.Count(p => p.BefizetesDatum.HasValue || (p.Statusz ?? "").ToLower() == "fizetve");
+                    
+                    // Százalékszámítás és kerekítés
+                    double arany = (double)befizetettTetelek / penzugyekLista.Count * 100;
+                    befizetesiArany = (int)Math.Round(arany);
+                }
+                else
+                {
+                    befizetesiArany = 100; // Ha senkinek nincs kiírva díj, akkor 100%
+                }
+
+                // Legújabb lakók a táblázatba
                 legujabbLakok = aktivBeosztasok
                     .OrderByDescending(b => b.BekoltozesDatum)
                     .Take(5)
                     .ToList();
 
-                // Emelet kapacitások összekötve a lakókkal
+                // Emelet kapacitások
                 emeletKapacitasok = osszesSzoba
                     .GroupBy(s => s.Emelet)
                     .Select(g => new EmeletKapacitas
@@ -225,7 +238,6 @@ else
             finally
             {
                 betoltesAlatt = false;
-                // Mivel ez OnAfterRenderAsyncben van, szólni kell a Blazornak, hogy frissítse az oldalt
                 StateHasChanged();
             }
         }

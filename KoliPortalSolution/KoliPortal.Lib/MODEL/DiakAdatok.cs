@@ -11,7 +11,7 @@ namespace KoliPortal.Lib.MODEL
     {
         [Key]
         public int UserID { get; set; }
-        public string? Evfolyam { get; set; }
+        public string? Szemeszter { get; set; }
         public string? Lakcim { get; set; }
     }
 }

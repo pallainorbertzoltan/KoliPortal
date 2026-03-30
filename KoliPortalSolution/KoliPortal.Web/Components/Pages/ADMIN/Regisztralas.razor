@@ -81,13 +81,19 @@ else
 
                     <div class="form-row d-flex gap-3 mb-3">
                         <div class="form-group flex-fill">
-                            <label>Évfolyam <span class="text-danger">*</span></label>
-                            <select class="form-select" @bind="valasztottEvfolyam" required>
-                                <option value="" disabled selected>Válassz évfolyamot...</option>
-                                <option value="1. évf.">1. évfolyam</option>
-                                <option value="2. évf.">2. évfolyam</option>
-                                <option value="3. évf.">3. évfolyam</option>
-                                <option value="4. évf.">4. évfolyam</option>
+                            <label>Szemeszter <span class="text-danger">*</span></label>
+                            <select class="form-select" @bind="valasztottSzemeszter" required>
+                                <option value="" disabled selected>Válassz szemesztert...</option>
+                                <option value="1 szemeszter">1 szemeszter</option>
+                                <option value="2 szemeszter">2 szemeszter</option>
+                                <option value="3 szemeszter">3 szemeszter</option>
+                                <option value="4 szemeszter">4 szemeszter</option>
+                                <option value="5 szemeszter">5 szemeszter</option>
+                                <option value="6 szemeszter">6 szemeszter</option>
+                                <option value="7 szemeszter">7 szemeszter</option>
+                                <option value="8 szemeszter">8 szemeszter</option>
+                                <option value="9 szemeszter">9 szemeszter</option>
+                                <option value="10 szemeszter">10 szemeszter</option>
                             </select>
                         </div>
 
@@ -137,7 +143,7 @@ else
     private string valasztottTelefonszam = "";
     private int valasztottSzerepkorId = 0;
 
-    private string valasztottEvfolyam = "";
+    private string valasztottSzemeszter = "";
     private string valasztottLakcim = "";
     private int valasztottSzobaId = 0;
 
@@ -228,9 +234,9 @@ else
             }
         }
 
-        if (IsLako(valasztottSzerepkorId) && string.IsNullOrEmpty(valasztottEvfolyam))
+        if (IsLako(valasztottSzerepkorId) && string.IsNullOrEmpty(valasztottSzemeszter))
         {
-            hibaUzenet = "Diák regisztrálásakor kötelező megadni az évfolyamot!";
+            hibaUzenet = "Diák regisztrálásakor kötelező megadni az szemesztert!";
             return;
         }
 
@@ -276,20 +282,51 @@ else
                             var ujDiakAdat = new DiakAdatok
                             {
                                 UserID = frissUser.ID,
-                                Evfolyam = valasztottEvfolyam,
+                                Szemeszter = valasztottSzemeszter,
                                 Lakcim = veglegesLakcim
                             };
                             await DiakAdatok.CreateDiakAdatok(ujDiakAdat, token);
 
                             if (valasztottSzobaId > 0)
                             {
-                                int varhatoKikoltozes = 1;
-                                switch (valasztottEvfolyam)
+                                // Alapértelmezetten 6 hónapot adunk
+                                int varhatoKikoltozes = 6;
+
+                                switch (valasztottSzemeszter)
                                 {
-                                    case "1. évf.": varhatoKikoltozes = 3; break;
-                                    case "2. évf.": varhatoKikoltozes = 2; break;
-                                    case "3. évf.": varhatoKikoltozes = 1; break;
-                                    default: varhatoKikoltozes = 1; break;
+                                    case "1 szemeszter":
+                                        varhatoKikoltozes = 6; 
+                                        break;
+                                    case "2 szemeszter":
+                                        varhatoKikoltozes = 12;
+                                        break;
+                                    case "3 szemeszter":
+                                        varhatoKikoltozes = 18;
+                                        break;
+                                    case "4 szemeszter":
+                                        varhatoKikoltozes = 24;
+                                        break;
+                                    case "5 szemeszter":
+                                        varhatoKikoltozes = 30;
+                                        break;
+                                    case "6 szemeszter":
+                                        varhatoKikoltozes = 36;
+                                        break;
+                                    case "7 szemeszter":
+										varhatoKikoltozes = 42;
+										break;
+                                    case "8 szemeszter":
+                                        varhatoKikoltozes = 48;
+                                        break;
+                                    case "9 szemeszter":
+                                        varhatoKikoltozes = 54;
+                                        break;
+                                    case "10 szemeszter":
+                                        varhatoKikoltozes = 60;
+                                        break;
+                                    default:
+                                        varhatoKikoltozes = 6;
+                                        break;
                                 }
 
                                 var ujBeosztas = new SzobaBeosztasok
@@ -297,7 +334,7 @@ else
                                     UserID = frissUser.ID,
                                     RoomID = valasztottSzobaId,
                                     BekoltozesDatum = DateTime.Now,
-                                    VarhatoKikoltozes = DateTime.Now.AddYears(varhatoKikoltozes)
+                                    VarhatoKikoltozes = DateTime.Now.AddMonths(varhatoKikoltozes)
                                 };
                                 await SzobaBeosztasok.CreateSzobaBeosztasok(ujBeosztas, token);
                             }
