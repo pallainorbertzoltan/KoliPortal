@@ -55,9 +55,10 @@ else if (!string.IsNullOrEmpty(hibaUzenet))
                 <input type="text" class="form-control" value="@sajatSzobaSzam" readonly style="background-color: #f8f9fa; cursor: not-allowed;">
             </div>
 
+            @* E-MAIL MEZŐ ÚJRA CSAK OLVASHATÓ *@
             <div class="mb-3">
                 <label class="form-label fw-bold">E-mail cím</label>
-                <input type="email" class="form-control" @bind="sajatUser.Email" placeholder="pelda@email.com">
+                <input type="email" class="form-control" value="@sajatUser.Email" readonly style="background-color: #f8f9fa; cursor: not-allowed;">
             </div>
 
             <div class="mb-4">
@@ -169,23 +170,6 @@ else if (!string.IsNullOrEmpty(hibaUzenet))
             sikeresMentes = false;
             hibaUzenet = "";
 
-            // E-MAIL ELLENŐRZÉSE
-            sajatUser.Email = sajatUser.Email?.Trim() ?? "";
-            if (string.IsNullOrEmpty(sajatUser.Email))
-            {
-                hibaUzenet = "Az e-mail cím nem lehet üres!";
-                mentesFolyamatban = false;
-                return;
-            }
-
-            if (!sajatUser.Email.Contains("@") || !sajatUser.Email.Contains("."))
-            {
-                hibaUzenet = "Kérlek érvényes e-mail címet adj meg!";
-                mentesFolyamatban = false;
-                return;
-            }
-
-            // TELEFONSZÁM ELLENŐRZÉSE
             string tel = sajatUser.Telefonszam?.Trim() ?? "";
 
             if (string.IsNullOrEmpty(tel))
