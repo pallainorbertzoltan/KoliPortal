@@ -43,22 +43,29 @@
             }
 
             <form @onsubmit="HibajelentesKuldese" @onsubmit:preventDefault="true">
-                <div class="input-group">
-                    <label>Típus</label>
-                    <select class="input-field" @bind="valasztottTipus">
+                <div class="input-group mb-3">
+                    <label class="form-label fw-bold">Típus</label>
+                    <select class="form-select input-field" @bind="valasztottTipus">
                         <option value="" disabled selected>Válassz...</option>
-                        <option value="Vízszerelés">Vízszerelés</option>
-                        <option value="Villanyszerelés">Villanyszerelés</option>
-                        <option value="Asztalos munka">Asztalos munka / Bútor</option>
-                        <option value="Egyéb">Egyéb</option>
+                        <option value="Vízvezeték és szaniter">Vízvezeték és szaniter</option>
+                        <option value="Elektromosság és világítás">Elektromosság és világítás</option>
+                        <option value="Fűtés">Fűtés</option>
+                        <option value="Nyílászárók és zárak">Nyílászárók és zárak</option>
+                        <option value="Bútorzat és asztalosmunka">Bútorzat és asztalosmunka</option>
+                        <option value="Közös helyiségek gépei">Közös helyiségek gépei</option>
+                        <option value="Internet és hálózat">Internet és hálózat</option>
+                        <option value="Kártevők és higiénia">Kártevők és higiénia</option>
+                        <option value="Egyéb műszaki hiba">Egyéb műszaki hiba</option>
                     </select>
                 </div>
-                <div class="input-group">
-                    <label>Leírás</label>
-                    <textarea class="input-field" rows="5" @bind="leiras"
+                <div class="input-group mb-3">
+                    <label class="form-label fw-bold">Leírás</label>
+                    <textarea class="form-control input-field" rows="5" @bind="leiras"
                               placeholder="Részletezd a problémát pontosan (pl. 204-es szoba, csöpög a csap a fürdőben)..."></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary w-100 mt-3">Jelentés küldése</button>
+                <button type="submit" class="btn btn-primary w-100 mt-3 fw-bold py-2">
+                    <i class="bi bi-send me-2"></i> Jelentés küldése
+                </button>
             </form>
         </div>
     }
@@ -155,12 +162,12 @@
             string veglegesLeiras = $"[{valasztottTipus}] {leiras}";
 
             var ujHiba = new KarbantartasiKeresek
-            {
-                BejelentoID = sajatId,
-                StatuszID = 1, // 1 = Új / Bejelentett státusz (Állítsd be az adatbázisod logikája szerint!)
-                Leiras = veglegesLeiras,
-                LetrehozasDatum = DateTime.Now
-            };
+                {
+                    BejelentoID = sajatId,
+                    StatuszID = 1, // 1 = Új / Bejelentett státusz (Állítsd be az adatbázisod logikája szerint!)
+                    Leiras = veglegesLeiras,
+                    LetrehozasDatum = DateTime.Now
+                };
 
             await KarbantartasiKeresek.CreateKarbantartasiKeresek(ujHiba, token);
 
