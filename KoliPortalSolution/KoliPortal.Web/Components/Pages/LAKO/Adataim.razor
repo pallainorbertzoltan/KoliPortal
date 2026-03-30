@@ -47,17 +47,17 @@ else if (!string.IsNullOrEmpty(hibaUzenet))
 
             <div class="mb-3">
                 <label class="form-label fw-bold">Teljes Név</label>
-                <input type="text" class="form-control" value="@sajatUser.Nev" readonly style="background-color: #f8f9fa;">
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label fw-bold">E-mail cím</label>
-                <input type="text" class="form-control" value="@sajatUser.Email" readonly style="background-color: #f8f9fa;">
+                <input type="text" class="form-control" value="@sajatUser.Nev" readonly style="background-color: #f8f9fa; cursor: not-allowed;">
             </div>
 
             <div class="mb-3">
                 <label class="form-label fw-bold">Szoba száma</label>
-                <input type="text" class="form-control" value="@sajatSzobaSzam" readonly style="background-color: #f8f9fa;">
+                <input type="text" class="form-control" value="@sajatSzobaSzam" readonly style="background-color: #f8f9fa; cursor: not-allowed;">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">E-mail cím</label>
+                <input type="email" class="form-control" @bind="sajatUser.Email" placeholder="pelda@email.com">
             </div>
 
             <div class="mb-4">
@@ -169,6 +169,23 @@ else if (!string.IsNullOrEmpty(hibaUzenet))
             sikeresMentes = false;
             hibaUzenet = "";
 
+            // E-MAIL ELLENŐRZÉSE
+            sajatUser.Email = sajatUser.Email?.Trim() ?? "";
+            if (string.IsNullOrEmpty(sajatUser.Email))
+            {
+                hibaUzenet = "Az e-mail cím nem lehet üres!";
+                mentesFolyamatban = false;
+                return;
+            }
+
+            if (!sajatUser.Email.Contains("@") || !sajatUser.Email.Contains("."))
+            {
+                hibaUzenet = "Kérlek érvényes e-mail címet adj meg!";
+                mentesFolyamatban = false;
+                return;
+            }
+
+            // TELEFONSZÁM ELLENŐRZÉSE
             string tel = sajatUser.Telefonszam?.Trim() ?? "";
 
             if (string.IsNullOrEmpty(tel))
@@ -209,6 +226,7 @@ else if (!string.IsNullOrEmpty(hibaUzenet))
                 }
             }
 
+            // MENTÉS AZ ADATBÁZISBA
             await FelhasznalokService.UpdateFelhasznalok(sajatUser, token);
 
             sikeresMentes = true;
