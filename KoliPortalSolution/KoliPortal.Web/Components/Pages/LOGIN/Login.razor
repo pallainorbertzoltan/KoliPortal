@@ -26,7 +26,8 @@
             </div>
         }
 
-        <div class="form-container">
+        @* DIV HELYETT FORM LETT, ÉS RÁKERÜLT AZ ONSUBMIT *@
+        <form class="form-container" @onsubmit="HandleLogin">
 
             <div class="form-group">
                 <label for="kollegium">Kollégium</label>
@@ -55,7 +56,8 @@
                 </div>
             </div>
 
-            <button type="button" class="btn-submit" disabled="@toltesAlatt" @onclick="HandleLogin" style="width: 100%; height: 46px; margin-top: 10px; background: #0d8368; color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer;">
+            @* TYPE="SUBMIT" LETT *@
+            <button type="submit" class="btn-submit" disabled="@toltesAlatt" style="width: 100%; height: 46px; margin-top: 10px; background: #0d8368; color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer;">
                 @if (toltesAlatt)
                 {
                     <span class="spinner-border spinner-border-sm me-2"></span>
@@ -70,7 +72,7 @@
             <div class="privacy-footer">
                 <a href="/adatvedelem" class="privacy-link">Adatkezelési tájékoztató</a>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -102,10 +104,10 @@
         {
             // Áttöltjük a beírt adatokat az API által várt modellbe
             var loginCsomag = new KoliPortal.Lib.MODEL.Login
-            {
-                Email = beviteliAdatok.Email,
-                Jelszo = beviteliAdatok.Jelszo
-            };
+                {
+                    Email = beviteliAdatok.Email,
+                    Jelszo = beviteliAdatok.Jelszo
+                };
 
             // Elküldjük a kérést
             string kapottToken = await AuthController.LoginAsync(loginCsomag);
