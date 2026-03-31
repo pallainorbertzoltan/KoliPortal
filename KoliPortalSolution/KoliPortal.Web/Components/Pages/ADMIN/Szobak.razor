@@ -3,6 +3,7 @@
 @using KoliPortal.Lib.SERVICE
 @layout AdminLayout
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
+
 @inject SzobakService Szoba
 @inject SzobaBeosztasokService SzobaBeosztasok
 @inject FelhasznalokService Felhasznalok
@@ -27,7 +28,7 @@ else
 {
     <div class="content-wrapper">
 
-        @* --- SZŰRŐK ÉS OLDALMÉRET VÁLASZTÓ --- *@
+        @* --- SZŰRŐK, KERESŐ ÉS OLDALMÉRET VÁLASZTÓ --- *@
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
             <div class="filter-controls m-0">
                 <button class="filter-btn @(mutasdCsakSzabadokat ? "" : "active")"
@@ -40,14 +41,21 @@ else
                 </button>
             </div>
 
-            <div class="d-flex align-items-center gap-2">
-                <span class="text-muted small fw-bold text-uppercase">Sor/oldal:</span>
-                <select class="form-select form-select-sm shadow-sm page-size-select" style="width: 80px; border-radius: 8px; cursor: pointer;" value="@elemekOldalankent" @onchange="OldalMeretValtozas">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                </select>
+            <div class="d-flex align-items-center gap-4">
+                <div class="input-group input-group-sm shadow-sm" style="width: 250px;">
+                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" class="form-control border-start-0 ps-0" placeholder="Keresés (szoba, lakó)..." value="@keresoSzoveg" @oninput="KeresesValtozas" />
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <span class="text-muted small fw-bold text-uppercase">Sor/oldal:</span>
+                    <select class="form-select form-select-sm shadow-sm page-size-select" style="width: 80px; border-radius: 8px; cursor: pointer;" value="@elemekOldalankent" @onchange="OldalMeretValtozas">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -122,6 +130,7 @@ else
     private bool betoltesAlatt = true;
 
     private bool mutasdCsakSzabadokat = false;
+    private string keresoSzoveg = "";
 
     // Alapadatok
     private List<KoliPortal.Lib.MODEL.Szobak> szobakLista = new();
@@ -148,7 +157,7 @@ else
 
                 if (string.IsNullOrEmpty(token))
                 {
-                    Nav.NavigateTo("/", forceLoad: true);
+                    Nav.NavigateTo("/login", forceLoad: true);
                     return; // Ha nincs token, visszadob a bejelentkező oldalra
                 }
 
@@ -160,8 +169,8 @@ else
                 // Ha a szerepkör NEM 1-es és NEM admin, akkor login oldal!
                 if (szerepkor != "1" && szerepkor?.ToLower() != "admin")
                 {
-                    // Mindenki más repül a kezdőlapra
-                    Nav.NavigateTo("/");
+                    // Mindenki más repül a loginra
+                    Nav.NavigateTo("/login");
                     return;
                 }
 
@@ -196,9 +205,18 @@ else
         FrissitSzurtListat();
     }
 
-    // Frissíti a szűrt listát a gombok alapján
+    // Gépelésre fut le
+    private void KeresesValtozas(ChangeEventArgs e)
+    {
+        keresoSzoveg = e.Value?.ToString() ?? "";
+        jelenlegiOldal = 1;
+        FrissitSzurtListat();
+    }
+
+    // Frissíti a szűrt listát a gombok és a kereső alapján
     private void FrissitSzurtListat()
     {
+        // 1. Alap szűrés (Gombok: Összes / Szabad ágyak)
         if (mutasdCsakSzabadokat)
         {
             // Csak azok a szobák kellenek, ahol kevesebb az aktív lakó, mint a férőhely
@@ -211,6 +229,16 @@ else
         {
             // Minden szoba
             szurtSzobak = szobakLista.OrderBy(x => x.Szobaszam).ToList();
+        }
+
+        // 2. Szöveges keresés (Szobaszám vagy Lakók neve alapján)
+        if (!string.IsNullOrWhiteSpace(keresoSzoveg))
+        {
+            var kereso = keresoSzoveg.ToLower();
+            szurtSzobak = szurtSzobak.Where(x =>
+                x.Szobaszam.ToLower().Contains(kereso) ||
+                GetLakoNevek(x.ID).ToLower().Contains(kereso)
+            ).ToList();
         }
 
         LapozasFrissitese();
