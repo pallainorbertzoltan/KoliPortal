@@ -13,7 +13,7 @@ namespace KoliPortal.Web
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
-            builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri("https://localhost:44331/") });
+            builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri("https://localhost:7245/") });
             builder.Services.AddScoped<DiakAdatokService>();
             builder.Services.AddScoped<SzobakService>();
             builder.Services.AddScoped<KarbantartasiKeresekService>();
