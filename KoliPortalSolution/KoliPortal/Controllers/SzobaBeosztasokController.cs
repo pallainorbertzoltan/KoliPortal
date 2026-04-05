@@ -36,7 +36,7 @@ namespace KoliPortal.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             await _service.Delete(id);

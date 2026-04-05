@@ -27,6 +27,14 @@
     </div>
 }
 
+@if (!string.IsNullOrEmpty(hibaUzenet))
+{
+    <div class="alert alert-danger m-3 alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill"></i> <strong>Hiba:</strong> @hibaUzenet
+        <button type="button" class="btn-close" @onclick="() => hibaUzenet = string.Empty"></button>
+    </div>
+}
+
 @if (betoltesAlatt)
 {
     <div class="text-center mt-5">
@@ -198,7 +206,7 @@ else
                         <h5>Diák adatok</h5>
 
                         <div class="form-group mb-3">
-                            <label>Évfolyam</label>
+                            <label>Szemeszter</label>
                             <select class="form-select" @bind="editModel.Szemeszter">
                                 <option value="" disabled selected>Válassz szemesztert...</option>
                                 <option value="1 szemeszter">1 szemeszter</option>
@@ -274,6 +282,9 @@ else
     private string keresoSzoveg = "";
     private List<KoliPortal.Lib.MODEL.Felhasznalok> szurtFelhasznalok = new();
     private List<KoliPortal.Lib.MODEL.Felhasznalok> megjelenitettFelhasznalok = new();
+
+    private bool isFizetesModalOpen = false;
+    private KoliPortal.Lib.MODEL.Penzugyek kivalasztottTetel;
 
     // LAPOZÁS VÁLTOZÓI
     private int jelenlegiOldal = 1;
@@ -361,7 +372,6 @@ else
 
     private void FrissitSzurot()
     {
-        // 1. Alap szűrés (Gombok: Összes / Bent lakók / Kiköltözöttek)
         if (szurtMod == 1)
         {
             szurtFelhasznalok = felhasznalokLista
@@ -379,7 +389,6 @@ else
             szurtFelhasznalok = felhasznalokLista.ToList();
         }
 
-        // 2. Szöveges keresés (Név, Email, vagy Szobaszám alapján)
         if (!string.IsNullOrWhiteSpace(keresoSzoveg))
         {
             var kereso = keresoSzoveg.ToLower();
@@ -393,7 +402,6 @@ else
         LapozasFrissitese();
     }
 
-    // LAPOZÁS LOGIKÁJA
     private void LapozasFrissitese()
     {
         osszesOldal = (int)Math.Ceiling((double)szurtFelhasznalok.Count / elemekOldalankent);
@@ -473,6 +481,7 @@ else
         {
             hibaUzenet = "Adminisztrátor fiók nem törölhető!";
             isModalOpen = false;
+            StateHasChanged();
             return;
         }
 
@@ -482,40 +491,45 @@ else
         {
             try
             {
+                // Védőháló a Pénzügyeknek
                 var penzugyL = penzugyekLista.Where(x => x.UserID == editModel.UserID).ToList();
                 foreach (var item in penzugyL)
                 {
-                    await Penzugyek.DeletePenzugyek(item.ID, token);
+                    try { await Penzugyek.DeletePenzugyek(item.ID, token); } catch { }
                 }
 
+                // Védőháló a Diákadatoknak
                 var diakAdat = diakAdatokLista.FirstOrDefault(x => x.UserID == editModel.UserID);
                 if (diakAdat != null)
                 {
-                    await DiakAdatok.DeleteDiakAdatok(diakAdat.UserID, token);
+                    try { await DiakAdatok.DeleteDiakAdatok(diakAdat.UserID, token); } catch { }
                 }
 
+                // Védőháló a Szobabeosztásoknak
                 var beosztasok = beosztasokLista.Where(x => x.UserID == editModel.UserID).ToList();
                 foreach (var item in beosztasok)
                 {
-                    await SzobaBeosztasok.DeleteSzobaBeosztasok(item.ID, token);
+                    try { await SzobaBeosztasok.DeleteSzobaBeosztasok(item.ID, token); } catch { }
                 }
 
-                var erintettKeresek = karbantartasiKeresekLista
-                    .Where(x => x.BejelentoID == editModel.UserID)
-                    .ToList();
-
+                // Védőháló a Hibajegyeknek
+                var erintettKeresek = karbantartasiKeresekLista.Where(x => x.BejelentoID == editModel.UserID).ToList();
                 foreach (var keres in erintettKeresek)
                 {
-                    await KarbantartasiKeresek.DeleteKarbantartasiKeresek(keres.ID, token);
+                    try { await KarbantartasiKeresek.DeleteKarbantartasiKeresek(keres.ID, token); } catch { }
                 }
 
+                // És végül a fő elem törlése (Ez már nem dobhat 404-et, mert erre kattintottunk)
                 await Felhasznalo.DeleteFelhasznalok(editModel.UserID, token);
 
                 isModalOpen = false;
                 await AdatokBetoltese();
 
+                hibaUzenet = string.Empty;
                 sikerUzenet = "Felhasználó és adatai véglegesen törölve!";
                 sikeresMentes = true;
+
+                StateHasChanged();
 
                 _ = Task.Run(async () =>
                 {
@@ -526,7 +540,10 @@ else
             }
             catch (Exception ex)
             {
-                hibaUzenet = $"Hiba a törlés során: {ex.Message}";
+                sikeresMentes = false;
+                hibaUzenet = $"Hiba a fő felhasználó törlése során: {ex.Message}";
+                isModalOpen = false;
+                StateHasChanged();
             }
         }
     }
@@ -550,13 +567,13 @@ else
                 var voltDiakAdat = diakAdatokLista.FirstOrDefault(x => x.UserID == editModel.UserID);
                 if (voltDiakAdat != null)
                 {
-                    await DiakAdatok.DeleteDiakAdatok(editModel.UserID, token);
+                    try { await DiakAdatok.DeleteDiakAdatok(voltDiakAdat.UserID, token); } catch { }
                 }
 
                 var voltBeosztasok = beosztasokLista.Where(x => x.UserID == editModel.UserID).ToList();
                 foreach (var beosztas in voltBeosztasok)
                 {
-                    await SzobaBeosztasok.DeleteSzobaBeosztasok(beosztas.ID, token);
+                    try { await SzobaBeosztasok.DeleteSzobaBeosztasok(beosztas.ID, token); } catch { }
                 }
             }
             else
@@ -648,8 +665,11 @@ else
             isModalOpen = false;
             await AdatokBetoltese();
 
+            hibaUzenet = string.Empty;
             sikerUzenet = "Sikeres mentés és adatok frissítése!";
             sikeresMentes = true;
+
+            StateHasChanged();
 
             _ = Task.Run(async () =>
             {
@@ -660,7 +680,9 @@ else
         }
         catch (Exception ex)
         {
+            sikeresMentes = false;
             hibaUzenet = $"Hiba a mentés során: {ex.Message}";
+            StateHasChanged();
         }
     }
 
