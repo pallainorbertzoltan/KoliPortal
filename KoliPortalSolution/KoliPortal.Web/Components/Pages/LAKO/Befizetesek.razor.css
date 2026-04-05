@@ -1,6 +1,5 @@
 ﻿/* Teljes nézet és háttér */
 .view-section {
-    background-color: #f8f9fa; /* Világos háttér a kártya mögött */
     padding: 3rem 1rem;
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     display: flex;
