@@ -239,7 +239,7 @@ html {
     }
 
 /* Mobil responzivitás kiegészítés */
-@@media (max-width: 768px) {
+@media (max-width: 768px) {
     .hero-title {
         font-size: 2.2rem;
     }
@@ -247,12 +247,17 @@ html {
     .landing-navbar {
         padding: 1rem;
     }
+    .landing-navbar {
+        padding: 1rem;
+    }
 }
 
-font-size: 2.2rem;
-}
-
-.landing-navbar {
-    padding: 1rem;
-}
+/* Hamburger gomb */
+.hamburger-btn {
+    background: #f4f6f9;
+    border: 1px solid #e5e9ec;
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 1.5rem;
+    color: #0d8368;
 }

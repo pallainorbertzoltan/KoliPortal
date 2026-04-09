@@ -3,21 +3,29 @@
 
 <div class="landing-page">
 
-    <nav class="landing-navbar">
-        <div class="nav-brand">
-            <a href="#rolunk" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 0.5rem;" @onclick:preventDefault>
-                <i class="bi bi-building"></i> <span>KoliPortál</span>
-            </a>
-        </div>
-
-        <div class="d-flex align-items-center">
-            <div class="nav-links d-none d-md-flex me-2">
-                <a href="#rolunk" @onclick:preventDefault>Rólunk</a>
-                <a href="#funkciok" @onclick:preventDefault>Funkciók</a>
-                <a href="#kapcsolat" @onclick:preventDefault>Kapcsolat</a>
+    <nav class="navbar navbar-expand-md landing-navbar">
+        <div class="container-fluid px-0">
+            <div class="nav-brand">
+                <a class="navbar-brand" href="#rolunk" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 0.5rem;" @onclick:preventDefault>
+                    <i class="bi bi-building"></i> <span>KoliPortál</span>
+                </a>
             </div>
-            <div class="nav-actions">
-                <a href="/login" class="btn btn-primary login-btn" style="text-decoration: none;">Bejelentkezés</a>
+
+            <button class="navbar-toggler shadow-none hamburger-btn" type="button" data-bs-toggle="collapse" data-bs-target="#koliNavbar" aria-controls="koliNavbar" aria-expanded="false" aria-label="Navigáció kinyitása">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="koliNavbar">
+                <div class="d-flex flex-column flex-md-row align-items-md-center gap-3 gap-md-0 mt-3 mt-md-0">
+                    <div class="nav-links d-flex flex-column flex-md-row me-md-4 gap-2 gap-md-0">
+                        <a href="#rolunk" class="nav-link px-0 px-md-2" @onclick:preventDefault>Rólunk</a>
+                        <a href="#funkciok" class="nav-link px-0 px-md-2" @onclick:preventDefault>Funkciók</a>
+                        <a href="#kapcsolat" class="nav-link px-0 px-md-2" @onclick:preventDefault>Kapcsolat</a>
+                    </div>
+                    <div class="nav-actions">
+                        <a href="/login" class="btn btn-primary login-btn w-100" style="text-decoration: none;">Bejelentkezés</a>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
