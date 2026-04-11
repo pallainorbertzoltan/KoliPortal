@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoliPortal.Lib", "KoliPorta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoliPortal.Web", "KoliPortal.Web\KoliPortal.Web.csproj", "{7CC56C66-F01A-429D-AF78-AFBD988651E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoliPortal.Test", "KoliPortal.Test\KoliPortal.Test.csproj", "{F2963861-54BD-48BD-B5A9-B0754E923AFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{7CC56C66-F01A-429D-AF78-AFBD988651E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CC56C66-F01A-429D-AF78-AFBD988651E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CC56C66-F01A-429D-AF78-AFBD988651E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2963861-54BD-48BD-B5A9-B0754E923AFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2963861-54BD-48BD-B5A9-B0754E923AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2963861-54BD-48BD-B5A9-B0754E923AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2963861-54BD-48BD-B5A9-B0754E923AFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
